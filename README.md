@@ -19,3 +19,7 @@
 - [Видеопрезентация] ()
 
 ## Материалы по проекту:
+
+- [Задачи в Trello](https://trello.com/b/8XYZKktR/renty)
+- [Доска в Miro](https://miro.com/app/board/uXjVMfMfX_M=/)
+- [Диаграммы в Draw.io](https://drive.google.com/file/d/1lqZKVPA-b3Bo-5tVm31jjGfLrGbnOb2S/view?usp=sharing)
