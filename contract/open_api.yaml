@@ -1,0 +1,414 @@
+openapi: 3.0.1
+info:
+  title: Renty API
+  description: API, используемый для коммуникации HTTP сервисов приложения Renty
+  contact:
+    name: ТП 5.2-3
+    url: https://github.com/sevolchenko/Renty
+  version: 1.0.0
+
+tags:
+  - name: Каталог
+    description: Доступ к товарам
+  - name: Аренды
+    description: Операции с арендами
+  - name: Пользователь
+    description: Операции с пользователями
+
+paths:
+
+  /products:
+    get:
+      tags:
+        - Каталог
+      summary: Получить все продукты
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses: 
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProductsResponse'
+
+  /products/{id}:
+    get:
+      tags:
+        - Каталог
+      summary: Получить продукт по id
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses: 
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+
+  /products/projections:
+    get:
+      tags:
+        - Каталог
+      summary: Получить все проекции продуктов
+      parameters:
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category_id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: price_from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: price_up_to
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort_by
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProductProjectionResponse'
+
+  /products/projections/{id}:
+    get:
+      tags:
+        - Каталог
+      summary: Получить проекцию по id
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductProjectionResponse'
+
+  /products/sizes/{id}:
+    get:
+      tags:
+        - Каталог
+      summary: Получить размеры по id товара
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: date
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: object
+            oneOf:
+              - properties:
+                  at_time:
+                    type: string
+                    format: date-time
+                required: [at_time]
+                additionalProperties: false
+              - properties:
+                  from_time:
+                    type: string
+                    format: date-time
+                  up_to_time:
+                    type: string
+                    format: date-time
+                required: [from_time, up_to_time]
+                additionalProperties: false
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSizesResponse'
+
+  /rents/{user_id}:
+    get:
+      tags:
+        - Аренды
+      summary: Получить список аренд пользователя по id пользователя
+      parameters: 
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRentEventsResponse'
+
+  /rents/{user_id}/{rent_id}:
+    get:
+      tags:
+        - Аренды
+      summary: Получить аренду по id пользователя и id аренды
+      parameters: 
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rent_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentEventResponse'
+    put:
+      tags:
+        - Аренды
+      summary: Продлить аренду по id пользователя и id аренды
+      parameters: 
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rent_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtendRentEventRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentEventResponse'
+
+      
+
+components:
+  schemas:
+    ProductResponse:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+          format: int32
+        sizes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SizeResponse'
+        category:
+          $ref: '#/components/schemas/CategoryResponse'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageResponse'
+
+    ListProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+        size:
+          type: integer
+          format: int32
+
+    ProductProjectionResponse:
+      type: object
+      properties: 
+        product_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        price:
+          type: integer
+          format: int32
+        busy_now:
+          type: boolean
+        category:
+          $ref: '#/components/schemas/CategoryResponse'
+        main_image:
+          $ref: '#/components/schemas/ImageResponse'
+
+    ListProductProjectionResponse:
+      type: object
+      properties:
+        projections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductProjectionResponse'
+        size:
+          type: integer
+          format: int32
+
+    ProductPreviewResponse:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        main_image:
+          $ref: '#/components/schemas/ImageResponse'
+        
+    ImageResponse:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        position:
+          type: integer
+          format: int32
+        image:
+          type: string
+          contentMediaType: image/*
+          contentEncoding: base64
+    
+    CategoryResponse:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+              
+    SizeResponse:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        size_name:
+          type: string
+        total:
+          type: integer
+          format: int32
+        free_now:
+          type: integer
+          format: int32
+
+    ListSizesResponse:
+      type: object
+      properties:
+        sizes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SizeResponse'
+        size:
+          type: integer
+          format: int32
+        
+    RentEventResponse:
+      type: object
+      properties:
+        rent_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        product_preview:
+          $ref: '#/components/schemas/ProductPreviewResponse'
+        size_name:
+          type: string
+        count:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        status:
+          type: string
+
+    ListRentEventsResponse:
+      type: object
+      properties:
+        rents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RentEventResponse'
+        size:
+          type: integer
+          format: int32
+
+    ExtendRentEventRequest:
+      new_end_time:
+          type: string
+          format: date-time
+        
+
+
+        
