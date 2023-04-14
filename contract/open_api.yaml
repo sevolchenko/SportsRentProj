@@ -10,46 +10,50 @@ info:
 tags:
   - name: Каталог
     description: Доступ к товарам
-  - name: Аренды
+  - name: Аренда
     description: Операции с арендами
+  - name: Оплата
+    description: Платежные операции
   - name: Пользователь
     description: Операции с пользователями
 
 paths:
 
-  /products:
+  /catalog/products:
     get:
       tags:
         - Каталог
       summary: Получить все продукты
-      parameters: 
+      parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
             format: int64
-      responses: 
+      responses:
         '200':
           description: Успешно
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListProductsResponse'
-
-  /products/{id}:
-    get:
+    post:
       tags:
         - Каталог
-      summary: Получить продукт по id
-      parameters: 
-        - name: id
-          in: path
+      summary: Создать продукт
+      parameters:
+        - name: authorization_token
+          in: header
           required: true
           schema:
-            type: integer
-            format: int64
-      responses: 
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
         '200':
           description: Успешно
           content:
@@ -57,7 +61,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductResponse'
 
-  /products/projections:
+  /catalog/products/{product_id}:
+    get:
+      tags:
+        - Каталог
+      summary: Получить продукт по id
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    delete:
+      tags:
+        - Каталог
+      summary: Удалить продукт по id
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+
+  /catalog/products/projections:
     get:
       tags:
         - Каталог
@@ -99,13 +146,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListProductProjectionResponse'
 
-  /products/projections/{id}:
+  /catalog/products/projections/{product_id}:
     get:
       tags:
         - Каталог
       summary: Получить проекцию по id
-      parameters: 
-        - name: id
+      parameters:
+        - name: product_id
           in: path
           required: true
           schema:
@@ -119,13 +166,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductProjectionResponse'
 
-  /products/sizes/{id}:
+
+  /catalog/products/sizes/{product_id}:
     get:
       tags:
         - Каталог
-      summary: Получить размеры по id товара
+      summary: Получить размеры по id товара и времени
       parameters:
-        - name: id
+        - name: product_id
           in: path
           required: true
           schema:
@@ -161,19 +209,189 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListSizesResponse'
+    post:
+      tags:
+        - Каталог
+      summary: Создать размер для товара
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SizeCreateRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SizeResponse'
+    patch:
+      tags:
+        - Каталог
+      summary: Изменить количество размеров для товара
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SizeCreateRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SizeResponse'
+    delete:
+      tags:
+        - Каталог
+      summary: Удалить размер для товара
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SizeDeleteRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SizeResponse'
+
+
+  /catalog/categories:
+    get:
+      tags:
+        - Каталог
+      summary: Получить список категорий
+      parameters:
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCategoriesFullResponse'
+    post:
+      tags:
+        - Каталог
+      summary: Создать категорию
+      parameters:
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreateRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryFullResponse'
+
+  /catalog/categories/{id}:
+    get:
+      tags:
+        - Каталог
+      summary: Получить категории по id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryFullResponse'
+    delete:
+      tags:
+        - Каталог
+      summary: Удалить категорию по id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryFullResponse'
+
 
   /rents/{user_id}:
     get:
       tags:
-        - Аренды
+        - Аренда
       summary: Получить список аренд пользователя по id пользователя
-      parameters: 
+      parameters:
         - name: user_id
           in: path
           required: true
           schema:
             type: integer
             format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Успешно
@@ -181,13 +399,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListRentEventsResponse'
+    post:
+      tags:
+        - Аренда
+      summary: Начать аренду
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRentEventsCreateRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRentEventsResponse'
+    patch:
+      tags:
+        - Аренда
+      summary: Завершить аренду
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRentFinishRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptResponse'
 
   /rents/{user_id}/{rent_id}:
     get:
       tags:
-        - Аренды
+        - Аренда
       summary: Получить аренду по id пользователя и id аренды
-      parameters: 
+      parameters:
         - name: user_id
           in: path
           required: true
@@ -200,6 +474,11 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Успешно
@@ -207,11 +486,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RentEventResponse'
-    put:
+
+    patch:
       tags:
-        - Аренды
+        - Аренда
       summary: Продлить аренду по id пользователя и id аренды
-      parameters: 
+      parameters:
         - name: user_id
           in: path
           required: true
@@ -224,6 +504,11 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -237,7 +522,130 @@ paths:
               schema:
                 $ref: '#/components/schemas/RentEventResponse'
 
-      
+  /pay/{receipt_id}:
+    get:
+      tags:
+        - Оплата
+      summary: Оплатить чек по id
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+
+  /pay/{receipt_id}/get:
+    get:
+      tags:
+        - Оплата
+      summary: Получить чек по id
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptResponse'
+
+  /users/login:
+    post:
+      tags:
+        - Пользователь
+      summary: Войти в систему
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponse'
+
+  /users/register:
+    post:
+      tags:
+        - Пользователь
+      summary: Зарегестрировать пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+      responses:
+        '200':
+          description: Успешно
+
+  /users/{user_id}:
+    get:
+      tags:
+        - Пользователь
+      summary: Получить пользователя по id
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  /users/search:
+    get:
+      tags:
+        - Пользователь
+      summary: Найти пользователей по электронной почте
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: authorization_token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserResponse'
+
+
+
 
 components:
   schemas:
@@ -257,7 +665,7 @@ components:
         sizes:
           type: array
           items:
-            $ref: '#/components/schemas/SizeResponse'
+            $ref: '#/components/schemas/ListSizesResponse'
         category:
           $ref: '#/components/schemas/CategoryResponse'
         images:
@@ -276,9 +684,27 @@ components:
           type: integer
           format: int32
 
+    ProductCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+          format: int32
+        category_id:
+          type: integer
+          format: int64
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageRequest'
+
     ProductProjectionResponse:
       type: object
-      properties: 
+      properties:
         product_id:
           type: integer
           format: int64
@@ -315,7 +741,7 @@ components:
           type: string
         main_image:
           $ref: '#/components/schemas/ImageResponse'
-        
+
     ImageResponse:
       type: object
       properties:
@@ -329,7 +755,18 @@ components:
           type: string
           contentMediaType: image/*
           contentEncoding: base64
-    
+
+    ImageRequest:
+      type: object
+      properties:
+        position:
+          type: integer
+          format: int32
+        image:
+          type: string
+          contentMediaType: image/*
+          contentEncoding: base64
+
     CategoryResponse:
       type: object
       properties:
@@ -338,7 +775,39 @@ components:
           format: int64
         name:
           type: string
-              
+
+    CategoryFullResponse:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          format: int64
+        parent_category_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    CategoryCreateRequest:
+      type: object
+      properties:
+        parent_category_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    ListCategoriesFullResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryFullResponse'
+        size:
+          type: integer
+          format: int32
+
     SizeResponse:
       type: object
       properties:
@@ -350,7 +819,31 @@ components:
         total:
           type: integer
           format: int32
-        free_now:
+        count_available_now:
+          type: integer
+          format: int32
+
+    SizeCreateRequest:
+      type: object
+      properties:
+        size_name:
+          type: string
+        total:
+          type: integer
+          format: int32
+
+    SizeDeleteRequest:
+      type: object
+      properties:
+        size_name:
+          type: string
+
+    SizeUpdateRequest:
+      type: object
+      properties:
+        size_name:
+          type: string
+        total:
           type: integer
           format: int32
 
@@ -364,7 +857,7 @@ components:
         size:
           type: integer
           format: int32
-        
+
     RentEventResponse:
       type: object
       properties:
@@ -384,6 +877,9 @@ components:
         price:
           type: integer
           format: int32
+        created_at:
+          type: string
+          format: date-time
         start_time:
           type: string
           format: date-time
@@ -405,10 +901,149 @@ components:
           format: int32
 
     ExtendRentEventRequest:
-      new_end_time:
+      type: object
+      properties:
+        new_end_time:
           type: string
           format: date-time
-        
 
+    RentEventCreateRequest:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        size_name:
+          type: string
+        count:
+          type: integer
+          format: int32
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
 
-        
+    ListRentEventsCreateRequest:
+      type: object
+      properties:
+        rents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RentEventCreateRequest'
+        size:
+          type: integer
+          format: int32
+
+    UserLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    UserLoginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/RentEventCreateRequest'
+        authorization_token:
+          type: string
+
+    UserRegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        name:
+          type: string
+
+    ListUserResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        size:
+          type: integer
+          format: int32
+
+    RentFinishRequest:
+      type: object
+      properties:
+        rent_id:
+          type: integer
+          format: int64
+        finish_time:
+          type: string
+          format: date-time
+
+    ListRentFinishRequest:
+      type: object
+      properties:
+        rents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RentFinishRequest'
+        size:
+          type: integer
+          format: int32
+
+    ReceiptItemResponse:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        number:
+          type: number
+          format: double
+        price:
+          type: integer
+          format: int32
+        isRent:
+          type: boolean
+
+    ReceiptResponse:
+      type: object
+      properties:
+        receipt_id:
+          type: string
+          format: uuid
+        user_id:
+          type: integer
+          format: int64
+        employee_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        pay_link:
+          type: string
+          format: url
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiptItemResponse'
+        sum:
+          type: number
+          format: double
+        status:
+          type: string
