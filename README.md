@@ -26,4 +26,5 @@
 ## Материалы по проекту:
 - [Задачи в Trello](https://trello.com/b/8XYZKktR/renty)
 - [Доска в Miro](https://miro.com/app/board/uXjVMfMfX_M=/)
+- [Дизайн в Figma](https://www.figma.com/file/0UBSbFquRYT1QXGyrH6JiV/Renty?node-id=0%3A1&t=63ZOD7RdBsDtvM6V-1)
 - [Диаграммы в Draw.io](https://drive.google.com/file/d/1lqZKVPA-b3Bo-5tVm31jjGfLrGbnOb2S/view?usp=sharing)
