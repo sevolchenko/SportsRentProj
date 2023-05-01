@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+    database: postgresql
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/renty
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+springdoc:
+  swagger-ui:
+    path: '/swagger-ui'
+
+server:
+  port: ${SERVER_PORT}
