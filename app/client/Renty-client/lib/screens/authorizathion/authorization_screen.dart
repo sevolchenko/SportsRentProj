@@ -1,13 +1,14 @@
+import 'package:client/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:client/bottom_menu.dart';
+import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
 import 'package:client/screens/registration/registration_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class AuthorizathionScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AuthorizathionScreenState createState() => _AuthorizathionScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _AuthorizathionScreenState extends State<AuthorizathionScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -15,10 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Авторизация'),
-        centerTitle: true,
-      ),
+      appBar: const MyAppBar(title: "Авторизация"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -28,19 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Почта',
-                  border: OutlineInputBorder(),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Почта',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите почту';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите почту';
-                  }
-                  return null;
-                },
-              ),
                 const SizedBox(height: 16.0),
                 TextFormField(
                   controller: _passwordController,
@@ -83,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-     bottomNavigationBar: const BottomMenu(),
+      bottomNavigationBar: BottomMenu(selectedIndex: 3,),
     );
   }
 }

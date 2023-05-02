@@ -1,5 +1,6 @@
+import 'package:client/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:client/bottom_menu.dart';
+import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -18,10 +19,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Регистрация'),
-        centerTitle: true,
-      ),
+      // resizeToAvoidBottomInset : false,
+      appBar: const MyAppBar(title: "Регистрация"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -105,7 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomMenu(),
+      bottomNavigationBar: BottomMenu(selectedIndex: 3,),
     );
   }
 }

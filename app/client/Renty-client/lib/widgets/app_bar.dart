@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/size_config.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -8,7 +9,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 40, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: 50),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -18,7 +19,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 34,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -31,5 +32,5 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(50.0);
+  Size get preferredSize => const Size.fromHeight(130);
 }

@@ -1,19 +1,18 @@
-// import 'package:flutter/material.dart';
-// import 'package:client/size_config.dart';
+import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
+import 'package:flutter/material.dart';
 
 
-// class HomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig().init(context);
-//     return Scaffold(
-//       appBar: buildAppBar(),
-//       body: Body(),
-//       // We are not able to BottomNavigationBar because the icon parameter dont except SVG
-//       // We also use Provied to manage the state of our Nav
-//       bottomNavigationBar: MyBottomNavBar(),
-//     );
-//   }
+class MainScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: buildAppBar(),
+      // body: Body(),
+      // We are not able to BottomNavigationBar because the icon parameter dont except SVG
+      // We also use Provied to manage the state of our Nav
+      bottomNavigationBar: BottomMenu(selectedIndex: 0,),
+    );
+  }
 
 //   AppBar buildAppBar() {
 //     return AppBar(
@@ -36,4 +35,4 @@
 //       ],
 //     );
 //   }
-// }
+}

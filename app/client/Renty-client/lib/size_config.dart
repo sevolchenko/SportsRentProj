@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 class SizeConfig {
-  static MediaQueryData _mediaQueryData = MediaQueryData();
-  static double screenWidth = 0;
-  static double screenHeight = 0;
+  static MediaQueryData _mediaQueryData = const MediaQueryData();
+  static double? screenWidth;
+  static double? screenHeight;
   static double defaultSize = 0;
   static Orientation? orientation;
 
@@ -15,7 +15,7 @@ class SizeConfig {
     // On iPhone 11 the defaultSize = 10 almost
     // So if the screen size increase or decrease then our defaultSize also vary
     defaultSize = orientation == Orientation.landscape
-        ? screenHeight * 0.024
-        : screenWidth * 0.024;
+        ? screenHeight! * 0.024
+        : screenWidth! * 0.024;
   }
 }

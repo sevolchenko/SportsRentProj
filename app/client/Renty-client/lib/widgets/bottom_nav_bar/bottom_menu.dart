@@ -7,7 +7,7 @@ import 'package:client/screens/cart/cart_screen.dart';
 class BottomMenu extends StatefulWidget {
   int selectedIndex;
 
-  BottomMenu({required this.selectedIndex});
+  BottomMenu({super.key, required this.selectedIndex});
 
   @override
   _BottomMenuState createState() => _BottomMenuState();
