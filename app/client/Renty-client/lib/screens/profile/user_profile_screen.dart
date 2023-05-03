@@ -1,6 +1,6 @@
-import 'package:client/widgets/app_bar.dart';
+import 'package:client/widgets/bar/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
+import 'package:client/widgets/bar/bottom_menu.dart';
 import 'package:client/constants.dart';
 import 'package:client/widgets/components/primary_button.dart';
 import 'package:client/widgets/components/secondary_button.dart';
