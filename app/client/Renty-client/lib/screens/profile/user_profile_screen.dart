@@ -19,8 +19,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Имя пользователя'),
-            const Text('Почта пользователя'),
+            Expanded(
+              child: Column(children: [
+                const Text(
+                  'Имя',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Divider(color: Colors.black)
+              ]),
+            ),
+            Expanded(
+              child: Column(children: [
+                const Text(
+                  'Электронная почта',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Divider(color: Colors.black)
+              ]),
+            ),
             ElevatedButton(
                 onPressed: () {
                   // TODO: Выход из аккаунта

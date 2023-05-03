@@ -9,6 +9,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: MediaQuery.of(context).size.height / 3 ,
       padding: const EdgeInsets.only(top: 50),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
