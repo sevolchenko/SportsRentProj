@@ -1,4 +1,5 @@
 import 'package:client/widgets/bar/app_bar.dart';
+import 'package:client/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:client/widgets/bar/bottom_menu.dart';
 import 'package:client/constants.dart';
@@ -45,13 +46,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Divider(color: Colors.black)
               ]),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  // TODO: Выход из аккаунта
-                },
-                style: secondaryButtonStyle,
-                child: const Text('Выйти',
-                    style: TextStyle(fontSize: 20, color: kTextColor))),
+            buildButton("Выйти", "secondary", () {
+              Navigator.of(context).pushNamed("signIn");
+            }),
           ],
         ),
       ),

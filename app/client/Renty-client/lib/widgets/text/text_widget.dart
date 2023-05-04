@@ -7,7 +7,7 @@ Widget reusableText(String text, Color color) {
     child: Text(
       text,
       style: TextStyle(
-          color: color, fontWeight: FontWeight.normal, fontSize: 18.sp),
+          color: color, fontWeight: FontWeight.normal, fontSize: 16.sp),
     ),
   );
 }

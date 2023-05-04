@@ -2,9 +2,10 @@ import 'package:client/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget buildButton(String buttonName, String buttonType) {
+Widget buildButton(
+    String buttonName, String buttonType, void Function()? func) {
   return GestureDetector(
-    onTap: () {},
+    onTap: func,
     child: Container(
       width: 280.w,
       height: 50.h,
