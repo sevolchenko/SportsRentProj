@@ -12,9 +12,9 @@ class SignInController {
       if (type == "email") {
         //BlocProvider.of<SignInBloc>(context).state
         final state = context.read<SignInBloc>().state;
-        String emailAddress = state.email;
+        String email = state.email;
         String password = state.password;
-        if (emailAddress.isEmpty) {
+        if (email.isEmpty) {
           toastInfo(msg: "Заполните поле ввода электронной почты");
           return;
         }

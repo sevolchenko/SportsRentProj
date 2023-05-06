@@ -21,29 +21,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Column(children: [
-                const Text(
+              child: Column(
+                children: const [
+                 Text(
                   'Имя',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Divider(color: Colors.black)
+                 Divider(color: Colors.black)
               ]),
             ),
             Expanded(
-              child: Column(children: [
-                const Text(
+              child: Column(
+                children: const [
+                 Text(
                   'Электронная почта',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Divider(color: Colors.black)
+                 Divider(color: Colors.black)
               ]),
             ),
             buildButton("Выйти", "secondary", () {
