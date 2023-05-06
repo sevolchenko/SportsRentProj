@@ -1,5 +1,5 @@
-import 'package:client/widgets/app_bar.dart';
-import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
+import 'package:client/widgets/bar/app_bar.dart';
+import 'package:client/widgets/bar/bottom_menu.dart';
 import 'package:flutter/material.dart';
 
 
@@ -16,26 +16,5 @@ class RentScreen extends StatelessWidget {
     );
   }
 
-  // AppBar buildAppBar() {
-  //   return AppBar(
-  //     leading: IconButton(
-  //       icon: SvgPicture.asset("assets/icons/menu.svg"),
-  //       onPressed: () {},
-  //     ),
-  //     // On Android by default its false
-  //     centerTitle: true,
-  //     title: Image.asset("assets/images/logo.png"),
-  //     actions: <Widget>[
-  //       IconButton(
-  //         icon: SvgPicture.asset("assets/icons/search.svg"),
-  //         onPressed: () {},
-  //       ),
-  //       SizedBox(
-  //         // It means 5 because by out defaultSize = 10
-  //         width: SizeConfig.defaultSize * 0.5,
-  //       )
-  //     ],
-  //   );
-  // }
 }
 

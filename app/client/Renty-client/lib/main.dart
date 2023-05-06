@@ -1,21 +1,41 @@
+import 'package:client/bloc/sign_in/sign_in_bloc.dart';
+import 'package:client/bloc/user/user_bloc.dart';
+import 'package:client/constants.dart';
+import 'package:client/screens/bloc_providers.dart';
+import 'package:client/screens/register/register_screen.dart';
+import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:client/screens/registration/registration_screen.dart';
-import 'package:client/screens/authorizathion/authorization_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: AuthorizathionScreen(),
-    );
+    return MultiBlocProvider(
+        providers: AppBlocProviders.allBlocProviders,
+        child: ScreenUtilInit(
+          builder: (context, child) => MaterialApp(
+            // debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+                appBarTheme: const AppBarTheme(
+                    iconTheme: IconThemeData(
+                      color: Colors.black,
+                    ),
+                    elevation: 0, backgroundColor: Colors.white)),
+            title: 'My App',
+            home: const SignInScreen(),
+            routes: {
+              "signIn": (context) => const SignInScreen(),
+              "register": (context) => const RegisterScreen(),
+            },
+          ),
+        ));
   }
 }

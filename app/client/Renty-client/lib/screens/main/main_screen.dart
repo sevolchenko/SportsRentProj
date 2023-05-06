@@ -1,4 +1,4 @@
-import 'package:client/widgets/bottom_nav_bar/bottom_menu.dart';
+import 'package:client/widgets/bar/bottom_menu.dart';
 import 'package:flutter/material.dart';
 
 
