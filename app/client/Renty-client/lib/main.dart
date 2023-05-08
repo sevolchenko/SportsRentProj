@@ -1,4 +1,5 @@
 import 'package:client/screens/bloc_providers.dart';
+import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/register/register_screen.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
                     ),
                     elevation: 0, backgroundColor: Colors.white)),
             title: 'My App',
-            home: const SignInScreen(),
+            home: const HomeScreen(),
             routes: {
               "signIn": (context) => const SignInScreen(),
               "register": (context) => const RegisterScreen(),

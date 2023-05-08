@@ -4,7 +4,7 @@ import 'package:client/bloc/sign_in/sign_in_state.dart';
 import 'package:client/controller/sign_in_controller.dart';
 import 'package:client/screens/sign_in/widgets/sign_in_widget.dart';
 import 'package:client/widgets/bar/app_bar.dart';
-import 'package:client/widgets/bar/bottom_menu.dart';
+import 'package:client/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/widgets/button_widget.dart';
 import 'package:client/widgets/text/text_field_widget.dart';
 import 'package:client/widgets/text/text_widget.dart';
@@ -71,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               buildButton("Войти", "primary", () {
                                 SignInController(context: context)
                                     .handleSignIn("email");
-                                    Navigator.of(context).pushNamed("profile");
+                                Navigator.of(context).pushNamed("profile");
                               }),
                               SizedBox(
                                 height: 20.h,
@@ -83,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ))
                     ]),
               ),
-              bottomNavigationBar: BottomMenu(selectedIndex: 3),
+              bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
             ),
           ),
         );

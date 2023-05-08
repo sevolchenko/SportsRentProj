@@ -1,7 +1,7 @@
 import 'package:client/widgets/bar/app_bar.dart';
 import 'package:client/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:client/widgets/bar/bottom_menu.dart';
+import 'package:client/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/constants.dart';
 import 'package:client/widgets/components/primary_button.dart';
 import 'package:client/widgets/components/secondary_button.dart';
@@ -21,31 +21,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Column(
-                children: const [
-                 Text(
+              child: Column(children: const [
+                Text(
                   'Имя',
                   textAlign: TextAlign.center,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                 Divider(color: Colors.black)
+                Divider(color: Colors.black)
               ]),
             ),
             Expanded(
-              child: Column(
-                children: const [
-                 Text(
+              child: Column(children: const [
+                Text(
                   'Электронная почта',
                   textAlign: TextAlign.center,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                 Divider(color: Colors.black)
+                Divider(color: Colors.black)
               ]),
             ),
             buildButton("Выйти", "secondary", () {
@@ -54,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomMenu(
+      bottomNavigationBar: MyBottomNavBar(
         selectedIndex: 3,
       ),
     );
