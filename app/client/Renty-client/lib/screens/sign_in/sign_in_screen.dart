@@ -71,6 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               buildButton("Войти", "primary", () {
                                 SignInController(context: context)
                                     .handleSignIn("email");
+                                    Navigator.of(context).pushNamed("profile");
                               }),
                               SizedBox(
                                 height: 20.h,

@@ -1,6 +1,7 @@
 import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/register/register_event.dart';
 import 'package:client/bloc/register/register_state.dart';
+import 'package:client/controller/register_controller.dart';
 import 'package:client/widgets/bar/app_bar.dart';
 import 'package:client/widgets/bar/bottom_menu.dart';
 import 'package:client/widgets/button_widget.dart';
@@ -79,8 +80,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
 
                             buildButton("Зарегистрироваться", "primary", () {
-                              // SignInController(context: context)
-                              //     .handleSignIn("email");
+                              RegisterController(context: context)
+                                  .handleRegister();
+                              Navigator.of(context).pushNamed("signIn");
                             }),
                           ],
                         ))

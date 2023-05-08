@@ -1,5 +1,4 @@
 import 'package:client/bloc/register/register_bloc.dart';
-import 'package:client/bloc/sign_in/sign_in_bloc.dart';
 import 'package:client/widgets/flutter_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,7 @@ class RegisterController {
   final BuildContext context;
   const RegisterController({required this.context});
 
-  void handleRegister(String type) {
+  void handleRegister() {
     try {
       final state = context.read<RegisterBloc>().state;
       String userName = state.userName;
@@ -31,6 +30,7 @@ class RegisterController {
         toastInfo(msg: "Пароли не совпадают");
         return;
       }
+      // Navigator.of(context).pop();
       //TODO работа с сервером
     } catch (e) {}
   }

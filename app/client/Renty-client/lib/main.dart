@@ -1,6 +1,3 @@
-import 'package:client/bloc/sign_in/sign_in_bloc.dart';
-import 'package:client/bloc/user/user_bloc.dart';
-import 'package:client/constants.dart';
 import 'package:client/screens/bloc_providers.dart';
 import 'package:client/screens/register/register_screen.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
