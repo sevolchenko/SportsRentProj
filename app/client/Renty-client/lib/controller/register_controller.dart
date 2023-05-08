@@ -30,7 +30,7 @@ class RegisterController {
         toastInfo(msg: "Пароли не совпадают");
         return;
       }
-      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
       //TODO работа с сервером
     } catch (e) {}
   }
