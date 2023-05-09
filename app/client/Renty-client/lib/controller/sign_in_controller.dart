@@ -22,6 +22,9 @@ class SignInController {
           toastInfo(msg: "Заполните поле ввода пароля");
           return;
         }
+        // if(user!=null){
+        Navigator.of(context).pushNamedAndRemoveUntil("/application", (route) => false);
+        // }
         try {
           // TODO Работа с сервером
         } catch (e) {}

@@ -16,7 +16,6 @@ class MyBottomNavBar extends StatefulWidget {
 
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
   final List<Widget> _widgetOptions = <Widget>[
-    // Экраны приложения
     HomeScreen(),
     RentScreen(),
     CartScreen(),

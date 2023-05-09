@@ -71,13 +71,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               buildButton("Войти", "primary", () {
                                 SignInController(context: context)
                                     .handleSignIn("email");
-                                Navigator.of(context).pushNamed("profile");
+                                // Navigator.of(context).pushNamed("/profile");
                               }),
                               SizedBox(
                                 height: 20.h,
                               ),
                               buildButton("Регистрация", "secondary", () {
-                                Navigator.of(context).pushNamed("register");
+                                Navigator.of(context).pushNamed("/register");
                               })
                             ],
                           ))

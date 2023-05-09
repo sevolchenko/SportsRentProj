@@ -82,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             buildButton("Зарегистрироваться", "primary", () {
                               RegisterController(context: context)
                                   .handleRegister();
-                              // Navigator.of(context).pushNamed("signIn");
+                              // Navigator.of(context).pushNamed("/sign_in");
                             }),
                           ],
                         ))
