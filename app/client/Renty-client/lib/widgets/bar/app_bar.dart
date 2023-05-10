@@ -8,24 +8,30 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    var appBar = AppBar(
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0),
         child: Container(
-          color: Colors.green.withOpacity(0.5),
-          height: 1.0,
+          margin: EdgeInsets.symmetric(horizontal: 30.w),
+          color: Colors.black.withOpacity(0.8),
+          height: 1.5,
         ),
       ),
       // backgroundColor: Colors.white,
-      title: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 30.sp,
-          fontWeight: FontWeight.normal,
+      title: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 15.h),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25.sp,
+            fontWeight: FontWeight.normal,
+          ),
         ),
       ),
     );
+    return appBar;
   }
 
   @override

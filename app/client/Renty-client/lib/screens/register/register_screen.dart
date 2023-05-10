@@ -88,7 +88,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ))
                   ]),
             ),
-            bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
           ),
         ),
       );

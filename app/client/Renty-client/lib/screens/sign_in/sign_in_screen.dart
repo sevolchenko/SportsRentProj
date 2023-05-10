@@ -83,7 +83,6 @@ class _SignInScreenState extends State<SignInScreen> {
                           ))
                     ]),
               ),
-              bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
             ),
           ),
         );

@@ -2,11 +2,12 @@ import 'package:client/widgets/bar/app_bar.dart';
 import 'package:client/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:client/widgets/bar/bottom_nav_bar.dart';
-import 'package:client/constants.dart';
+import 'package:client/common/values/colors.dart';
 import 'package:client/widgets/components/primary_button.dart';
 import 'package:client/widgets/components/secondary_button.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -52,9 +53,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavBar(
-        selectedIndex: 3,
-      ),
+      // bottomNavigationBar: MyBottomNavBar(
+      //   selectedIndex: 3,
+      // ),
     );
   }
 }

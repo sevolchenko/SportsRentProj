@@ -1,8 +1,10 @@
 //unify BlocProvider and routes and screens
 import 'package:client/bloc/application/application_bloc.dart';
+import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/sign_in/sign_in_bloc.dart';
 import 'package:client/common/routes/names.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/profile/user_profile_screen.dart';
@@ -34,17 +36,17 @@ class AppScreens {
             create: (_) => RegisterBloc(),
           )),
       ScreenEntity(
+          route: AppRoutes.HOME,
+          screen: const HomeScreen(),
+          bloc: BlocProvider(
+            create: (_) => HomeBloc(),
+          )),
+      ScreenEntity(
           route: AppRoutes.PROFILE,
-          screen:  ProfileScreen(),
+          screen: ProfileScreen(),
           bloc: BlocProvider(
             create: (_) => RegisterBloc(), // change to ProfileBloc
           )),
-      // ScreenEntity(
-      //     route: AppRoutes.HOME,
-      //     screen: const HomeScreen(),
-      //     bloc: BlocProvider(
-      //       create: (_) => ApplicationBloc(),
-      //     )),
     ];
   }
 
@@ -61,16 +63,25 @@ class AppScreens {
     if (settings.name != null) {
       //check for route name matching when navigator gets triggered
       var result = routes().where((element) => element.route == settings.name);
+      //TODO действия для зарегестр. и незарегестр. пользователя при нажатии на кнопки
 
       if (result.isNotEmpty) {
         print("valid ${settings.name}");
+        // if(){
+        bool isLoged = Global.storageService.getIsLoggedIn();
+        if (isLoged) {
+          return MaterialPageRoute(builder: (_) => const Application());
+        }
+        // }
         return MaterialPageRoute(
             builder: (_) => result.first.screen, settings: settings);
       }
     }
     print("invalid ${settings.name}");
     return MaterialPageRoute(
-        builder: (_) => const SignInScreen(), settings: settings);
+        builder: (_) => const Application(), settings: settings);
+    // return MaterialPageRoute(
+    //     builder: (_) => const SignInScreen(), settings: settings);
   }
 }
 

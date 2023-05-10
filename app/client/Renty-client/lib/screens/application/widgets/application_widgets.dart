@@ -1,13 +1,15 @@
+import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/profile/user_profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget buildScreen(int index) {
   List<Widget> _widget = [
-    Center(child: Text("Home")),
+    const HomeScreen(),
     Center(child: Text("Rent")),
     Center(child: Text("Cart")),
-    Center(child: Text("Profile"))
+    const ProfileScreen()
   ];
   print("build screen: ${index}");
 
