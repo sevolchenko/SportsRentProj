@@ -16,5 +16,6 @@
     <include file="create_size_table.sql" relativeToChangelogFile="true"/>
     <include file="create_receipt_table.sql" relativeToChangelogFile="true"/>
     <include file="create_rent_event_table.sql" relativeToChangelogFile="true"/>
+    <include file="create_rent_item_table.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
