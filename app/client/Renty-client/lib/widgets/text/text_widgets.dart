@@ -7,8 +7,9 @@ Widget reusableText(String text, Color color) {
     margin: EdgeInsets.only(bottom: 5.h),
     child: Text(
       text,
+      overflow: TextOverflow.fade,
       style: TextStyle(
-          color: color, fontWeight: FontWeight.normal, fontSize: 16.sp),
+          color: color, fontWeight: FontWeight.normal, fontSize: 14.sp),
     ),
   );
 }
@@ -58,4 +59,38 @@ Widget buildTextField(String hintText, String textType, double height,
           )
         ],
       ));
+}
+
+Widget buildTextInfo(String title, String content) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 20.h),
+    child: Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(top: 30.h, left: 20.w, right: 20.w),
+          child: reusableText(title, Colors.black),
+        ),
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(bottom: 5.h, left: 40.w, right: 20.w),
+          child: Text(
+            content,
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Avenir",
+                fontWeight: FontWeight.normal,
+                fontSize: 22.sp),
+          ),
+        ),
+        const Divider(
+          height: 10,
+          indent: 35,
+          endIndent: 35,
+          thickness: 1,
+          color: Colors.black,
+        ),
+      ],
+    ),
+  );
 }

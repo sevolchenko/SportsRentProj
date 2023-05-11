@@ -16,7 +16,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Container(
               // alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 5.h),
+              padding: EdgeInsets.only(top: 5.h),
               child: Text(
                 title,
                 // textAlign: TextAlign.left,
@@ -28,7 +28,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const Divider(
-              height: 0,
+              height: 10,
               indent: 35,
               endIndent: 35,
               thickness: 1,
