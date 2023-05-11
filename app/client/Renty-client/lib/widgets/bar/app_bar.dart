@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:client/size_config.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -9,28 +8,37 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(
-          color: Colors.green.withOpacity(0.5),
-          height: 1.0,
-        ),
-      ),
-      // backgroundColor: Colors.white,
-      title: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 30.sp,
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    );
+    var appBar = AppBar(
+        backgroundColor: Colors.white,
+        title: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 10.h),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28.sp,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            const Divider(
+              height: 0,
+              indent: 30,
+              endIndent: 30,
+              thickness: 2,
+              color: Colors.black,
+            ),
+          ],
+        ));
+    return appBar;
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(50.h);
+  Size get preferredSize => Size.fromHeight(40.h);
 }
 
 

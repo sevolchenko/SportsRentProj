@@ -3,7 +3,7 @@ import 'package:client/bloc/register/register_event.dart';
 import 'package:client/bloc/register/register_state.dart';
 import 'package:client/controller/register_controller.dart';
 import 'package:client/widgets/bar/app_bar.dart';
-import 'package:client/widgets/bar/bottom_menu.dart';
+import 'package:client/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/widgets/button_widget.dart';
 import 'package:client/widgets/text/text_field_widget.dart';
 import 'package:client/widgets/text/text_widget.dart';
@@ -82,13 +82,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             buildButton("Зарегистрироваться", "primary", () {
                               RegisterController(context: context)
                                   .handleRegister();
-                              Navigator.of(context).pushNamed("signIn");
+                              // Navigator.of(context).pushNamed("/sign_in");
                             }),
                           ],
                         ))
                   ]),
             ),
-            bottomNavigationBar: BottomMenu(selectedIndex: 3),
           ),
         ),
       );

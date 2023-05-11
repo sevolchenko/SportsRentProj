@@ -21,5 +21,3 @@ class RePasswordEvent extends RegisterEvent {
   final String rePassword;
   const RePasswordEvent(this.rePassword);
 }
-
-

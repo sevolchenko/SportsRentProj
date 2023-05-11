@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:client/screens/profile/user_profile_screen.dart';
-import 'package:client/screens/main/main_screen.dart';
+import 'package:client/screens/profile/profile_screen.dart';
+import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/rent/rent_screen.dart';
 import 'package:client/screens/cart/cart_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BottomMenu extends StatefulWidget {
+class MyBottomNavBar extends StatefulWidget {
   int selectedIndex;
 
-  BottomMenu({super.key, required this.selectedIndex});
+  MyBottomNavBar({super.key, required this.selectedIndex});
 
   @override
-  _BottomMenuState createState() => _BottomMenuState();
+  _MyBottomNavBarState createState() => _MyBottomNavBarState();
 }
 
-class _BottomMenuState extends State<BottomMenu> {
+class _MyBottomNavBarState extends State<MyBottomNavBar> {
   final List<Widget> _widgetOptions = <Widget>[
-    // Экраны приложения
-    MainScreen(),
+    HomeScreen(),
     RentScreen(),
     CartScreen(),
     ProfileScreen(),
@@ -39,31 +39,36 @@ class _BottomMenuState extends State<BottomMenu> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      elevation: 0,
       type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.grey,
       currentIndex: widget.selectedIndex,
       onTap: _onItemTapped,
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home,
-              size: 40,
+              size: 30.w,
               color: widget.selectedIndex == 0 ? Colors.black : Colors.grey),
           label: _labels[0],
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.pedal_bike,
-              size: 40,
+              size: 30.w,
               color: widget.selectedIndex == 1 ? Colors.black : Colors.grey),
           label: _labels[1],
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.shopping_cart,
-              size: 40,
+              size: 30.w,
               color: widget.selectedIndex == 2 ? Colors.black : Colors.grey),
           label: _labels[2],
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person,
-              size: 40,
+              size: 30.w,
               color: widget.selectedIndex == 3 ? Colors.black : Colors.grey),
           label: _labels[3],
         ),
