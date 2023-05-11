@@ -5,8 +5,7 @@ import 'package:client/controller/register_controller.dart';
 import 'package:client/widgets/bar/app_bar.dart';
 import 'package:client/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/widgets/button_widget.dart';
-import 'package:client/widgets/text/text_field_widget.dart';
-import 'package:client/widgets/text/text_widget.dart';
+import 'package:client/widgets/text/text_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,6 +86,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ))
                   ]),
+            ),
+            bottomNavigationBar: MyBottomNavBar(
+              selectedIndex: 3,
             ),
           ),
         ),

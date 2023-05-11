@@ -1,5 +1,7 @@
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
+import 'package:client/screens/register/register_screen.dart';
+import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +11,9 @@ Widget buildScreen(int index) {
     const HomeScreen(),
     Center(child: Text("Rent")),
     Center(child: Text("Cart")),
-    const ProfileScreen()
+    const ProfileScreen(),
+    // const SignInScreen(),
+    // const RegisterScreen(),
   ];
   print("build screen: ${index}");
 

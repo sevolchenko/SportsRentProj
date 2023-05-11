@@ -1,6 +1,17 @@
-import 'package:client/common/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:client/common/values/colors.dart';
+
+Widget reusableText(String text, Color color) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 5.h),
+    child: Text(
+      text,
+      style: TextStyle(
+          color: color, fontWeight: FontWeight.normal, fontSize: 16.sp),
+    ),
+  );
+}
 
 Widget buildTextField(String hintText, String textType, double height,
     void Function(String value)? func) {
@@ -23,7 +34,8 @@ Widget buildTextField(String hintText, String textType, double height,
               decoration: InputDecoration(
                 hintText: hintText,
                 border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent),
                 ),

@@ -18,7 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(title: "Личный кабинет "),
-      body: Center(
+      body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -48,9 +48,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Divider(color: Colors.black)
               ]),
             ),
-            buildButton("Выйти", "secondary", () {
-              Navigator.of(context).pop(const SignInScreen());
-            }),
+            buildButton(
+              "Выйти",
+              "secondary",
+              () {
+                // Navigator.of(context).pop(const SignInScreen());
+                // or
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const SignInScreen(),
+                //   ),
+                // );
+              },
+            ),
           ],
         ),
       ),

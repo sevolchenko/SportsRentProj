@@ -43,7 +43,7 @@ class AppScreens {
           )),
       ScreenEntity(
           route: AppRoutes.PROFILE,
-          screen: ProfileScreen(),
+          screen: const ProfileScreen(),
           bloc: BlocProvider(
             create: (_) => RegisterBloc(), // TODO change to ProfileBloc
           )),
