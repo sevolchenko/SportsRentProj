@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/screens/profile/user_profile_screen.dart';
+import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/rent/rent_screen.dart';
 import 'package:client/screens/cart/cart_screen.dart';

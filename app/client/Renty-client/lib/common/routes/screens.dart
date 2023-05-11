@@ -7,7 +7,7 @@ import 'package:client/common/routes/names.dart';
 import 'package:client/global.dart';
 import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
-import 'package:client/screens/profile/user_profile_screen.dart';
+import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/register/register_screen.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +45,7 @@ class AppScreens {
           route: AppRoutes.PROFILE,
           screen: ProfileScreen(),
           bloc: BlocProvider(
-            create: (_) => RegisterBloc(), // change to ProfileBloc
+            create: (_) => RegisterBloc(), // TODO change to ProfileBloc
           )),
     ];
   }

@@ -1,3 +1,4 @@
+import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:client/widgets/bar/app_bar.dart';
 import 'package:client/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ]),
             ),
             buildButton("Выйти", "secondary", () {
-              Navigator.of(context).pushNamed("signIn");
+              Navigator.of(context).pop(const SignInScreen());
             }),
           ],
         ),
