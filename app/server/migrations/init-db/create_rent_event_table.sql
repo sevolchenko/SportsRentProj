@@ -11,5 +11,6 @@ create table rent_event
     user_id    bigint                   not null references app_user (user_id),
     start_time timestamp with time zone not null,
     end_time   timestamp with time zone not null,
+    created_at timestamp with time zone not null,
     status     varchar            default 'CREATED'
 );
