@@ -82,10 +82,13 @@ public class CatalogService {
 
     public ProductResponse deleteProductById(Long productId) {
 
-        var product = productsRepository.deleteByProductId(productId)
-                .orElseThrow(NoResultException::new);
+        var deleted = productsRepository.removeProductByProductIdEquals(productId);
 
-        return productMapper.map(product);
+        if (deleted.isEmpty()) {
+            throw new NoResultException();
+        }
+
+        return productMapper.map(deleted.get(0));
     }
 
 
@@ -197,10 +200,13 @@ public class CatalogService {
 
     public CategoryResponse deleteCategoryById(Long categoryId) {
 
-        var category = categoriesRepository.deleteByCategoryId(categoryId)
-                .orElseThrow(NoResultException::new);
+        var deleted = categoriesRepository.removeCategoryByCategoryIdEquals(categoryId);
 
-        return categoryMapper.map(category);
+        if (deleted.isEmpty()) {
+            throw new NoResultException();
+        }
+
+        return categoryMapper.map(deleted.get(0));
     }
 
 }
