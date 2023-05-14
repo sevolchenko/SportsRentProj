@@ -9,27 +9,29 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
+        leadingWidth: 30.w,
+        // automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Column(
           children: [
             Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 10.h),
+              // alignment: Alignment.center,
+              padding: EdgeInsets.only(top: 5.h),
               child: Text(
                 title,
-                textAlign: TextAlign.center,
+                // textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 28.sp,
+                  fontSize: 30.sp,
                   fontWeight: FontWeight.normal,
                 ),
               ),
             ),
             const Divider(
-              height: 0,
-              indent: 30,
-              endIndent: 30,
-              thickness: 2,
+              height: 10,
+              indent: 35,
+              endIndent: 35,
+              thickness: 1,
               color: Colors.black,
             ),
           ],

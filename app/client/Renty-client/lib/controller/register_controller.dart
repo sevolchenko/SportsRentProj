@@ -1,5 +1,5 @@
 import 'package:client/bloc/register/register_bloc.dart';
-import 'package:client/widgets/flutter_toast.dart';
+import 'package:client/common/widgets/flutter_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
