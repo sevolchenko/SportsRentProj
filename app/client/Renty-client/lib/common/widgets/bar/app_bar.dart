@@ -8,39 +8,42 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
-        leadingWidth: 30.w,
-        // automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: Column(
-          children: [
-            Container(
-              // alignment: Alignment.center,
-              padding: EdgeInsets.only(top: 5.h),
-              child: Text(
-                title,
-                // textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.normal,
-                ),
+    return AppBar(
+      leadingWidth: 30.w,
+      // automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      
+      title: Column(
+        children: [
+          Container(
+            // alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 10.h),
+            child: Text(
+              title,
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 26.sp,
+                fontWeight: FontWeight.normal,
               ),
             ),
-            const Divider(
-              height: 10,
-              indent: 35,
-              endIndent: 35,
-              thickness: 1,
-              color: Colors.black,
-            ),
-          ],
-        ));
-    return appBar;
+          ),
+          const Divider(
+            height: 15,
+            indent: 35,
+            endIndent: 35,
+            thickness: 1,
+            color: Colors.black,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(40.h);
+  Size get preferredSize => Size.fromHeight(60.h);
 }
 
 

@@ -5,7 +5,7 @@ import 'package:client/bloc/profile/profile_state.dart';
 import 'package:client/common/routes/routes.dart';
 import 'package:client/common/values/constant.dart';
 import 'package:client/global.dart';
-import 'package:client/screens/sign_in/sign_in_screen.dart';
+import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
@@ -72,7 +72,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: const Text("Отмена"),
                                   ),
                                   TextButton(
-                                    onPressed: () => removeUserData(),
+                                    // onPressed: () => removeUserData(),
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text("Выйти"),
                                   ),
                                 ],
@@ -91,9 +99,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            // bottomNavigationBar: MyBottomNavBar(
-            //   selectedIndex: 3,
-            // ),
+            bottomNavigationBar: MyBottomNavBar(
+              selectedIndex: 3,
+            ),
           ),
         ),
       );

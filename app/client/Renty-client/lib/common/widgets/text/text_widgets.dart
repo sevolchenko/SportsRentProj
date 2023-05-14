@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:client/common/values/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-Widget reusableText(String text, Color color) {
+Widget reusableText(String text, Color color, {double textSize = 14}) {
   return Container(
     margin: EdgeInsets.only(bottom: 5.h),
     child: Text(
       text,
       overflow: TextOverflow.fade,
-      style: TextStyle(
-          color: color, fontWeight: FontWeight.normal, fontSize: 14.sp),
+      style: GoogleFonts.raleway(
+          color: color, fontWeight: FontWeight.normal, fontSize: textSize.sp),
     ),
   );
 }
 
-Widget buildTextField(String hintText, String textType, double height,
-    void Function(String value)? func) {
+Widget buildTextField(String hintText, String textType,
+    void Function(String value)? func, {double height=50, double bottomMargin=30}) {
   return Container(
-      margin: EdgeInsets.only(bottom: 30.h),
+      margin: EdgeInsets.only(bottom: bottomMargin.h),
       width: 313.w,
       height: height.h,
       decoration: BoxDecoration(
@@ -63,7 +64,6 @@ Widget buildTextField(String hintText, String textType, double height,
 
 Widget buildTextInfo(String title, String content) {
   return Container(
-    margin: EdgeInsets.only(bottom: 20.h),
     child: Column(
       children: [
         Container(
@@ -76,11 +76,10 @@ Widget buildTextInfo(String title, String content) {
           padding: EdgeInsets.only(bottom: 5.h, left: 40.w, right: 20.w),
           child: Text(
             content,
-            style: TextStyle(
+            style: GoogleFonts.raleway(
                 color: Colors.black,
-                fontFamily: "Avenir",
                 fontWeight: FontWeight.normal,
-                fontSize: 22.sp),
+                fontSize: 18.sp),
           ),
         ),
         const Divider(
@@ -93,4 +92,35 @@ Widget buildTextInfo(String title, String content) {
       ],
     ),
   );
+}
+
+Widget buildTextInfoField(String content) {
+  return Container(
+      margin: EdgeInsets.only(top: 10.h),
+      width: 313.w,
+      height: 50.h,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20.w)),
+          border: Border.all(color: kPrimaryColor, width: 4)),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 300.w,
+            height: 50.h,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                content,
+                textAlign: TextAlign.left,
+                style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp),
+              ),
+            ),
+          )
+        ],
+      ));
 }

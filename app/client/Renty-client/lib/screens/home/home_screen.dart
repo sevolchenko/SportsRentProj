@@ -3,6 +3,8 @@ import 'package:client/bloc/application/application_state.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_state.dart';
 import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
+import 'package:client/screens/home/product/product_screen.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApplicationBloc, ApplicationState>(
+    return BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -49,7 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         childCount: 4,
                         (BuildContext context, int index) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProductScreen(),
+                                  ),
+                                );
+                            },
                             child: productsGrid(),
                           );
                         },
@@ -61,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
+        bottomNavigationBar: MyBottomNavBar(selectedIndex: 0,)
       );
     });
   }

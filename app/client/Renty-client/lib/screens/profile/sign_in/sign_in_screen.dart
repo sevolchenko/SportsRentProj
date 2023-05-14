@@ -4,8 +4,7 @@ import 'package:client/bloc/sign_in/sign_in_state.dart';
 import 'package:client/controller/sign_in_controller.dart';
 import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
-import 'package:client/screens/register/register_screen.dart';
-import 'package:client/screens/sign_in/widgets/sign_in_widget.dart';
+import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
@@ -51,22 +50,22 @@ class _SignInScreenState extends State<SignInScreen> {
                                 height: 5.h,
                               ),
                               buildTextField(
-                                  "Введите электронную почту", 'email', 58,
+                                  "Введите электронную почту", 'email',
                                   (value) {
                                 context
                                     .read<SignInBloc>()
                                     .add(EmailEvent(value));
-                              }),
+                              }, height: 58),
                               reusableText("Пароль", Colors.black),
                               SizedBox(
                                 height: 5.h,
                               ),
-                              buildTextField("Введите пароль", 'password', 58,
+                              buildTextField("Введите пароль", 'password',
                                   (value) {
                                 context
                                     .read<SignInBloc>()
                                     .add(PasswordEvent(value));
-                              }),
+                              }, height: 58),
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -78,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const Application(),
+                                        const HomeScreen(),
                                   ),
                                 );
 

@@ -3,6 +3,7 @@ import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 AppBar buildAppBar() {
   return AppBar(
@@ -14,7 +15,7 @@ AppBar buildAppBar() {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                buildTextField("Поиск", 'search', 50, (value) {}),
+                buildTextField("Поиск", 'search', (value) {}),
               ],
             ),
           ],
@@ -50,6 +51,10 @@ Widget sortAndFilter() {
 
 Widget productsGrid() {
   return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20.w),
+      border: Border.all(color: kPrimaryColor, width: 4),
+    ),
     child: Column(
       children: [
         Container(
@@ -89,22 +94,14 @@ Widget productsGrid() {
             "1000 Р/час",
             maxLines: 2,
             overflow: TextOverflow.fade,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
-            ),
+            style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.normal,
+                fontSize: 18.sp),
           ),
         ),
       ],
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20.w),
-      border: Border.all(color: kPrimaryColor, width: 4),
-      // image: const DecorationImage(
-      //   image:
-      //       AssetImage("assets/images/image_2.png"),
-      // ),
     ),
   );
 }

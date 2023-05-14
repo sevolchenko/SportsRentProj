@@ -44,6 +44,7 @@ dependencies:
   flutter_screenutil:
   fluttertoast:
   shared_preferences: ^2.1.1
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
