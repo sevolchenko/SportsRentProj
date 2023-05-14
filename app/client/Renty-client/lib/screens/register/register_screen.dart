@@ -2,10 +2,11 @@ import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/register/register_event.dart';
 import 'package:client/bloc/register/register_state.dart';
 import 'package:client/controller/register_controller.dart';
-import 'package:client/widgets/bar/app_bar.dart';
-import 'package:client/widgets/bar/bottom_nav_bar.dart';
-import 'package:client/widgets/button_widget.dart';
-import 'package:client/widgets/text/text_widgets.dart';
+import 'package:client/common/widgets/bar/app_bar.dart';
+import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
+import 'package:client/common/widgets/button_widget.dart';
+import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,9 +80,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
 
                             buildButton("Зарегистрироваться", "primary", () {
-                              RegisterController(context: context)
-                                  .handleRegister();
-                              // Navigator.of(context).pushNamed("/sign_in");
+                              // RegisterController(context: context)
+                              //     .handleRegister();
+
+                              // Navigator.of(context).pushNamed("/application");
+
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SignInScreen(),
+                                  ),
+                                );
                             }),
                           ],
                         ))

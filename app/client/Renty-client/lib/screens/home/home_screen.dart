@@ -4,7 +4,7 @@ import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_state.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
-import 'package:client/widgets/bar/app_bar.dart';
+import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
