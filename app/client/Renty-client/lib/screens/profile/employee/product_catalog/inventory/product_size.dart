@@ -1,25 +1,28 @@
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_quantity.dart';
+import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class InventoryScreen extends StatefulWidget {
-  const InventoryScreen({super.key});
+class ProductSizeScreen extends StatefulWidget {
+  const ProductSizeScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  State<ProductSizeScreen> createState() => _ProductSizeScreenState();
 }
 
-class _InventoryScreenState extends State<InventoryScreen> {
+class _ProductSizeScreenState extends State<ProductSizeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: "Инвентарь", autoLeading: true,),
+        appBar: const MyAppBar(
+          title: "Новый размер",
+          autoLeading: true,
+        ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
@@ -27,20 +30,17 @@ class _InventoryScreenState extends State<InventoryScreen> {
               SizedBox(
                 height: 150.h,
               ),
-
-
-              SizedBox(
-                height: 50.h,
-              ),
+              buildTextField('Введите размер', '', (value) {}), //TODO тип ввода
+              buildTextField('Введите количество', 'size', (value) {}),
               buildButton(
-                "Добавить товар",
-                "secondary",
+                "Добавить",
+                "primary",
                 () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ProductQuantityScreen(),
-                    ),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const RentScreen(),
+                  //   ),
+                  // );
                 },
               ),
             ],

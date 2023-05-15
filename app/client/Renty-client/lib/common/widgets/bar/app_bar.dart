@@ -17,12 +17,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Column(
         children: [
           Container(
-            // alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 10.h),
+            // color: Colors.red,
+            margin: EdgeInsets.only(top: 20.h),
             child: Text(
               title,
-              maxLines: 2,
-              softWrap: true,
+              // maxLines: 2,
+              // softWrap: true,
               overflow: TextOverflow.fade,
               style: TextStyle(
                 color: Colors.black,
@@ -32,10 +32,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const Divider(
-            height: 15,
+            height: 20,
             indent: 35,
             endIndent: 35,
-            thickness: 1,
+            thickness: 2,
             color: Colors.black,
           ),
         ],
@@ -44,7 +44,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(60.h);
+  Size get preferredSize => Size.fromHeight(90.h);
 }
 
 
