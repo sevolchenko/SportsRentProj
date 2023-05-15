@@ -60,9 +60,18 @@ Widget productsGrid() {
     ),
     child: Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
-          child: Image.asset("assets/images/image_2.png"),
+        // Container(
+        //   margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
+        //   child: Image.asset("assets/images/image_2.png"),
+        // ),
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+          child: Image.asset(
+            "assets/images/image_2.png",
+            // width: 90.h,
+            // height: 90.h,
+          ),
         ),
         const Divider(
           height: 0,
@@ -76,10 +85,11 @@ Widget productsGrid() {
             maxLines: 2,
             overflow: TextOverflow.fade,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              fontSize: 14.sp,
+            style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.normal,
+                fontSize: 14.sp,
             ),
           ),
         ),
@@ -100,7 +110,7 @@ Widget productsGrid() {
             style: GoogleFonts.raleway(
                 color: Colors.black,
                 fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.bold,
                 fontSize: 18.sp),
           ),
         ),
