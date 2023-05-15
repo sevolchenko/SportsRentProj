@@ -5,21 +5,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-AppBar buildAppBar() {
-  return AppBar(
-    automaticallyImplyLeading: false,
-    title: Container(
-        margin: EdgeInsets.only(top: 20.h, left: 5.w, right: 5.w),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildTextField("Поиск", 'search', (value) {}),
-              ],
-            ),
-          ],
-        )),
+PreferredSize buildAppBar() {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(60.h),
+    child: AppBar(
+      automaticallyImplyLeading: false,
+      title: Container(
+          margin: EdgeInsets.only(top: 30.h, left: 5.w, right: 5.w),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildTextField("Поиск", 'search', height: 45, (value) {}),
+                ],
+              ),
+            ],
+          )),
+    ),
   );
 }
 

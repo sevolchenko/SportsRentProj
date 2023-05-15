@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             backgroundColor: Colors.white,
             appBar: const MyAppBar(
               title: 'Регистрация',
+              autoLeading: true,
             ),
             body: SingleChildScrollView(
               child: Column(

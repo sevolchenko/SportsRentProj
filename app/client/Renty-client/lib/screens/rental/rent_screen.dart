@@ -2,7 +2,7 @@ import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
-import 'package:client/screens/rent/rent_actions/rent_info.dart';
+import 'package:client/screens/rental/rental_actions/rental_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -85,7 +85,7 @@ class _RentScreenState extends State<RentScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const RentInfoScreen(),
+                                            const RentalInfoScreen(),
                                       ),
                                     );
                                   },

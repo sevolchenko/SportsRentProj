@@ -3,24 +3,28 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/rental/rental_actions/rental_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RentInfoScreen extends StatefulWidget {
-  const RentInfoScreen({super.key});
+class RentalInfoScreen extends StatefulWidget {
+  const RentalInfoScreen({super.key});
 
   @override
-  State<RentInfoScreen> createState() => _RentInfoScreenState();
+  State<RentalInfoScreen> createState() => _RentalInfoScreenState();
 }
 
-class _RentInfoScreenState extends State<RentInfoScreen> {
+class _RentalInfoScreenState extends State<RentalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: "Информация об аренде"),
+        appBar: const MyAppBar(
+          title: "Информация об аренде",
+          autoLeading: true,
+        ),
         body: SingleChildScrollView(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -44,11 +48,13 @@ class _RentInfoScreenState extends State<RentInfoScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                buildButton("Уведомить по освобождении", "secondary", () {}),
-                SizedBox(
-                  height: 20.h,
-                ),
-                buildButton("Добавить в корзину", "primary", () {}),
+                buildButton("Продлить аренду", "primary", () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RentalExtensionScreen(),
+                    ),
+                  );
+                }),
                 SizedBox(
                   height: 20.h,
                 ),

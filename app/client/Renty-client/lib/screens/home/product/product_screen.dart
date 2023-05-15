@@ -22,7 +22,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: "Информация о товаре"),
+        appBar: const MyAppBar(title: "Информация о товаре", autoLeading: true,),
         body: SingleChildScrollView(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,

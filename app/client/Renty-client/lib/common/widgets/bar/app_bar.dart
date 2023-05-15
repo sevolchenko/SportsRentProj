@@ -3,16 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool autoLeading;
 
-  const MyAppBar({Key? key, required this.title}) : super(key: key);
+  const MyAppBar({Key? key, required this.title, this.autoLeading = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 30.w,
-      // automaticallyImplyLeading: false,
+      automaticallyImplyLeading: autoLeading,
       backgroundColor: Colors.white,
-      
       title: Column(
         children: [
           Container(
@@ -25,7 +26,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               overflow: TextOverflow.fade,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 26.sp,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.normal,
               ),
             ),
