@@ -24,14 +24,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Go to server directory
-        run: cd app/server/project
-
       - name: Maven package
-        run: mvn package
+        run: mvn package --file app/server/project/pom.xml
 
       - name: Build Docker image
-        run: docker build . --build-arg GITHUB_REPO=${{ github.repository }} -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: docker build app/server/project --build-arg GITHUB_REPO=${{ github.repository }} -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Docker login
         uses: docker/login-action@v1
