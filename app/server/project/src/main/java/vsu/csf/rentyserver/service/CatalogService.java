@@ -4,6 +4,8 @@ import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vsu.csf.rentyserver.exception.DuplicateElementException;
+import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateSizeRequest;
@@ -26,6 +28,7 @@ import vsu.csf.rentyserver.model.mapping.ProductMapper;
 import vsu.csf.rentyserver.model.mapping.SizeMapper;
 import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
+import vsu.csf.rentyserver.repository.SizesRepository;
 
 @Service
 @Transactional
@@ -34,6 +37,7 @@ public class CatalogService {
 
     private final ProductsRepository productsRepository;
     private final CategoriesRepository categoriesRepository;
+    private final SizesRepository sizesRepository;
 
     private final ProductMapper productMapper;
     private final SizeMapper sizeMapper;
@@ -51,7 +55,7 @@ public class CatalogService {
     public ProductResponse findProductById(Long productId) {
 
         var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         return productMapper.map(product);
     }
@@ -59,7 +63,7 @@ public class CatalogService {
     public ProductResponse createProduct(CreateProductRequest request) {
 
         var category = categoriesRepository.findById(request.categoryId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NoSuchElementException("category", Category.class, request.categoryId()));
 
         var product = new Product();
 
@@ -85,7 +89,7 @@ public class CatalogService {
         var deleted = productsRepository.removeProductByProductIdEquals(productId);
 
         if (deleted.isEmpty()) {
-            throw new NoResultException();
+            throw new NoSuchElementException("product", Product.class, productId);
         }
 
         return productMapper.map(deleted.get(0));
@@ -104,7 +108,7 @@ public class CatalogService {
     public ProductProjectionResponse findProjectionById(Long productId) {
 
         var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         return productMapper.mapToProjection(product);
     }
@@ -113,40 +117,48 @@ public class CatalogService {
     @Transactional(readOnly = true)
     public SizeListResponse findSizes(Long productId) {
         var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         return sizeMapper.fromList(product.getSizes());
     }
 
     public SizeResponse addSizeToProduct(Long productId, CreateSizeRequest request) {
         var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
-
-        var size = new Size()
-                .setSizeId(new SizeId()
-                        .setProduct(product)
-                        .setName(request.sizeName()))
-                .setTotal(request.total());
-
-        product.getSizes().add(size);
-
-        return sizeMapper.map(size);
-    }
-
-    public SizeResponse setSizeForProduct(Long productId, CreateSizeRequest request) {
-        var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         var sizeId = new SizeId()
                 .setProduct(product)
                 .setName(request.sizeName());
 
-        var size = product.getSizes().stream()
-                .filter((sz) -> sizeId.equals(sz.getSizeId()))
-                .findFirst().orElseThrow(NoResultException::new)
+        if (sizesRepository.existsById(sizeId)) {
+            throw new DuplicateElementException("size", Size.class, sizeId);
+        }
+
+        var size = new Size()
+                .setSizeId(sizeId)
                 .setTotal(request.total());
 
-        return sizeMapper.map(size);
+        var saved = sizesRepository.save(size);
+
+        return sizeMapper.map(saved);
+    }
+
+    public SizeResponse setSizeForProduct(Long productId, CreateSizeRequest request) {
+        var product = productsRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
+
+        var sizeId = new SizeId()
+                .setProduct(product)
+                .setName(request.sizeName());
+
+        var size = sizesRepository.findById(sizeId)
+                .orElseThrow(() -> new NoSuchElementException("size", Size.class, sizeId));
+
+        size.setTotal(request.total());
+
+        var saved = sizesRepository.save(size);
+
+        return sizeMapper.map(saved);
     }
 
     public SizeResponse deleteSizeForProduct(Long productId, String sizeName) {
@@ -157,13 +169,13 @@ public class CatalogService {
                 .setProduct(product)
                 .setName(sizeName);
 
-        var size = product.getSizes().stream()
-                .filter((sz) -> sizeId.equals(sz.getSizeId()))
-                .findFirst().orElseThrow(NoResultException::new);
+        var deleted = sizesRepository.removeSizeBySizeIdEquals(sizeId);
 
-        product.getSizes().remove(size);
+        if (deleted.isEmpty()) {
+            throw new NoSuchElementException("size", Size.class, sizeId);
+        }
 
-        return sizeMapper.map(size);
+        return sizeMapper.map(deleted.get(0));
     }
 
 
@@ -179,7 +191,7 @@ public class CatalogService {
     public CategoryResponse findCategoryById(Long categoryId) {
 
         var category = categoriesRepository.findById(categoryId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("category", Category.class, categoryId));
 
         return categoryMapper.map(category);
     }
@@ -187,7 +199,7 @@ public class CatalogService {
     public CategoryResponse createCategory(CreateCategoryRequest request) {
 
         var parentCategory = categoriesRepository.findById(request.parentCategoryId())
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("parentCategory", Category.class, request.parentCategoryId()));
 
         var category = new Category()
                 .setParentCategory(parentCategory)
@@ -203,7 +215,7 @@ public class CatalogService {
         var deleted = categoriesRepository.removeCategoryByCategoryIdEquals(categoryId);
 
         if (deleted.isEmpty()) {
-            throw new NoResultException();
+            throw new NoSuchElementException("category", Category.class, categoryId);
         }
 
         return categoryMapper.map(deleted.get(0));

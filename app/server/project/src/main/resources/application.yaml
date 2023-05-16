@@ -9,7 +9,7 @@ spring:
     password: ${POSTGRES_PASSWORD:postgres}
 
   liquibase:
-    enabled: false
+    change-log: migrations/master.xml
 
 springdoc:
   swagger-ui:

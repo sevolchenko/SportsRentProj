@@ -5,17 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.IntegrationEnvironment;
-import vsu.csf.rentyserver.configuration.JdbcTestConfig;
 import vsu.csf.rentyserver.model.dto.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateImageRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateSizeRequest;
-import vsu.csf.rentyserver.model.dto.response.ProductResponse;
 import vsu.csf.rentyserver.model.entity.Category;
 import vsu.csf.rentyserver.model.entity.Image;
 import vsu.csf.rentyserver.model.entity.Product;
@@ -28,13 +25,15 @@ import vsu.csf.rentyserver.model.mapping.SizeMapper;
 import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
-@Import(JdbcTestConfig.class)
 @RunWith(SpringRunner.class)
 public class CatalogServiceIT extends IntegrationEnvironment {
 
@@ -638,7 +637,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(productsRepository.findById(response.productId()), is(notNullValue()));
 
-        }
+    }
 
 
     @Transactional
