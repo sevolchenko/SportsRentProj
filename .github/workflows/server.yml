@@ -53,7 +53,7 @@ jobs:
       - name: Authenticate and deploy to Kubernetes
         env:
           KUBECONFIG_FILE: ${{ secrets.KUBECONFIG }}
-          KUBE_NAMESPACE: ${{ github.actor }}
+          KUBE_NAMESPACE: sevolchenko
         run: |
           echo "$KUBECONFIG_FILE" > kubeconfig.yaml
           kubectl config use-context cloud_okteto_com-context --kubeconfig=kubeconfig.yaml
