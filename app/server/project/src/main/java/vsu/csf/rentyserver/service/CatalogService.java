@@ -163,7 +163,7 @@ public class CatalogService {
 
     public SizeResponse deleteSizeForProduct(Long productId, String sizeName) {
         var product = productsRepository.findById(productId)
-                .orElseThrow(NoResultException::new);
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         var sizeId = new SizeId()
                 .setProduct(product)
@@ -201,6 +201,10 @@ public class CatalogService {
         var parentCategory = categoriesRepository.findById(request.parentCategoryId())
                 .orElseThrow(() -> new NoSuchElementException("parentCategory", Category.class, request.parentCategoryId()));
 
+        var duplicateCategory = categoriesRepository.findByName(request.name());
+        if (duplicateCategory != null) {
+            throw new DuplicateElementException("category", Category.class, duplicateCategory.getCategoryId());
+        }
         var category = new Category()
                 .setParentCategory(parentCategory)
                 .setName(request.name());

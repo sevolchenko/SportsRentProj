@@ -9,6 +9,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.IntegrationEnvironment;
+import vsu.csf.rentyserver.exception.DuplicateElementException;
+import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateImageRequest;
 import vsu.csf.rentyserver.model.dto.request.CreateProductRequest;
@@ -24,14 +26,14 @@ import vsu.csf.rentyserver.model.mapping.ProductMapper;
 import vsu.csf.rentyserver.model.mapping.SizeMapper;
 import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
+import vsu.csf.rentyserver.repository.SizesRepository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -39,11 +41,12 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
     @Autowired
     private CatalogService catalogService;
-
     @Autowired
     private ProductsRepository productsRepository;
     @Autowired
     private CategoriesRepository categoriesRepository;
+    @Autowired
+    private SizesRepository sizesRepository;
 
     @Autowired
     private ProductMapper productMapper;
@@ -107,15 +110,15 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(categoryResponse.name(), is(equalTo(category.getName())));
 
         assertThat(response.products(), is(equalTo(productMapper.map(expected))));
-
     }
 
     @Transactional
     @Rollback
     @Test
     public void testListAllProductsWithNoProducts() {
+        // given
 
-        //when
+        // when
         var response = catalogService.listAllProducts();
 
         // then
@@ -147,27 +150,36 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(response.name(), is(equalTo(product.getName())));
         assertThat(response.description(), is(equalTo(product.getDescription())));
         assertThat(response.price(), is(equalTo(product.getPrice())));
+        assertThat(response, is(equalTo(productMapper.map(product))));
 
         var categoryResponse = response.category();
         assertThat(categoryResponse, is(notNullValue()));
 
         assertThat(categoryResponse.categoryId(), is(equalTo(category.getCategoryId())));
         assertThat(categoryResponse.name(), is(equalTo(category.getName())));
-
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testFindProductByIdWithProductNotExists() throws NoResultException {
-        catalogService.findProductById(5L);
+    @Test
+    public void testFindProductByIdWithProductNotExists() {
+        // given
+        Long productId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.findProductById(productId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testDeleteProductById() {
-
         // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
@@ -186,6 +198,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(response.name(), is(equalTo(product.getName())));
         assertThat(response.description(), is(equalTo(product.getDescription())));
         assertThat(response.price(), is(equalTo(product.getPrice())));
+        assertThat(response, is(equalTo(productMapper.map(product))));
 
         var categoryResponse = response.category();
         assertThat(categoryResponse, is(notNullValue()));
@@ -198,9 +211,19 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testDeleteProductByIdWithProductNotExists() throws NoResultException {
-        catalogService.deleteProductById(5L);
+    @Test
+    public void testDeleteProductByIdWithProductNotExists() {
+        // given
+        Long productId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.deleteProductById(productId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
     }
 
     @Transactional
@@ -217,7 +240,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setPrice(123)
                 .setCategory(category);
 
-        product1.setImages(Collections.singletonList(new Image()
+        product1.setImages(List.of(new Image()
                 .setImageId(new ImageId().setProduct(product1).setPosition(1))
                 .setImgBytes(new byte[]{})));
 
@@ -242,6 +265,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(response.projections(), is(notNullValue()));
         assertThat(response.projections().size(), is(equalTo(expected.size())));
+        assertThat(response.projections(), is(equalTo(productMapper.mapToProjection(expected))));
 
         var projectionResponse = response.projections().get(0);
 
@@ -258,28 +282,28 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(categoryResponse.categoryId(), is(equalTo(category.getCategoryId())));
         assertThat(categoryResponse.name(), is(equalTo(category.getName())));
-
     }
 
     @Transactional
     @Rollback
     @Test
     public void testListAllProjectionsWithNoProducts() {
+        // given
 
-        //when
+        // when
         var response = catalogService.listAllProjections();
 
         // then
         assertThat(response, is(notNullValue()));
         assertThat(response.projections(), is(empty()));
         assertThat(response.size(), is(equalTo(0)));
-
     }
 
     @Transactional
     @Rollback
     @Test
     public void testFindProjectionById() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -287,7 +311,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("Liuz")
                 .setCategory(category);
 
-        product.setImages(Collections.singletonList(new Image()
+        product.setImages(List.of(new Image()
                 .setImageId(new ImageId().setProduct(product).setPosition(1))
                 .setImgBytes(new byte[]{})));
 
@@ -301,6 +325,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(response.name(), is(equalTo(product.getName())));
         assertThat(response.price(), is(equalTo(product.getPrice())));
+        assertThat(response, is(equalTo(productMapper.mapToProjection(product))));
 
         var categoryResponse = response.category();
         assertThat(categoryResponse, is(notNullValue()));
@@ -311,9 +336,19 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testFindProjectionByIdWithProductNotExists() throws NoResultException {
-        catalogService.findProjectionById(5L);
+    @Test
+    public void testFindProjectionByIdWithProductNotExists() {
+        // given
+        Long productId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.findProjectionById(productId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
     }
 
     @Transactional
@@ -349,14 +384,16 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(response.categories().get(0).name(), is(equalTo(category1.getName())));
         assertThat(response.categories().get(1).name(), is(equalTo(category2.getName())));
 
+        assertThat(response.categories(), is(equalTo(categoryMapper.map(expected))));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testListAllCategoriesWithNoCategories() {
+        // given
 
-        //when
+        // when
         var response = catalogService.listAllCategories();
 
         // then
@@ -369,6 +406,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
     @Rollback
     @Test
     public void testFindCategoryById() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -379,21 +417,30 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(response, is(notNullValue()));
         assertThat(response.categoryId(), is(equalTo(category.getCategoryId())));
         assertThat(response.name(), is(equalTo(category.getName())));
-
+        assertThat(response, is(equalTo(categoryMapper.map(category))));
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testFindCategoryByIdWithCategoryNotExists() throws NoResultException {
-        catalogService.findCategoryById(5L);
+    @Test
+    public void testFindCategoryByIdWithCategoryNotExists() {
+        // given
+        Long categoryId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.findCategoryById(categoryId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("category")));
+        assertThat(ex.getClazz(), is(equalTo(Category.class)));
+        assertThat(ex.getEntityId(), is(equalTo(categoryId)));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testDeleteCategoryById() {
-
         // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
@@ -406,21 +453,33 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(response.name(), is(equalTo(category.getName())));
         assertThat(response.categoryId(), is(equalTo(category.getCategoryId())));
+        assertThat(response, is(equalTo(categoryMapper.map(category))));
 
         assertThat(categoriesRepository.findById(category.getCategoryId()), is(Optional.empty()));
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testDeleteCategoryByIdWithCategoryNotExists() throws NoResultException {
-        catalogService.deleteCategoryById(5L);
+    @Test
+    public void testDeleteCategoryByIdWithCategoryNotExists() {
+        // given
+        Long categoryId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.deleteCategoryById(categoryId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("category")));
+        assertThat(ex.getClazz(), is(equalTo(Category.class)));
+        assertThat(ex.getEntityId(), is(equalTo(categoryId)));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testFindSizesByProductId() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -428,8 +487,10 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("Liuz")
                 .setCategory(category);
 
-        product.setSizes(Collections.singletonList(new Size()
+        product.setSizes(List.of(new Size()
                 .setSizeId(new SizeId().setProduct(product).setName("1"))
+                .setTotal(1), new Size()
+                .setSizeId(new SizeId().setProduct(product).setName("2"))
                 .setTotal(1)));
 
         productsRepository.saveAndFlush(product);
@@ -439,19 +500,19 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         // then
         assertThat(response, is(notNullValue()));
-
         assertThat(response.size(), is(equalTo(product.getSizes().size())));
         assertThat(response.sizes(), is(notNullValue()));
         assertThat(response.sizes().size(), is(equalTo(product.getSizes().size())));
         assertThat(response.sizes().get(0).sizeName(), is(equalTo(product.getSizes().get(0).getSizeId().getName())));
         assertThat(response.sizes().get(0).total(), is(equalTo(product.getSizes().get(0).getTotal())));
-
+        assertThat(response.sizes(), is(equalTo(sizeMapper.map(product.getSizes()))));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testFindSizesByProductIdWithNoSizes() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -472,42 +533,82 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testFindSizesByIdWithProductNotExists() throws NoResultException {
-        catalogService.findSizes(5L);
+    @Test
+    public void testFindSizesByIdWithProductNotExists() {
+        // given
+        Long productId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.findSizes(productId));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testCreateCategory() {
-
         // given
         Category parentCategory = new Category()
                 .setName("a");
         categoriesRepository.saveAndFlush(parentCategory);
 
-        Category category = new Category()
-                .setParentCategory(parentCategory)
-                .setName("l");
+        String name = "l";
 
         // when
-        var response = catalogService.createCategory(new CreateCategoryRequest(parentCategory.getCategoryId(), "l"));
+        var response = catalogService.createCategory(new CreateCategoryRequest(parentCategory.getCategoryId(), name));
 
-        //then
+        // then
         assertThat(response, is(notNullValue()));
 
-        assertThat(response.name(), is(equalTo(category.getName())));
+        assertThat(response.name(), is(equalTo(name)));
 
-        assertThat(categoriesRepository.findById(response.categoryId()), is(notNullValue()));
+        assertThat(categoriesRepository.findById(response.categoryId()), is(not(Optional.empty())));
 
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testCreateCategoryWithParentCategoryNotExists() throws NoResultException {
-        catalogService.createCategory(new CreateCategoryRequest(1L, "l"));
+    @Test
+    public void testCreateCategoryWithParentCategoryNotExists() {
+        // given
+        Long parentCategoryId = 5L;
+        String name = "l";
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.createCategory(new CreateCategoryRequest(parentCategoryId, name)));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("parentCategory")));
+        assertThat(ex.getClazz(), is(equalTo(Category.class)));
+        assertThat(ex.getEntityId(), is(equalTo(parentCategoryId)));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testCreateCategoryWithCategoryAlreadyExists() {
+        // given
+        Category parentCategory = new Category()
+                .setName("parent category");
+        categoriesRepository.saveAndFlush(parentCategory);
+        Category category = new Category()
+                .setName("category");
+        categoriesRepository.saveAndFlush(category);
+
+        // when
+        var ex = assertThrows(DuplicateElementException.class, () ->
+                catalogService.createCategory(new CreateCategoryRequest(parentCategory.getCategoryId(), category.getName())));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("category")));
+        assertThat(ex.getClazz(), is(equalTo(Category.class)));
+        assertThat(ex.getEntityId(), is(equalTo(category.getCategoryId())));
     }
 
     @Transactional
@@ -519,25 +620,20 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("a");
         categoriesRepository.saveAndFlush(category);
 
-        Product product = new Product()
-                .setName("a")
-                .setDescription("b")
-                .setPrice(1)
-                .setCategory(category);
-        product.setImages(Collections.singletonList(new Image()
-                .setImageId(new ImageId().setProduct(product).setPosition(1))
-                .setImgBytes(new byte[]{1})));
+        String name = "a";
+        String description = "b";
+        Integer price = 1;
 
         // when
-        var response = catalogService.createProduct(new CreateProductRequest("a", "b", 1, category.getCategoryId(),
-                Collections.singletonList(new CreateImageRequest(1, new byte[]{1}))));
+        var response = catalogService.createProduct(new CreateProductRequest(name, description, price, category.getCategoryId(),
+                List.of(new CreateImageRequest(1, new byte[]{1}))));
 
-        //then
+        // then
         assertThat(response, is(notNullValue()));
 
-        assertThat(response.name(), is(equalTo(product.getName())));
-        assertThat(response.description(), is(equalTo(product.getDescription())));
-        assertThat(response.price(), is(equalTo(product.getPrice())));
+        assertThat(response.name(), is(equalTo(name)));
+        assertThat(response.description(), is(equalTo(description)));
+        assertThat(response.price(), is(equalTo(price)));
 
         var categoryResponse = response.category();
         assertThat(categoryResponse, is(notNullValue()));
@@ -545,29 +641,35 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(categoryResponse.categoryId(), is(equalTo(category.getCategoryId())));
         assertThat(categoryResponse.name(), is(equalTo(category.getName())));
 
-        assertThat(productsRepository.findById(response.productId()), is(notNullValue()));
-
+        assertThat(productsRepository.findById(response.productId()), is(not(Optional.empty())));
     }
 
     @Transactional
     @Rollback
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateProductWithCategoryNotExists() throws IllegalArgumentException {
-        catalogService.createProduct(new CreateProductRequest("a", "b", 1, 1L,
-                Collections.singletonList(new CreateImageRequest(1, new byte[]{1}))));
+    @Test
+    public void testCreateProductWithCategoryNotExists() {
+        // given
+        Long categoryId = 5L;
+        String name = "a";
+        String description = "b";
+        Integer price = 1;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.createProduct(new CreateProductRequest(name, description, price, categoryId,
+                        List.of(new CreateImageRequest(1, new byte[]{1})))));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("category")));
+        assertThat(ex.getClazz(), is(equalTo(Category.class)));
+        assertThat(ex.getEntityId(), is(equalTo(categoryId)));
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testAddSizeForProductWithProductNotExist() throws NoResultException {
-        catalogService.addSizeToProduct(1L, new CreateSizeRequest("f", 1));
-    }
-
-    @Transactional
-    @Rollback
-    @Test(expected = NoResultException.class)
-    public void testAddSizeForProductWithSizeAlreadyExists() throws NoResultException {
+    @Test
+    public void testAddSizeToProduct() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -575,36 +677,100 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("Liuz")
                 .setCategory(category);
 
-        product.setSizes(Collections.singletonList(new Size()
-                .setSizeId(new SizeId().setProduct(product).setName("f"))
-                .setTotal(1)));
+        Size size1 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("1")
+                        .setProduct(product))
+                .setTotal(1);
+
+        Size size2 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("2")
+                        .setProduct(product))
+                .setTotal(1);
+        product.setSizes(List.of(size1, size2));
 
         productsRepository.saveAndFlush(product);
 
-        //when
-        catalogService.addSizeToProduct(product.getProductId(), new CreateSizeRequest("f", 1));
+        String sizeName = "3";
+        Integer total = 2;
+        var sizeId = new SizeId()
+                .setProduct(product)
+                .setName(sizeName);
+
+        // when
+        var response = catalogService.addSizeToProduct(product.getProductId(), new CreateSizeRequest(sizeName, total));
+
+        // then
+        assertThat(response, is(notNullValue()));
+        assertThat(response.productId(), is(equalTo(product.getProductId())));
+        assertThat(response.sizeName(), is(equalTo(sizeName)));
+        assertThat(response.total(), is(equalTo(total)));
+        assertThat(sizesRepository.findById(sizeId), is(not(Optional.empty())));
+        assertThat(catalogService.findSizes(product.getProductId()).size(), is(equalTo(3)));
+        assertThat(productsRepository.findById(product.getProductId()).get().getSizes().size(), is(equalTo(3)));
+
     }
 
     @Transactional
     @Rollback
-    @Test(expected = NoResultException.class)
-    public void testCreateCategoryWithCategoryAlreadyExists() throws NoResultException {
-        Category parentCategory = new Category().setName("parent category");
-        categoriesRepository.saveAndFlush(parentCategory);
+    @Test
+    public void testAddSizeWithProductNotExist() {
+        // given
+        Long productId = 5L;
 
-        Category category = new Category()
-                .setName("Category")
-                .setParentCategory(parentCategory);
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.addSizeToProduct(productId, new CreateSizeRequest("a", 2)));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testAddSizeForProductWithSizeAlreadyExists() {
+        // given
+        Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
-        //when
-        catalogService.createCategory(new CreateCategoryRequest(parentCategory.getCategoryId(), "Category"));
+        Product product = new Product()
+                .setName("Liuz")
+                .setCategory(category);
+
+        Size size1 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("1")
+                        .setProduct(product))
+                .setTotal(1);
+
+        Size size2 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("2")
+                        .setProduct(product))
+                .setTotal(1);
+        product.setSizes(List.of(size1, size2));
+
+        productsRepository.saveAndFlush(product);
+
+        // when
+        var ex = assertThrows(DuplicateElementException.class, () ->
+                catalogService.addSizeToProduct(product.getProductId(), new CreateSizeRequest(size1.getSizeId().getName(), size1.getTotal())));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("size")));
+        assertThat(ex.getClazz(), is(equalTo(Size.class)));
+        assertThat(ex.getEntityId(), is(equalTo(size1.getSizeId())));
     }
 
     @Transactional
     @Rollback
     @Test
     public void testCreateProductWithProductAlreadyExists() {
+        // given
         Category category = new Category().setName("category");
         categoriesRepository.saveAndFlush(category);
 
@@ -622,7 +788,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         var response = catalogService.createProduct(new CreateProductRequest("a", "b", 1, category.getCategoryId(),
                 Collections.singletonList(new CreateImageRequest(1, new byte[]{1}))));
 
-        //then
+        // then
         assertThat(response, is(notNullValue()));
 
         assertThat(response.name(), is(equalTo(product.getName())));
@@ -634,9 +800,6 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(categoryResponse.categoryId(), is(equalTo(category.getCategoryId())));
         assertThat(categoryResponse.name(), is(equalTo(category.getName())));
-
-        assertThat(productsRepository.findById(response.productId()), is(notNullValue()));
-
     }
 
 
@@ -644,6 +807,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
     @Rollback
     @Test
     public void testSetSizeForProduct() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -651,24 +815,86 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("Liuz")
                 .setCategory(category);
 
-        product.setSizes(Collections.singletonList(new Size()
-                .setSizeId(new SizeId().setProduct(product).setName("f"))
-                .setTotal(1)));
+        Size size1 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("1")
+                        .setProduct(product))
+                .setTotal(1);
+
+        Size size2 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("2")
+                        .setProduct(product))
+                .setTotal(1);
+        product.setSizes(List.of(size1, size2));
 
         productsRepository.saveAndFlush(product);
 
-        //when
-        var response = catalogService.setSizeForProduct(product.getProductId(), new CreateSizeRequest("f", 2));
+        Integer total = 5;
+        // when
+        var response = catalogService.setSizeForProduct(product.getProductId(), new CreateSizeRequest(size1.getSizeId().getName(), total));
 
-        //then
+        // then
         assertThat(response, is(notNullValue()));
-        assertThat(response.total(), is(equalTo(product.getSizes().get(0).getTotal())));
+        assertThat(response.productId(), is(equalTo(product.getProductId())));
+        assertThat(response.sizeName(), is(equalTo(size1.getSizeId().getName())));
+        assertThat(response.total(), is(equalTo(total)));
+        assertThat(productsRepository.findById(product.getProductId()).get().getSizes().get(0).getTotal(), is(equalTo(total)));
+        assertThat(sizesRepository.findById(size1.getSizeId()).get().getTotal(), is(equalTo(total)));
     }
 
     @Transactional
     @Rollback
     @Test
+    public void testSetSizeWithProductNotExist() {
+        // given
+        Long productId = 5L;
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.setSizeForProduct(productId, new CreateSizeRequest("a", 2)));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("product")));
+        assertThat(ex.getClazz(), is(equalTo(Product.class)));
+        assertThat(ex.getEntityId(), is(equalTo(productId)));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testSetSizeWithSizeNotExist() {
+        // given
+        Category category = new Category().setName("Category");
+        categoriesRepository.saveAndFlush(category);
+
+        Product product = new Product()
+                .setName("Liuz")
+                .setCategory(category);
+        productsRepository.saveAndFlush(product);
+
+        String sizeName = "3";
+        Integer total = 2;
+        var sizeId = new SizeId()
+                .setProduct(product)
+                .setName(sizeName);
+
+        // when
+        var ex = assertThrows(NoSuchElementException.class, () ->
+                catalogService.setSizeForProduct(product.getProductId(), new CreateSizeRequest(sizeName, total)));
+
+        // then
+        assertThat(ex.getVarName(), is(equalTo("size")));
+        assertThat(ex.getClazz(), is(equalTo(Size.class)));
+        assertThat(ex.getEntityId(), is(equalTo(sizeId)));
+    }
+
+
+    @Transactional
+    @Rollback
+    @Test
     public void testDeleteSizeForProduct() {
+        // given
         Category category = new Category().setName("Category");
         categoriesRepository.saveAndFlush(category);
 
@@ -676,18 +902,30 @@ public class CatalogServiceIT extends IntegrationEnvironment {
                 .setName("Liuz")
                 .setCategory(category);
 
-        product.setSizes(Collections.singletonList(new Size()
-                .setSizeId(new SizeId().setProduct(product).setName("f"))
-                .setTotal(1)));
+        Size size1 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("1")
+                        .setProduct(product))
+                .setTotal(1);
+
+        Size size2 = new Size()
+                .setSizeId(new SizeId()
+                        .setName("2")
+                        .setProduct(product))
+                .setTotal(1);
+        product.setSizes(List.of(size1, size2));
 
         productsRepository.saveAndFlush(product);
 
         //when
-        var response = catalogService.deleteSizeForProduct(product.getProductId(), "f");
+        var response = catalogService.deleteSizeForProduct(product.getProductId(), size1.getSizeId().getName());
 
         //then
         assertThat(response, is(notNullValue()));
-        assertThat(response.sizeName(), is(equalTo(product.getName())));
+        assertThat(response.sizeName(), is(equalTo(size1.getSizeId().getName())));
+        assertThat(response.productId(), is(equalTo(product.getProductId())));
+        assertThat(response.total(), is(equalTo(size1.getTotal())));
+        assertThat(sizesRepository.findById(size1.getSizeId()), is(Optional.empty()));
     }
 }
 

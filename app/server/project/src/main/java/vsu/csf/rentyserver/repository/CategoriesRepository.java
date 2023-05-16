@@ -11,4 +11,6 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
 
     List<Category> removeCategoryByCategoryIdEquals(Long categoryId);
 
+    Category findByName(String name);
+
 }
