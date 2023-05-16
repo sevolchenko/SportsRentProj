@@ -28,10 +28,16 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 150.h,
+                height: 70.h,
               ),
               buildTextField('Введите размер', '', (value) {}), //TODO тип ввода
+              SizedBox(
+                height: 30.h,
+              ),
               buildTextField('Введите количество', 'size', (value) {}),
+              SizedBox(
+                height: 50.h,
+              ),
               buildButton(
                 "Добавить",
                 "primary",

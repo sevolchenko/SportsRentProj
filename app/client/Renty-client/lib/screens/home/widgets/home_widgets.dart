@@ -33,20 +33,26 @@ Widget sortAndFilter() {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.sort,
-              size: 35,
-            )),
-        SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.filter,
-              size: 35,
-            )),
+        GestureDetector(
+          onTap: (){},
+          child: SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: const Icon(
+                FontAwesomeIcons.sort,
+                size: 35,
+              )),
+        ),
+        GestureDetector(
+          onTap: (){},
+          child: SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: const Icon(
+                FontAwesomeIcons.filter,
+                size: 35,
+              )),
+        ),
       ],
     ),
   );

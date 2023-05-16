@@ -13,7 +13,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leadingWidth: 30.w,
       automaticallyImplyLeading: autoLeading,
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       title: Column(
         children: [
           Container(
@@ -44,7 +44,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(90.h);
+  Size get preferredSize => Size.fromHeight(80.h);
 }
 
 
