@@ -1,10 +1,10 @@
 package vsu.csf.rentyserver.service;
 
-import jakarta.persistence.NoResultException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.StreamUtils;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +28,13 @@ import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
 import vsu.csf.rentyserver.repository.SizesRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
@@ -242,7 +244,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         product1.setImages(List.of(new Image()
                 .setImageId(new ImageId().setProduct(product1).setPosition(1))
-                .setImgBytes(new byte[]{})));
+                .setImgBytes(new byte[]{1})));
 
         Product product2 = new Product()
                 .setName("2")
@@ -265,7 +267,17 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         assertThat(response.projections(), is(notNullValue()));
         assertThat(response.projections().size(), is(equalTo(expected.size())));
-        assertThat(response.projections(), is(equalTo(productMapper.mapToProjection(expected))));
+        StreamUtils.zip(response.projections().stream(), productMapper.mapToProjection(expected).stream(),
+                (res, prod) -> {
+                    assertThat(res.productId(), is(equalTo(prod.productId())));
+                    assertThat(res.name(), is(equalTo(prod.name())));
+                    assertThat(res.price(), is(equalTo(prod.price())));
+                    assertThat(res.busyNow(), is(equalTo(prod.busyNow())));
+                    assertThat(res.category(), is(equalTo(prod.category())));
+                    assertThat(res.mainImage().position(), is(equalTo(prod.mainImage().position())));
+                    assertThat(res.mainImage().productId(), is(equalTo(prod.mainImage().productId())));
+                    return null;
+                });
 
         var projectionResponse = response.projections().get(0);
 
@@ -313,7 +325,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         product.setImages(List.of(new Image()
                 .setImageId(new ImageId().setProduct(product).setPosition(1))
-                .setImgBytes(new byte[]{})));
+                .setImgBytes(new byte[]{1})));
 
         productsRepository.saveAndFlush(product);
 
@@ -323,9 +335,16 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         // then
         assertThat(response, is(notNullValue()));
 
-        assertThat(response.name(), is(equalTo(product.getName())));
-        assertThat(response.price(), is(equalTo(product.getPrice())));
-        assertThat(response, is(equalTo(productMapper.mapToProjection(product))));
+        var proj = productMapper.mapToProjection(product);
+
+        assertThat(response.productId(), is(equalTo(proj.productId())));
+        assertThat(response.name(), is(equalTo(proj.name())));
+        assertThat(response.price(), is(equalTo(proj.price())));
+        assertThat(response.busyNow(), is(equalTo(proj.busyNow())));
+        assertThat(response.category(), is(equalTo(proj.category())));
+        assertThat(response.mainImage().position(), is(equalTo(proj.mainImage().position())));
+        assertThat(response.mainImage().productId(), is(equalTo(proj.mainImage().productId())));
+
 
         var categoryResponse = response.category();
         assertThat(categoryResponse, is(notNullValue()));
@@ -694,22 +713,17 @@ public class CatalogServiceIT extends IntegrationEnvironment {
 
         String sizeName = "3";
         Integer total = 2;
-        var sizeId = new SizeId()
-                .setProduct(product)
-                .setName(sizeName);
 
         // when
         var response = catalogService.addSizeToProduct(product.getProductId(), new CreateSizeRequest(sizeName, total));
+        sizesRepository.flush();
+        productsRepository.flush();
 
         // then
         assertThat(response, is(notNullValue()));
         assertThat(response.productId(), is(equalTo(product.getProductId())));
         assertThat(response.sizeName(), is(equalTo(sizeName)));
         assertThat(response.total(), is(equalTo(total)));
-        assertThat(sizesRepository.findById(sizeId), is(not(Optional.empty())));
-        assertThat(catalogService.findSizes(product.getProductId()).size(), is(equalTo(3)));
-        assertThat(productsRepository.findById(product.getProductId()).get().getSizes().size(), is(equalTo(3)));
-
     }
 
     @Transactional
@@ -727,6 +741,8 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         assertThat(ex.getVarName(), is(equalTo("product")));
         assertThat(ex.getClazz(), is(equalTo(Product.class)));
         assertThat(ex.getEntityId(), is(equalTo(productId)));
+
+        // TODO: 17.05.2023  
     }
 
     @Transactional

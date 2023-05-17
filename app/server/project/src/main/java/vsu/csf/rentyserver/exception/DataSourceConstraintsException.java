@@ -3,7 +3,7 @@ package vsu.csf.rentyserver.exception;
 import lombok.Getter;
 
 @Getter
-public class DataSourceConstraintsException extends RuntimeException{
+public class DataSourceConstraintsException extends RuntimeException {
 
     public DataSourceConstraintsException(String message, String varName, Class<?> clazz, Object entityId) {
         super(message);

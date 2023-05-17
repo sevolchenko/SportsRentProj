@@ -2,7 +2,7 @@ package vsu.csf.rentyserver.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record SizeResponse (
+public record SizeResponse(
 
         @JsonProperty("product_id")
         Long productId,

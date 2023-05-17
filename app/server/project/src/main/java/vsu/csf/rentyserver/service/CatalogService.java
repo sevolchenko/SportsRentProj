@@ -1,6 +1,5 @@
 package vsu.csf.rentyserver.service;
 
-import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

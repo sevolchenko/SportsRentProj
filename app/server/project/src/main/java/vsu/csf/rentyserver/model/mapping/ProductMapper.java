@@ -36,7 +36,8 @@ public interface ProductMapper {
 
     // TODO: 12.05.2023 fill busyNow
     @Mapping(target = "busyNow", expression = "java(false)")
-    @Mapping(target = "mainImage", expression = "java(imageMapper.map(product.getImages().get(0)))")
+    @Mapping(target = "mainImage",
+            expression = "java(product.getImages() != null ? imageMapper.map(product.getImages().get(0)) : null)")
     ProductProjectionResponse mapToProjection(Product product);
 
     List<ProductProjectionResponse> mapToProjection(List<Product> products);

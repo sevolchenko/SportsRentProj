@@ -27,7 +27,7 @@ public abstract class IntegrationEnvironment {
         registry.add("spring.datasource.password", DB_CONTAINER::getPassword);
 
         Startables.deepStart(DB_CONTAINER);
-                //.thenAccept(unused -> runMigrations(DB_CONTAINER));
+        //.thenAccept(unused -> runMigrations(DB_CONTAINER));
     }
 //
 //

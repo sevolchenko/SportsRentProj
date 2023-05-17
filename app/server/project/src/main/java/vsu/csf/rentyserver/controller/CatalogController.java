@@ -68,7 +68,7 @@ public class CatalogController {
 
     @PatchMapping("/products/{product_id}/sizes")
     SizeResponse changeTotalForProduct(@PathVariable("product_id") Long productId,
-                                      @RequestBody CreateSizeRequest request) {
+                                       @RequestBody CreateSizeRequest request) {
         return catalogService.setSizeForProduct(productId, request);
     }
 
