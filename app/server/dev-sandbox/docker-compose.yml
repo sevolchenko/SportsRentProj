@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  database:
+    image: 'postgres:15-alpine'
+    container_name: database
+    ports:
+      - "5434:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=renty
+    restart: always
+
+volumes:
+  db-data:
