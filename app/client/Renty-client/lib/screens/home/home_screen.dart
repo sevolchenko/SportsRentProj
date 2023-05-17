@@ -24,55 +24,55 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return SafeArea(
         child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: buildAppBar(),
-            body: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                return Container(
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: sortAndFilter(),
+          backgroundColor: Colors.white,
+          appBar: buildAppBar(),
+          body: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return Container(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: sortAndFilter(),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20.h,
+                        horizontal: 15.w,
                       ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 20.h,
-                          horizontal: 15.w,
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          childAspectRatio: 0.7,
                         ),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 15,
-                            childAspectRatio: 0.7,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            // childCount: 4,
-                            (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProductScreen(),
-                                    ),
-                                  );
-                                },
-                                child: productsGrid(),
-                              );
-                            },
-                          ),
+                        delegate: SliverChildBuilderDelegate(
+                          // childCount: 4,
+                          (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const ProductScreen(),
+                                  ),
+                                );
+                              },
+                              child: productsGrid(),
+                            );
+                          },
                         ),
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-            bottomNavigationBar: MyBottomNavBar(
-              selectedIndex: 0,
-            )),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+          bottomNavigationBar: MyBottomNavBar(
+            selectedIndex: 0,
+          ),
+        ),
       );
     });
   }

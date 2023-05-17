@@ -11,7 +11,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leadingWidth: 30.w,
+      // leadingWidth: 30.w,
       automaticallyImplyLeading: autoLeading,
       // backgroundColor: Colors.white,
       title: Column(
@@ -23,7 +23,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               title,
               // maxLines: 2,
               // softWrap: true,
-              overflow: TextOverflow.fade,
+              // overflow: TextOverflow.fade,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 24.sp,

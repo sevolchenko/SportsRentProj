@@ -39,6 +39,7 @@ Widget buildTextField(
           height: 50.h,
           child: TextField(
             onChanged: (value) => func!(value),
+            textAlign: TextAlign.left,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
               hintText: hintText,

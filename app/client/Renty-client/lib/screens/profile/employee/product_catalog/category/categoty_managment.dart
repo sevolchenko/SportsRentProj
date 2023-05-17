@@ -4,6 +4,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/icons.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -47,8 +48,7 @@ class _CategoryManagmentScreenState extends State<CategoryManagmentScreen> {
                     childCount: 4,
                     (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () {
-                        },
+                        onTap: () {},
                         child: Row(
                           children: [
                             Container(
@@ -90,7 +90,13 @@ class _CategoryManagmentScreenState extends State<CategoryManagmentScreen> {
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 20.w),
-                              child: buildTrashIcon(() {}),
+                              child: buildTrashIcon(() {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeScreen(),
+                                  ),
+                                );
+                              }),
                             )
                           ],
                         ),

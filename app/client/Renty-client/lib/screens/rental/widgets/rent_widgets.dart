@@ -23,7 +23,7 @@ Widget buildRentTime(String time) {
 
 Widget buildSmallProductImage(String imagePath) {
   return ClipRRect(
-    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0)),
+    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
     child: Image.asset(
       imagePath,
       width: 90.h,
