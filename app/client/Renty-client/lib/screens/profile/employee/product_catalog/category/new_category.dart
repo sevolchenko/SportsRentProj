@@ -2,6 +2,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/categoty_managment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -43,11 +44,11 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                 "Добавить",
                 "primary",
                 () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const RentScreen(),
-                  //   ),
-                  // );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CategoryManagmentScreen(),
+                    ),
+                  );
                 },
               ),
             ],

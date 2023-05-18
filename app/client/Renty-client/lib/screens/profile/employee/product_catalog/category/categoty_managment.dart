@@ -5,6 +5,8 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/icons.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/new_category.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/product_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -99,6 +101,22 @@ class _CategoryManagmentScreenState extends State<CategoryManagmentScreen> {
                               }),
                             )
                           ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.only(top: 30.h, bottom: 20.h),
+                  child: buildButton(
+                    "Добавить категорию",
+                    "secondary",
+                    () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const NewCategoryScreen(),
                         ),
                       );
                     },

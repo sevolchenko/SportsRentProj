@@ -23,7 +23,8 @@ Widget buildRentTime(String time) {
 
 Widget buildSmallProductImage(String imagePath) {
   return ClipRRect(
-    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+    borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
     child: Image.asset(
       imagePath,
       width: 90.h,
@@ -57,7 +58,7 @@ Widget rentColumnText(String topText, String bottomText) {
   );
 }
 
-Widget rentGrid() {
+Widget rentGrid({Color borderColor = kPrimaryColor}) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
@@ -133,24 +134,6 @@ Widget rentGrid() {
                       color: kPrimaryColor,
                     ),
                     buildRentTime("23.04.23 16:00"),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(
-                    //         builder: (context) =>
-                    //             const RentalInfoScreen(),
-                    //       ),
-                    //     );
-                    //   },
-                    //   child: SizedBox(
-                    //     width: 20.w,
-                    //     height: 20.h,
-                    //     child: const Icon(
-                    //       FontAwesomeIcons.circleInfo,
-                    //       size: 35,
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
