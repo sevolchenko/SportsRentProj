@@ -9,8 +9,8 @@ import 'package:client/global.dart';
 import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
-import 'package:client/screens/register/register_screen.dart';
-import 'package:client/screens/sign_in/sign_in_screen.dart';
+import 'package:client/screens/profile/register/register_screen.dart';
+import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,15 +23,14 @@ class ScreenEntity {
   ScreenEntity({required this.route, required this.screen, this.bloc});
 }
 
-
 class AppScreens {
   static List<ScreenEntity> routes() {
     return [
       ScreenEntity(
-          route: AppRoutes.APPLICATION,
-          screen: const Application(),
+          route: AppRoutes.HOME,
+          screen: const HomeScreen(),
           bloc: BlocProvider(
-            create: (_) => ApplicationBloc(),
+            create: (_) => HomeBloc(),
           )),
       ScreenEntity(
           route: AppRoutes.SIGN_IN,
@@ -46,17 +45,17 @@ class AppScreens {
             create: (_) => RegisterBloc(),
           )),
       ScreenEntity(
-          route: AppRoutes.HOME,
-          screen: const HomeScreen(),
-          bloc: BlocProvider(
-            create: (_) => HomeBloc(),
-          )),
-      ScreenEntity(
           route: AppRoutes.PROFILE,
           screen: const ProfileScreen(),
           bloc: BlocProvider(
             create: (_) => ProfileBloc(),
           )),
+      // ScreenEntity(
+      //     route: AppRoutes.APPLICATION,
+      //     screen: const Application(),
+      //     bloc: BlocProvider(
+      //       create: (_) => ApplicationBloc(),
+      //     )),
     ];
   }
 
@@ -89,9 +88,8 @@ class AppScreens {
     // }
     print("invalid ${settings.name}");
     return MaterialPageRoute(
-        builder: (_) => const SignInScreen(), settings: settings);
+        builder: (_) => const HomeScreen(), settings: settings);
     // return MaterialPageRoute(
     //     builder: (_) => const SignInScreen(), settings: settings);
   }
 }
-

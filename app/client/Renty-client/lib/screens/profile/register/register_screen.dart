@@ -6,7 +6,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/sign_in/sign_in_screen.dart';
+import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             backgroundColor: Colors.white,
             appBar: const MyAppBar(
               title: 'Регистрация',
+              autoLeading: true,
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -46,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // SizedBox(
                             //   height: 1.h,
                             // ),
-                            buildTextField("Введите Ваше имя", 'name', 50,
+                            buildTextField("Введите Ваше имя", 'name',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
@@ -55,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             reusableText("Почта", Colors.black),
 
                             buildTextField(
-                                "Введите электронную почту", 'email', 50,
+                                "Введите электронную почту", 'email',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
@@ -63,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
                             reusableText("Пароль", Colors.black),
 
-                            buildTextField("Введите пароль", 'password', 50,
+                            buildTextField("Введите пароль", 'password',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
@@ -72,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             reusableText("Подтверждение пароля", Colors.black),
 
                             buildTextField(
-                                "Введите пароль снова", 'password', 50,
+                                "Введите пароль снова", 'password',
                                 (value) {
                               context
                                   .read<RegisterBloc>()

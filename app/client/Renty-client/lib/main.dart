@@ -1,7 +1,8 @@
 import 'package:client/common/routes/routes.dart';
 import 'package:client/global.dart';
 import 'package:client/screens/application/application.dart';
-import 'package:client/screens/sign_in/sign_in_screen.dart';
+import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
                   elevation: 0,
                   backgroundColor: Colors.white)),
           title: 'My App',
-          // home: const SignInScreen(),
+          // home: const HomeScreen(),
           onGenerateRoute: AppScreens.GenerateRouteSettings,
         ),
       ),

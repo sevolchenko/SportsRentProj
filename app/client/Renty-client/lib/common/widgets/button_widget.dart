@@ -22,7 +22,7 @@ Widget buildButton(
           buttonName,
           style: TextStyle(
               color: buttonType == 'primary' ? Colors.white : Colors.black,
-              fontSize: 16.sp,
+              fontSize: 18.sp,
               fontWeight: FontWeight.normal),
         ),
       ),

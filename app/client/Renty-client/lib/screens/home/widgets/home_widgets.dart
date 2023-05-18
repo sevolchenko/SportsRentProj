@@ -3,22 +3,26 @@ import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-AppBar buildAppBar() {
-  return AppBar(
-    automaticallyImplyLeading: false,
-    title: Container(
-        margin: EdgeInsets.only(top: 20.h, left: 5.w, right: 5.w),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildTextField("Поиск", 'search', 50, (value) {}),
-              ],
-            ),
-          ],
-        )),
+PreferredSize buildAppBar() {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(60.h),
+    child: AppBar(
+      automaticallyImplyLeading: false,
+      title: Container(
+          margin: EdgeInsets.only(top: 30.h, left: 5.w, right: 5.w),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildTextField("Поиск", 'search', height: 45, (value) {}),
+                ],
+              ),
+            ],
+          )),
+    ),
   );
 }
 
@@ -29,20 +33,26 @@ Widget sortAndFilter() {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.sort,
-              size: 35,
-            )),
-        SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.filter,
-              size: 35,
-            )),
+        GestureDetector(
+          onTap: (){},
+          child: SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: const Icon(
+                FontAwesomeIcons.sort,
+                size: 35,
+              )),
+        ),
+        GestureDetector(
+          onTap: (){},
+          child: SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: const Icon(
+                FontAwesomeIcons.filter,
+                size: 35,
+              )),
+        ),
       ],
     ),
   );
@@ -50,11 +60,24 @@ Widget sortAndFilter() {
 
 Widget productsGrid() {
   return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20.w),
+      border: Border.all(color: kPrimaryColor, width: 4),
+    ),
     child: Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
-          child: Image.asset("assets/images/image_2.png"),
+        // Container(
+        //   margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
+        //   child: Image.asset("assets/images/image_2.png"),
+        // ),
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+          child: Image.asset(
+            "assets/images/image_2.png",
+            // width: 90.h,
+            // height: 90.h,
+          ),
         ),
         const Divider(
           height: 0,
@@ -68,10 +91,11 @@ Widget productsGrid() {
             maxLines: 2,
             overflow: TextOverflow.fade,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              fontSize: 14.sp,
+            style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.normal,
+                fontSize: 14.sp,
             ),
           ),
         ),
@@ -89,22 +113,14 @@ Widget productsGrid() {
             "1000 Р/час",
             maxLines: 2,
             overflow: TextOverflow.fade,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
-            ),
+            style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 18.sp),
           ),
         ),
       ],
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20.w),
-      border: Border.all(color: kPrimaryColor, width: 4),
-      // image: const DecorationImage(
-      //   image:
-      //       AssetImage("assets/images/image_2.png"),
-      // ),
     ),
   );
 }
