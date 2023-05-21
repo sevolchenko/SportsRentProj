@@ -1,6 +1,6 @@
-package vsu.csf.rentyserver.model.dto.response.list;
+package vsu.csf.rentyserver.model.dto.catalog.response.list;
 
-import vsu.csf.rentyserver.model.dto.response.ProductProjectionResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductProjectionResponse;
 
 import java.util.List;
 

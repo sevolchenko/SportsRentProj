@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.model.dto.response;
+package vsu.csf.rentyserver.model.dto.catalog.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,7 +14,7 @@ public record ProductProjectionResponse(
         @JsonProperty("busy_now")
         Boolean busyNow,
 
-        CategoryResponse category,
+        CategoryPreviewResponse category,
 
         @JsonProperty("main_image")
         ImageResponse mainImage

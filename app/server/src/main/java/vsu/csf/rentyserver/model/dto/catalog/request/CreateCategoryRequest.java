@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.model.dto.request;
+package vsu.csf.rentyserver.model.dto.catalog.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

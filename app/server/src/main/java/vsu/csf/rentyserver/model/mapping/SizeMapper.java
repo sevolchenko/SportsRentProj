@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import vsu.csf.rentyserver.component.RentProcessor;
-import vsu.csf.rentyserver.model.dto.response.SizeResponse;
-import vsu.csf.rentyserver.model.dto.response.list.SizeListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
 import vsu.csf.rentyserver.model.entity.Size;
 
 import java.util.List;

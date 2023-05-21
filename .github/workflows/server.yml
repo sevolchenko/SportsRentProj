@@ -1,4 +1,4 @@
-name: Server Module Java CI with Maven
+name: Server Module Java CI/CD with Maven
 
 on:
   push:

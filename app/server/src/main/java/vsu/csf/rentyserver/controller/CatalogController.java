@@ -2,17 +2,17 @@ package vsu.csf.rentyserver.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import vsu.csf.rentyserver.model.dto.request.CreateCategoryRequest;
-import vsu.csf.rentyserver.model.dto.request.CreateProductRequest;
-import vsu.csf.rentyserver.model.dto.request.CreateSizeRequest;
-import vsu.csf.rentyserver.model.dto.response.CategoryResponse;
-import vsu.csf.rentyserver.model.dto.response.ProductProjectionResponse;
-import vsu.csf.rentyserver.model.dto.response.ProductResponse;
-import vsu.csf.rentyserver.model.dto.response.SizeResponse;
-import vsu.csf.rentyserver.model.dto.response.list.CategoryListResponse;
-import vsu.csf.rentyserver.model.dto.response.list.ProductListResponse;
-import vsu.csf.rentyserver.model.dto.response.list.ProductProjectionListResponse;
-import vsu.csf.rentyserver.model.dto.response.list.SizeListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductProjectionResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.CategoryListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductProjectionListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
 import vsu.csf.rentyserver.service.CatalogService;
 
 @RestController

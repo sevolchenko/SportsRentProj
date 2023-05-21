@@ -14,9 +14,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
-import vsu.csf.rentyserver.model.dto.response.ApiErrorResponse;
+import vsu.csf.rentyserver.model.dto.ApiErrorResponse;
 
 import java.util.Arrays;
+import java.util.List;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -40,14 +41,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return buildApiErrorResponse(ex, ex.getVarName(), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(NoSuchFieldException.class)
+    @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> handleNoSuchChatException(NoSuchElementException ex) {
         return buildApiErrorResponse(ex, ex.getVarName(), HttpStatus.NOT_FOUND);
     }
     private ResponseEntity<Object> buildApiErrorResponse(Exception ex, String description, HttpStatus status) {
-        String[] stackTrace = Arrays.stream(ex.getStackTrace())
+        List<String> stackTrace = Arrays.stream(ex.getStackTrace())
                 .map(StackTraceElement::toString)
-                .toArray(String[]::new);
+                .toList();
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(description,
                 String.valueOf(status.value()), ex.getClass().getName(), ex.getMessage(), stackTrace);
         return new ResponseEntity<>(apiErrorResponse, status);

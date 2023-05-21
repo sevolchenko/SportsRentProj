@@ -2,10 +2,10 @@ package vsu.csf.rentyserver.model.mapping;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import vsu.csf.rentyserver.model.dto.response.ProductProjectionResponse;
-import vsu.csf.rentyserver.model.dto.response.ProductResponse;
-import vsu.csf.rentyserver.model.dto.response.list.ProductListResponse;
-import vsu.csf.rentyserver.model.dto.response.list.ProductProjectionListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductProjectionResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductListResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductProjectionListResponse;
 import vsu.csf.rentyserver.model.entity.Product;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public interface ProductMapper {
     // TODO: 12.05.2023 fill busyNow
     @Mapping(target = "busyNow", expression = "java(false)")
     @Mapping(target = "mainImage",
-            expression = "java(product.getImages() != null ? imageMapper.map(product.getImages().get(0)) : null)")
+            expression = "java(!product.getImages().isEmpty() ? imageMapper.map(product.getImages().get(0)) : null)")
     ProductProjectionResponse mapToProjection(Product product);
 
     List<ProductProjectionResponse> mapToProjection(List<Product> products);

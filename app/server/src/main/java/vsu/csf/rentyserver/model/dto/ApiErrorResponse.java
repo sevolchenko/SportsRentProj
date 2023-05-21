@@ -1,4 +1,6 @@
-package vsu.csf.rentyserver.model.dto.response;
+package vsu.csf.rentyserver.model.dto;
+
+import java.util.List;
 
 public record ApiErrorResponse(
 
@@ -10,7 +12,7 @@ public record ApiErrorResponse(
 
         String exceptionMessage,
 
-        String[] stacktrace
+        List<String> stacktrace
 
 ) {
 }

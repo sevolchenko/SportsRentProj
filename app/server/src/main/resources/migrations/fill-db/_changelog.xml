@@ -9,4 +9,9 @@
 
     <changeSet id="FILL-DB" author="Sergey Volchenko"/>
 
+    <include file="fill_category_table.sql" relativeToChangelogFile="true"/>
+    <include file="fill_product_table.sql" relativeToChangelogFile="true"/>
+    <include file="fill_size_table.sql" relativeToChangelogFile="true"/>
+    <include file="fill_image_table.sql" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
