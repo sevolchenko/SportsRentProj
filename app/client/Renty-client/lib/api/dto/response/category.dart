@@ -1,34 +1,34 @@
-class CategoryResponse {
-  final int id;
+class CategoryPreviewResponse {
+  final int categoryId;
   final String name;
 
-  CategoryResponse({required this.id, required this.name});
+  CategoryPreviewResponse({required this.categoryId, required this.name});
+
+  factory CategoryPreviewResponse.fromJson(Map<String, dynamic> json) {
+    return CategoryPreviewResponse(categoryId: json['category_id'], name: json['name']);
+  }
+}
+
+class CategoryResponse {
+  final int categoryId;
+  final CategoryPreviewResponse parentCategoty;
+  final String name;
+
+  CategoryResponse({required this.categoryId, required this.parentCategoty, required this.name});
 
   factory CategoryResponse.fromJson(Map<String, dynamic> json) {
-    return CategoryResponse(id: json['category_id'], name: json['name']);
-  }
-}
-
-class CategoryFullResponse {
-  final int id;
-  final int parentCategotyId;
-  final String name;
-
-  CategoryFullResponse({required this.id, required this.parentCategotyId, required this.name});
-
-  factory CategoryFullResponse.fromJson(Map<String, dynamic> json) {
-    return CategoryFullResponse(id: json['category_id'], parentCategotyId: json['parent_category_id'], name: json['name']);
+    return CategoryResponse(categoryId: json['category_id'], parentCategoty: json['parent_category'], name: json['name']);
   }
 }
 
 
-class ListCategoriesFullResponse {
-  final List<CategoryFullResponse> categories;
+class CategoryListResponse {
+  final List<CategoryResponse> categories;
   final int size;
 
-  ListCategoriesFullResponse({required this.categories, required this.size});
+  CategoryListResponse({required this.categories, required this.size});
 
-  factory ListCategoriesFullResponse.fromJson(Map<String, dynamic> json) {
-    return ListCategoriesFullResponse(categories: json['categories'], size: json['size']);
+  factory CategoryListResponse.fromJson(Map<String, dynamic> json) {
+    return CategoryListResponse(categories: json['categories'], size: json['size']);
   }
 }

@@ -5,7 +5,7 @@ class ProductCreateRequest {
   final String name;
   final String description;
   final int price;
-  final CategoryResponse category;
+  final CategoryPreviewResponse category;
   final List<ImageResponse> images;
 
   ProductCreateRequest(
@@ -16,10 +16,10 @@ class ProductCreateRequest {
       required this.images});
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'description': description,
-    'price': price,
-    'category': category,
-    'images': images,
-  };
+        'name': name,
+        'description': description,
+        'price': price,
+        'category': category,
+        'images': images,
+      };
 }

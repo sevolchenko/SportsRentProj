@@ -6,7 +6,7 @@ class ProductProjection {
   final String name;
   final int price;
   final bool busyNow;
-  final CategoryResponse category;
+  final CategoryPreviewResponse category;
   final ImageResponse mainImage;
 
   ProductProjection({
@@ -20,27 +20,27 @@ class ProductProjection {
 
   factory ProductProjection.fromJson(Map<String, dynamic> json) {
     return ProductProjection(
-        productId: json['product_id'],
-        name: json['name'],
-        price: json['price'],
-        busyNow: json['busy_now'],
-        category: json['category'],
-        mainImage: json['main_image'],
-        );
+      productId: json['product_id'],
+      name: json['name'],
+      price: json['price'],
+      busyNow: json['busy_now'],
+      category: json['category'],
+      mainImage: json['main_image'],
+    );
   }
 }
 
-class ListProductProjection {
+class ProductProjectionListResponse {
   final List<ProductProjection> projections;
   final int size;
 
-  ListProductProjection({
+  ProductProjectionListResponse({
     required this.projections,
     required this.size,
   });
 
-  factory ListProductProjection.fromJson(Map<String, dynamic> json) {
-    return ListProductProjection(
+  factory ProductProjectionListResponse.fromJson(Map<String, dynamic> json) {
+    return ProductProjectionListResponse(
       projections: json['projections'],
       size: json['size'],
     );

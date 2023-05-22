@@ -8,7 +8,7 @@ class ProductResponse {
   final String description;
   final int price;
   final List<SizeResponse> sizes;
-  final CategoryResponse category;
+  final CategoryPreviewResponse category;
   final List<ImageResponse> images;
 
   ProductResponse(
@@ -32,15 +32,16 @@ class ProductResponse {
   }
 }
 
-class ListProductsResponse {
+class ProductListResponse {
   final ProductResponse products;
   final int size;
 
-  ListProductsResponse({ required this.products, required this.size,});
+  ProductListResponse({
+    required this.products,
+    required this.size,
+  });
 
-  factory ListProductsResponse.fromJson(Map<String, dynamic> json) {
-    return ListProductsResponse(
-        products: json['products'],
-        size: json['size']);
+  factory ProductListResponse.fromJson(Map<String, dynamic> json) {
+    return ProductListResponse(products: json['products'], size: json['size']);
   }
 }
