@@ -27,6 +27,8 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
 
+                .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+
                 .requestMatchers(new AntPathRequestMatcher("/auth/login")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/auth/register")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/auth/logout")).authenticated()
