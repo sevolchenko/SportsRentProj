@@ -7,15 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.ApiErrorResponse;
 
+import javax.naming.AuthenticationException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +48,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoSuchChatException(NoSuchElementException ex) {
         return buildApiErrorResponse(ex, ex.getVarName(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
+        return buildApiErrorResponse(ex, ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex) {
+        return buildApiErrorResponse(ex, ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AlreadyRegisteredUserException.class)
+    protected ResponseEntity<Object> handleAlreadyRegisteredUserException(AlreadyRegisteredUserException ex) {
+        return buildApiErrorResponse(ex, ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+
     private ResponseEntity<Object> buildApiErrorResponse(Exception ex, String description, HttpStatus status) {
         List<String> stackTrace = Arrays.stream(ex.getStackTrace())
                 .map(StackTraceElement::toString)
