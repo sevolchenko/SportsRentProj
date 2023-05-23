@@ -26,4 +26,6 @@ public class AppUser {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 }

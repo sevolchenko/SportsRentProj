@@ -1,3 +1,8 @@
+application:
+  security:
+    secret-key: '7638792F423F4528482B4B6250655368566D597133743677397A24432646294A'
+    jwt-expires-after: P90D
+
 spring:
   jpa:
     show-sql: true

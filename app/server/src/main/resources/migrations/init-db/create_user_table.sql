@@ -10,5 +10,6 @@ create table app_user
     user_id  bigint primary key default nextVal('user_sequence'),
     email    varchar not null unique,
     name     varchar not null,
-    password varchar not null
+    password varchar not null,
+    role     varchar not null   default 'USER'
 );
