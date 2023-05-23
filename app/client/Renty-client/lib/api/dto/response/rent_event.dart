@@ -1,9 +1,8 @@
-import 'package:client/api/dto/response/product_preview.dart';
 
 class RentEventResponse {
   final int id;
   final int userId;
-  final ProductPreviewResponse productPreview;
+  // final ProductPreviewResponse productPreview;
   final int count;
   final int price;
   final String createdAt;
@@ -14,7 +13,7 @@ class RentEventResponse {
   RentEventResponse({
     required this.id,
     required this.userId,
-    required this.productPreview,
+    // required this.productPreview,
     required this.count,
     required this.price,
     required this.createdAt,
@@ -27,7 +26,7 @@ class RentEventResponse {
     return RentEventResponse(
       id: json['rent_id'],
       userId: json['user_id'],
-      productPreview: json['product_preview'],
+      // productPreview: json['product_preview'],
       count: json['count'],
       price: json['price'],
       createdAt: json['created_at'],
@@ -39,7 +38,7 @@ class RentEventResponse {
 }
 
 class ListRentEventsResponse {
-  final List<ListRentEventsResponse> rents;
+  final List<RentEventResponse> rents;
   final int size;
 
   ListRentEventsResponse({

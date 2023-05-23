@@ -1,47 +1,52 @@
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/image.dart';
 
-class ProductProjection {
+class ProductProjectionResponse {
   final int productId;
   final String name;
   final int price;
   final bool busyNow;
   final CategoryPreviewResponse category;
-  final ImageResponse mainImage;
+  final ImageResponse? mainImage;
 
-  ProductProjection({
+  ProductProjectionResponse({
     required this.productId,
     required this.name,
     required this.price,
     required this.busyNow,
     required this.category,
-    required this.mainImage,
+    this.mainImage,
   });
 
-  factory ProductProjection.fromJson(Map<String, dynamic> json) {
-    return ProductProjection(
+  factory ProductProjectionResponse.fromJson(Map<String, dynamic> json) {
+    return ProductProjectionResponse(
       productId: json['product_id'],
       name: json['name'],
       price: json['price'],
       busyNow: json['busy_now'],
-      category: json['category'],
-      mainImage: json['main_image'],
+      category: json['category'] =
+          CategoryPreviewResponse.fromJson(json['category']),
+      mainImage: json['main_image'] == null
+          ? null
+          : ImageResponse.fromJson(json['main_image']),
     );
   }
 }
 
 class ProductProjectionListResponse {
-  final List<ProductProjection> projections;
-  final int size;
+  final List<ProductProjectionResponse>? projections;
+  final int? size;
 
   ProductProjectionListResponse({
-    required this.projections,
-    required this.size,
+    this.projections,
+    this.size,
   });
 
   factory ProductProjectionListResponse.fromJson(Map<String, dynamic> json) {
     return ProductProjectionListResponse(
-      projections: json['projections'],
+      projections: json['projections'] = List<ProductProjectionResponse>.from(
+          json['projections']
+              .map((x) => ProductProjectionResponse.fromJson(x))),
       size: json['size'],
     );
   }

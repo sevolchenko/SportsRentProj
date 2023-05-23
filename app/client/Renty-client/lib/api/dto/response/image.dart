@@ -7,6 +7,24 @@ class ImageResponse {
 
   factory  ImageResponse.fromJson(Map<String, dynamic> json) {
     return ImageResponse(
-        productId: json['user_id'], position: json['position'], image: json['image']);
+        productId: json['product_id'], position: json['position'], image: json['image']);
+  }
+}
+
+
+class ImageListResponse {
+  final List<ImageResponse> images;
+  final int size;
+
+  ImageListResponse({
+    required this.images,
+    required this.size,
+  });
+
+  factory ImageListResponse.fromJson(Map<String, dynamic> json) {
+    return ImageListResponse(
+        images: json['images'] = List<ImageResponse>.from(
+            json['images'].map((x) => ImageResponse.fromJson(x))),
+        size: json['size']);
   }
 }

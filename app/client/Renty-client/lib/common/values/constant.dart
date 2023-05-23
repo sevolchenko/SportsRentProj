@@ -1,5 +1,6 @@
 class AppConstants {
-  static const String SERVER_API_URL = '';
+  static const String SERVER_API_URL =
+      "https://renty-api-sevolchenko.cloud.okteto.net/";
 
   static const String STORAGE_DEVICE_OPEN_FIRST_TIME = 'device_first_open';
   static const String STORAGE_USER_PROFILE_KEY = 'user_profile_key';

@@ -30,4 +30,14 @@ class StorageService {
   Future<bool> remove(String key) {
     return _prefs.remove(key);
   }
+
+  String getUserToken() {
+    return _prefs.getString(AppConstants.STORAGE_USER_TOKEN_KEY) ?? "";
+  }
+
+  getUserProfile() {
+    var profileOffline =
+        _prefs.getString(AppConstants.STORAGE_USER_PROFILE_KEY) ?? "";
+    if (profileOffline.isNotEmpty) {}
+  }
 }

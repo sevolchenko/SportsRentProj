@@ -12,7 +12,6 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,6 +24,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   void removeUserData() {
     context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
+    Global.storageService.remove(AppConstants.STORAGE_USER_TOKEN_KEY);
     Global.storageService.remove(AppConstants.STORAGE_USER_PROFILE_KEY);
     Navigator.of(context)
         .pushNamedAndRemoveUntil(AppRoutes.SIGN_IN, (route) => false);

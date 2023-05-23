@@ -8,7 +8,6 @@ class RegisterController {
   const RegisterController({required this.context});
 
   void handleRegister() {
-    try {
       final state = context.read<RegisterBloc>().state;
       String userName = state.userName;
       String email = state.email;
@@ -30,8 +29,11 @@ class RegisterController {
         toastInfo(msg: "Пароли не совпадают");
         return;
       }
-      Navigator.of(context).pop();
-      //TODO работа с сервером
-    } catch (e) {}
+      
+      try{
+        
+      } catch(e){
+
+      }
   }
 }
