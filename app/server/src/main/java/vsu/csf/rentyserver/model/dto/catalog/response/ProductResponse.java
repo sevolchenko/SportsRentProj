@@ -1,8 +1,8 @@
 package vsu.csf.rentyserver.model.dto.catalog.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.ImageListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
+
+import java.util.List;
 
 public record ProductResponse(
 
@@ -15,11 +15,11 @@ public record ProductResponse(
 
         Integer price,
 
-        SizeListResponse sizes,
+        List<SizeResponse> sizes,
 
         CategoryPreviewResponse category,
 
-        ImageListResponse images
+        List<ImageResponse> images
 
 ) {
 }

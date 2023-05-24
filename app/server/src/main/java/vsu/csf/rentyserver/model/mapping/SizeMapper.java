@@ -4,13 +4,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import vsu.csf.rentyserver.component.RentProcessor;
+import vsu.csf.rentyserver.configuration.MapperConfiguration;
 import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
 import vsu.csf.rentyserver.model.entity.Size;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(config = MapperConfiguration.class)
 public abstract class SizeMapper {
 
     @Autowired
@@ -22,16 +22,5 @@ public abstract class SizeMapper {
     public abstract SizeResponse map(Size size);
 
     public abstract List<SizeResponse> map(List<Size> list);
-
-    public SizeListResponse fromList(List<Size> list) {
-        return fromListResponse(map(list));
-    }
-
-    public SizeListResponse fromListResponse(List<SizeResponse> list) {
-        if (list == null) {
-            return new SizeListResponse(List.of(), 0);
-        }
-        return new SizeListResponse(list, list.size());
-    }
 
 }

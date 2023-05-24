@@ -1,5 +1,6 @@
 package vsu.csf.rentyserver.controller.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -51,7 +53,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
-        return buildApiErrorResponse(ex, ex.getMessage(), HttpStatus.FORBIDDEN);
+        return buildApiErrorResponse(ex, ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -66,6 +68,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private ResponseEntity<Object> buildApiErrorResponse(Exception ex, String description, HttpStatus status) {
+        log.warn("Received exception {}: {}. Response code: {}", ex.getClass().getName(), description, status);
+
         List<String> stackTrace = Arrays.stream(ex.getStackTrace())
                 .map(StackTraceElement::toString)
                 .toList();

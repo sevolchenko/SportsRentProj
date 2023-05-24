@@ -1,6 +1,7 @@
 package vsu.csf.rentyserver.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
@@ -9,13 +10,9 @@ import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.ProductProjectionResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.CategoryListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductProjectionListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
 import vsu.csf.rentyserver.model.entity.Category;
 import vsu.csf.rentyserver.model.entity.Image;
 import vsu.csf.rentyserver.model.entity.Product;
@@ -29,9 +26,12 @@ import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
 import vsu.csf.rentyserver.repository.SizesRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CatalogService {
 
     private final ProductsRepository productsRepository;
@@ -43,15 +43,17 @@ public class CatalogService {
     private final CategoryMapper categoryMapper;
 
     @Transactional(readOnly = true)
-    public ProductListResponse listAllProducts() {
+    public List<ProductResponse> listAllProducts() {
+        log.info("List all products called");
 
         var products = productsRepository.findAll();
 
-        return productMapper.fromList(products);
+        return productMapper.map(products);
     }
 
     @Transactional(readOnly = true)
     public ProductResponse findProductById(Long productId) {
+        log.info("Find product by id {} called", productId);
 
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
@@ -60,6 +62,7 @@ public class CatalogService {
     }
 
     public ProductResponse createProduct(CreateProductRequest request) {
+        log.info("Create product {} called", request);
 
         var category = categoriesRepository.findById(request.categoryId())
                 .orElseThrow(() -> new NoSuchElementException("category", Category.class, request.categoryId()));
@@ -84,6 +87,7 @@ public class CatalogService {
     }
 
     public ProductResponse deleteProductById(Long productId) {
+        log.info("Delete product by id {} called", productId);
 
         var deleted = productsRepository.removeProductByProductIdEquals(productId);
 
@@ -96,32 +100,38 @@ public class CatalogService {
 
 
     @Transactional(readOnly = true)
-    public ProductProjectionListResponse listAllProjections() {
+    public List<ProductPreviewResponse> listAllProductsPreviews() {
+        log.info("List all products projections called");
 
         var products = productsRepository.findAll();
 
-        return productMapper.fromListToProjection(products);
+        return productMapper.mapToPreview(products);
     }
 
     @Transactional(readOnly = true)
-    public ProductProjectionResponse findProjectionById(Long productId) {
+    public ProductPreviewResponse findProductPreviewById(Long productId) {
+        log.info("Find product projection by id {} called", productId);
 
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
-        return productMapper.mapToProjection(product);
+        return productMapper.mapToPreview(product);
     }
 
 
     @Transactional(readOnly = true)
-    public SizeListResponse findSizes(Long productId) {
+    public List<SizeResponse> findSizes(Long productId) {
+        log.info("Find product sizes by id {} called", productId);
+
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
-        return sizeMapper.fromList(product.getSizes());
+        return sizeMapper.map(product.getSizes());
     }
 
     public SizeResponse addSizeToProduct(Long productId, CreateSizeRequest request) {
+        log.info("Add size {} to product id {} called", request, productId);
+
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
@@ -143,6 +153,8 @@ public class CatalogService {
     }
 
     public SizeResponse setSizeForProduct(Long productId, CreateSizeRequest request) {
+        log.info("Set size {} to product id {} called", request, productId);
+
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
@@ -161,6 +173,8 @@ public class CatalogService {
     }
 
     public SizeResponse deleteSizeForProduct(Long productId, String sizeName) {
+        log.info("Delete size {} to product id {} called", sizeName, productId);
+
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
@@ -179,15 +193,17 @@ public class CatalogService {
 
 
     @Transactional(readOnly = true)
-    public CategoryListResponse listAllCategories() {
+    public List<CategoryResponse> listAllCategories() {
+        log.info("List all categories called");
 
         var categories = categoriesRepository.findAll();
 
-        return categoryMapper.fromList(categories);
+        return categoryMapper.map(categories);
     }
 
     @Transactional(readOnly = true)
     public CategoryResponse findCategoryById(Long categoryId) {
+        log.info("Find category by id {} called", categoryId);
 
         var category = categoriesRepository.findById(categoryId)
                 .orElseThrow(() -> new NoSuchElementException("category", Category.class, categoryId));
@@ -196,6 +212,7 @@ public class CatalogService {
     }
 
     public CategoryResponse createCategory(CreateCategoryRequest request) {
+        log.info("Create category {} called", request);
 
         var parentCategory = categoriesRepository.findById(request.parentCategoryId())
                 .orElseThrow(() -> new NoSuchElementException("parentCategory", Category.class, request.parentCategoryId()));
@@ -214,6 +231,7 @@ public class CatalogService {
     }
 
     public CategoryResponse deleteCategoryById(Long categoryId) {
+        log.info("Delete category by id {} called", categoryId);
 
         var deleted = categoriesRepository.removeCategoryByCategoryIdEquals(categoryId);
 

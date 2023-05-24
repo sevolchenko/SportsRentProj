@@ -6,14 +6,12 @@ import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.ProductProjectionResponse;
+import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.CategoryListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.ProductProjectionListResponse;
-import vsu.csf.rentyserver.model.dto.catalog.response.list.SizeListResponse;
 import vsu.csf.rentyserver.service.CatalogService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/catalog")
@@ -23,7 +21,7 @@ public class CatalogController {
     private final CatalogService catalogService;
 
     @GetMapping("/products")
-    ProductListResponse listAllProducts() {
+    List<ProductResponse> listAllProducts() {
         return catalogService.listAllProducts();
     }
 
@@ -43,20 +41,20 @@ public class CatalogController {
     }
 
 
-    @GetMapping("/products/projections")
-    ProductProjectionListResponse listAllProjections() {
-        return catalogService.listAllProjections();
+    @GetMapping("/products/previews")
+    List<ProductPreviewResponse> listAllPreviews() {
+        return catalogService.listAllProductsPreviews();
     }
 
-    @GetMapping("/products/projections/{product_id}")
-    ProductProjectionResponse findOneProjection(@PathVariable("product_id") Long productId) {
-        return catalogService.findProjectionById(productId);
+    @GetMapping("/products/previews/{product_id}")
+    ProductPreviewResponse findOnePreview(@PathVariable("product_id") Long productId) {
+        return catalogService.findProductPreviewById(productId);
     }
 
 
     // TODO: 12.05.2023 "at_time"
     @GetMapping("/products/{product_id}/sizes")
-    SizeListResponse findSizesForProduct(@PathVariable("product_id") Long productId) {
+    List<SizeResponse> findSizesForProduct(@PathVariable("product_id") Long productId) {
         return catalogService.findSizes(productId);
     }
 
@@ -80,7 +78,7 @@ public class CatalogController {
 
 
     @GetMapping("/categories")
-    CategoryListResponse getAllCategories() {
+    List<CategoryResponse> getAllCategories() {
         return catalogService.listAllCategories();
     }
 
