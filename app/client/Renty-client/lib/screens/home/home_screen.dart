@@ -63,10 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
+                                Navigator.push(
+                                  context,
                                   MaterialPageRoute(
-                                    builder: (context) => ProductScreen(index:
-                                        state.productProjectionItem[index]
+                                    builder: (context) => ProductScreen(
+                                        productId: state
+                                            .productProjectionItem[index]
                                             .productId),
                                   ),
                                 );
