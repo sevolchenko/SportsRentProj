@@ -36,20 +36,3 @@ class RentEventResponse {
     );
   }
 }
-
-class ListRentEventsResponse {
-  final List<RentEventResponse> rents;
-  final int size;
-
-  ListRentEventsResponse({
-    required this.rents,
-    required this.size,
-  });
-
-  factory ListRentEventsResponse.fromJson(Map<String, dynamic> json) {
-    return ListRentEventsResponse(
-      rents: json['rents'],
-      size: json['size'],
-    );
-  }
-}

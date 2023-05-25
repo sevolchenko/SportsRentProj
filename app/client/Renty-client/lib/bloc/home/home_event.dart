@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/product_projection.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 
 abstract class HomeEvent {
   const HomeEvent();
@@ -6,5 +6,5 @@ abstract class HomeEvent {
 
 class HomeProductProjectionItem extends HomeEvent {
   const HomeProductProjectionItem(this.productProjectionItem);
-  final List<ProductProjectionResponse>? productProjectionItem;
+  final List<ProductPreviewResponse>? productProjectionItem;
 }

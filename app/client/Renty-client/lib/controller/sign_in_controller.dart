@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:client/api/apis/user_api.dart';
-import 'package:client/api/dto/request/user/user_login.dart';
+import 'package:client/api/dto/request/user/login.dart';
 import 'package:client/bloc/sign_in/sign_in_bloc.dart';
 import 'package:client/common/values/constant.dart';
 import 'package:client/global.dart';

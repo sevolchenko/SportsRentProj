@@ -28,16 +28,3 @@ class CategoryResponse {
   }
 }
 
-class CategoryListResponse {
-  final List<CategoryResponse> categories;
-  final int size;
-
-  CategoryListResponse({required this.categories, required this.size});
-
-  factory CategoryListResponse.fromJson(Map<String, dynamic> json) {
-    return CategoryListResponse(
-        categories: json['categories'] = List<CategoryResponse>.from(
-            json['categories'].map((x) => CategoryResponse.fromJson(x))),
-        size: json['size']);
-  }
-}

@@ -1,4 +1,4 @@
-import 'package:client/api/apis/product_projection_api.dart';
+import 'package:client/api/apis/product_preview_api.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_event.dart';
 import 'package:client/common/values/constant.dart';
@@ -17,8 +17,8 @@ class HomeController {
       maskType: EasyLoadingMaskType.clear,
       dismissOnTap: true,
     );
-    var result = await ProductProjectionApi.productProjList();
-    context.read<HomeBloc>().add(HomeProductProjectionItem(result.projections));
+    var result = await ProductPreviewApi.productProjList();
+    context.read<HomeBloc>().add(HomeProductProjectionItem(result));
     EasyLoading.dismiss();
   }
 }

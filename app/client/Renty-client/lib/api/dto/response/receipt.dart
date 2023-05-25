@@ -26,7 +26,8 @@ class ReceiptItemResponse {
       employeeId: json['employee_id'],
       payLink: json['pay_link'],
       createdAt: json['created_at'],
-      items: json['items'],
+      items: json['items'] = List<ReceiptItemResponse>.from(
+          json['items'].map((x) => ReceiptItemResponse.fromJson(x))),
       sum: json['sum'],
       status: json['status'],
     );

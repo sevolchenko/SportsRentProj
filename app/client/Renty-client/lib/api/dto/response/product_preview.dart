@@ -1,7 +1,7 @@
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/image.dart';
 
-class ProductProjectionResponse {
+class ProductPreviewResponse {
   final int productId;
   final String name;
   final int price;
@@ -9,7 +9,7 @@ class ProductProjectionResponse {
   final CategoryPreviewResponse category;
   final ImageResponse? mainImage;
 
-  ProductProjectionResponse({
+  ProductPreviewResponse({
     required this.productId,
     required this.name,
     required this.price,
@@ -18,8 +18,8 @@ class ProductProjectionResponse {
     this.mainImage,
   });
 
-  factory ProductProjectionResponse.fromJson(Map<String, dynamic> json) {
-    return ProductProjectionResponse(
+  factory ProductPreviewResponse.fromJson(Map<String, dynamic> json) {
+    return ProductPreviewResponse(
       productId: json['product_id'],
       name: json['name'],
       price: json['price'],
@@ -29,25 +29,6 @@ class ProductProjectionResponse {
       mainImage: json['main_image'] == null
           ? null
           : ImageResponse.fromJson(json['main_image']),
-    );
-  }
-}
-
-class ProductProjectionListResponse {
-  final List<ProductProjectionResponse>? projections;
-  final int? size;
-
-  ProductProjectionListResponse({
-    this.projections,
-    this.size,
-  });
-
-  factory ProductProjectionListResponse.fromJson(Map<String, dynamic> json) {
-    return ProductProjectionListResponse(
-      projections: json['projections'] = List<ProductProjectionResponse>.from(
-          json['projections']
-              .map((x) => ProductProjectionResponse.fromJson(x))),
-      size: json['size'],
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:client/api/dto/request/user/user_login.dart';
+import 'package:client/api/dto/request/user/login.dart';
 import 'package:client/common/utils/http_util.dart';
 
 class UserApi {

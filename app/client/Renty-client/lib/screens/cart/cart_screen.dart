@@ -37,14 +37,7 @@ class CartScreen extends StatelessWidget {
                   childCount: 10,
                   (BuildContext context, int index) {
                     return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductQuantityScreen(),
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.w),

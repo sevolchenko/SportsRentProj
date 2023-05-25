@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:client/api/dto/response/product_projection.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ Widget sortAndFilter() {
   );
 }
 
-Widget productsGrid(ProductProjectionResponse item) {
+Widget productsGrid(ProductPreviewResponse item) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),

@@ -19,20 +19,3 @@ class SizeResponse {
   }
 }
 
-class SizeListResponse {
-  final List<SizeResponse> sizes;
-  final int size;
-
-  SizeListResponse({
-    required this.sizes,
-    required this.size,
-  });
-
-  factory SizeListResponse.fromJson(Map<String, dynamic> json) {
-    return SizeListResponse(
-      sizes: json['sizes'] = List<SizeResponse>.from(
-          json['sizes'].map((x) => SizeResponse.fromJson(x))),
-      size: json['size'],
-    );
-  }
-}
