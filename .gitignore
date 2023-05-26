@@ -16,6 +16,9 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+dev-sandbox/
+*-dev.*
+
 # Dart gitignores
 # Files and directories created by pub
 .dart_tool/

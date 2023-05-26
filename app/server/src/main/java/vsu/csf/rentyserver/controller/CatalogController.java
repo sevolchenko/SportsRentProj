@@ -1,5 +1,6 @@
 package vsu.csf.rentyserver.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
@@ -26,7 +27,7 @@ public class CatalogController {
     }
 
     @PostMapping("/products")
-    ProductResponse createProduct(@RequestBody CreateProductRequest request) {
+    ProductResponse createProduct(@Valid @RequestBody CreateProductRequest request) {
         return catalogService.createProduct(request);
     }
 
@@ -60,7 +61,7 @@ public class CatalogController {
 
     @PostMapping("/products/{product_id}/sizes")
     SizeResponse createSizeForProduct(@PathVariable("product_id") Long productId,
-                                      @RequestBody CreateSizeRequest request) {
+                                      @Valid @RequestBody CreateSizeRequest request) {
         return catalogService.addSizeToProduct(productId, request);
     }
 
@@ -88,7 +89,7 @@ public class CatalogController {
     }
 
     @PostMapping("/categories")
-    CategoryResponse createCategory(@RequestBody CreateCategoryRequest request) {
+    CategoryResponse createCategory(@Valid @RequestBody CreateCategoryRequest request) {
         return catalogService.createCategory(request);
     }
 

@@ -1,18 +1,16 @@
 package vsu.csf.rentyserver.model.dto;
 
-import java.util.List;
+import java.util.Map;
 
 public record ApiErrorResponse(
 
-        String description,
+        Map<String, String> errors,
 
         String code,
 
         String exceptionName,
 
-        String exceptionMessage,
-
-        List<String> stacktrace
+        String exceptionMessage
 
 ) {
 }
