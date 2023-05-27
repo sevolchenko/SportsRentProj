@@ -1,7 +1,6 @@
 package vsu.csf.rentyserver.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public static UserDetails fromUser(AppUser user) {
-        return new User(
+        return new SecurityUser(
+                user.getUserId(),
                 user.getEmail(),
                 user.getPassword(),
                 true, true,

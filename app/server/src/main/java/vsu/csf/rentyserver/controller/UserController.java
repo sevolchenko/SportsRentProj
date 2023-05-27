@@ -19,8 +19,8 @@ public class UserController {
         userService.register(request);
     }
 
-    @GetMapping("/{user_id}")
-    public UserResponse findById(@PathVariable("user_id") Long userId) {
+    @GetMapping
+    public UserResponse findById(@RequestParam("user_id") Long userId) {
         return userService.findById(userId);
     }
 

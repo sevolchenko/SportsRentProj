@@ -2,6 +2,7 @@ package vsu.csf.rentyserver.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @AllArgsConstructor
 @Getter
@@ -11,5 +12,9 @@ public enum Permission {
     WRITE("write");
 
     private final String permission;
+
+    public SimpleGrantedAuthority getAuthority() {
+        return new SimpleGrantedAuthority(permission);
+    }
 
 }
