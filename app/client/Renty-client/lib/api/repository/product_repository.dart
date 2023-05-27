@@ -7,4 +7,8 @@ class ProductRepository {
   Future<ProductResponse> getProductById(int id) {
     return _productApi.productById(id);
   }
+
+  Future<List<ProductResponse>> getProducts() {
+    return _productApi.products();
+  }
 }

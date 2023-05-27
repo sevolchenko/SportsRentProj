@@ -8,22 +8,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductController {
   final BuildContext context;
-  ProductApi _productApi = ProductApi();
+  // ProductApi _productApi = ProductApi();
   ProductController({required this.context});
 
   void init(int productId) async {
-    EasyLoading.show(
-      indicator: CircularProgressIndicator(),
-      maskType: EasyLoadingMaskType.clear,
-      dismissOnTap: true,
-    );
-    var result = await _productApi.productById(productId);
-    context.read<ProductBloc>().add(HomeProductItem(result));
-    EasyLoading.dismiss();
+    // EasyLoading.show(
+    //   indicator: CircularProgressIndicator(),
+    //   maskType: EasyLoadingMaskType.clear,
+    //   dismissOnTap: true,
+    // );
+    // var result = await _productApi.productById(productId);
+    // context.read<ProductBloc>().add(HomeProductItem(result));
+    // EasyLoading.dismiss();
+        context.read<ProductBloc>().add(ProductLoadEvent(productId));
   }
 
-  Future<ProductResponse> getProductById(int productId) async {
-    final result = await _productApi.productById(productId);
-    return result;
+
+void initProducts() async {
+    // EasyLoading.show(
+    //   indicator: CircularProgressIndicator(),
+    //   maskType: EasyLoadingMaskType.clear,
+    //   dismissOnTap: true,
+    // );
+    // var result = await _productApi.productById(productId);
+    // context.read<ProductBloc>().add(HomeProductItem(result));
+    // EasyLoading.dismiss();
+        context.read<ProductBloc>().add(ProductsLoadEvent());
   }
+
+  // Future<ProductResponse> getProductById(int productId) async {
+  //   final result = await _productApi.productById(productId);
+  //   return result;
+  // }
 }
