@@ -1,11 +1,13 @@
+import 'package:client/api/dto/response/product.dart';
 import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/icons.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget buildInventoryItem(
-    {String? imagePath, String mainText = '', String price = ''}) {
+    {String? image, String mainText = '', String price = ''}) {
   return Container(
     width: 290.w,
     decoration: BoxDecoration(
@@ -14,7 +16,9 @@ Widget buildInventoryItem(
     ),
     child: Row(
       children: [
-        buildSmallProductImage(imagePath!),
+        image != null
+            ? buildSmallProductImage(image)
+            : Image.asset("assets/images/no_picture.jpg"),
         const VerticalDivider(
           thickness: 2,
           color: kPrimaryColor,
@@ -30,7 +34,6 @@ Widget buildInventoryItem(
                   border: Border(
                     bottom: BorderSide(
                         width: 2.0,
-                        // strokeAlign: ,
                         color: Colors.black.withOpacity(0.6)),
                   ),
                 ),
@@ -61,5 +64,20 @@ Widget buildInventoryItem(
         )
       ],
     ),
+  );
+}
+
+Widget productsGrid(ProductResponse product, BuildContext context) {
+  return Row(
+    children: [
+      buildInventoryItem(
+          image: product.images?[0].image,
+          mainText: product.name!,
+          price: "${product.price} Р/час"),
+      Container(
+        margin: EdgeInsets.only(left: 10.w),
+        child: buildTrashIcon(context, () {}),
+      ),
+    ],
   );
 }

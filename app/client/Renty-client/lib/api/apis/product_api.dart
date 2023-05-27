@@ -16,4 +16,15 @@ class ProductApi {
     // print(e.message);
     // }
   }
+
+  Future<List<ProductResponse>> products() async {
+    var path = 'catalog/products';
+    var response = await HttpUtil().get(
+      path,
+    );
+    var jsonData = response.data;
+    var res = List<ProductResponse>.from(
+        jsonData.map((x) => ProductResponse.fromJson(x)));
+    return res;
+  }
 }

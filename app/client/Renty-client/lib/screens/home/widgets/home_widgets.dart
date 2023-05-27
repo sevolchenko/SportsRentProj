@@ -61,7 +61,7 @@ Widget sortAndFilter() {
   );
 }
 
-Widget productsGrid(ProductPreviewResponse item) {
+Widget productsPreviewGrid(ProductPreviewResponse item) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
@@ -87,18 +87,20 @@ Widget productsGrid(ProductPreviewResponse item) {
           thickness: 3,
           color: kPrimaryColor,
         ),
-        Container(
-          padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
-          child: Text(
-            item.name,
-            maxLines: 2,
-            overflow: TextOverflow.fade,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.raleway(
-              color: Colors.black,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.normal,
-              fontSize: 14.sp,
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
+            child: Text(
+              item.name,
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.normal,
+                fontSize: 16.sp,
+              ),
             ),
           ),
         ),
@@ -110,7 +112,7 @@ Widget productsGrid(ProductPreviewResponse item) {
           color: Colors.black,
         ),
         Container(
-          padding: EdgeInsets.only(top: 2.h, right: 10.w),
+          padding: EdgeInsets.only(top: 2.h, right: 10.w, bottom: 3.h),
           alignment: Alignment.centerRight,
           child: Text(
             "${item.price.toString()} Р/час",

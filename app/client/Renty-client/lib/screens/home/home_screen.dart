@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:client/bloc/application/application_bloc.dart';
-import 'package:client/bloc/application/application_state.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_state.dart';
-import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/controller/home_controller.dart';
 import 'package:client/screens/home/product/product_screen.dart';
@@ -22,74 +21,84 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeController _homeController;
+
   @override
   void initState() {
     super.initState();
+
     _homeController = HomeController(context: context);
     _homeController.init();
+    // bloc.getProductsPreview();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      // print(state.productProjectionItem[0].category.name);
-      return SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: buildAppBar(),
-          body: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              return Container(
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: sortAndFilter(),
-                    ),
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 20.h,
-                        horizontal: 15.w,
-                      ),
-                      sliver: SliverGrid(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 15,
-                          crossAxisSpacing: 15,
-                          childAspectRatio: 0.7,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                          childCount: state.productProjectionItem.length,
-                          (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductScreen(
-                                        productId: state
-                                            .productProjectionItem[index]
-                                            .productId),
-                                  ),
-                                );
-                              },
-                              child: productsGrid(
-                                  state.productProjectionItem[index]),
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-          bottomNavigationBar: MyBottomNavBar(
-            selectedIndex: 0,
-          ),
-        ),
-      );
-    });
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoadedState) {
+          return _buildProductPreviewWidget(state.productsPreview);
+        } else {
+          return buildLoadingWidget();
+        }
+      },
+    );
   }
+}
+
+Widget _buildProductPreviewWidget(
+    List<ProductPreviewResponse>? productsPreview) {
+  return SafeArea(
+    child: Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(),
+      body: Container(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: sortAndFilter(),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(
+                vertical: 20.h,
+                horizontal: 15.w,
+              ),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15,
+                  childAspectRatio: 0.7,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  childCount: productsPreview?.length,
+                  (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductScreen(
+                                productId: productsPreview[index].productId),
+                          ),
+                        );
+                      },
+                      child: productsPreviewGrid(productsPreview![index]),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+      bottomNavigationBar: MyBottomNavBar(
+        selectedIndex: 0,
+      ),
+    ),
+  );
 }

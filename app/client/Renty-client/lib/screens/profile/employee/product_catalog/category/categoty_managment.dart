@@ -92,7 +92,7 @@ class _CategoryManagmentScreenState extends State<CategoryManagmentScreen> {
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 20.w),
-                              child: buildTrashIcon(() {
+                              child: buildTrashIcon(context, () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => const HomeScreen(),

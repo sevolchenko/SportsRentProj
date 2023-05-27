@@ -5,7 +5,7 @@ import 'package:client/common/utils/http_util.dart';
 import 'package:dio/dio.dart';
 
 class ProductPreviewApi {
-  static Future<List<ProductPreviewResponse>> productProjList() async {
+  Future<List<ProductPreviewResponse>> productProjList() async {
     // try {
     var response = await HttpUtil().get(
       'catalog/products/previews',

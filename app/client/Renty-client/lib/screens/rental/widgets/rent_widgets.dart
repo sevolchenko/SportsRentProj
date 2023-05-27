@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:client/common/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,12 +23,12 @@ Widget buildRentTime(String time) {
   );
 }
 
-Widget buildSmallProductImage(String imagePath) {
+Widget buildSmallProductImage(String image) {
   return ClipRRect(
     borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-    child: Image.asset(
-      imagePath,
+    child: Image.memory(
+      base64Decode(image),
       width: 90.h,
       height: 90.h,
     ),
