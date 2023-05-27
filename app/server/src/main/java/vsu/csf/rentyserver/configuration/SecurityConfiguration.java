@@ -31,8 +31,10 @@ public class SecurityConfiguration {
                 .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
 
                 .requestMatchers(new AntPathRequestMatcher("/auth/login")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/auth/register")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/auth/logout")).authenticated()
+
+                .requestMatchers(new AntPathRequestMatcher("/users/register")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/users/**")).authenticated()
 
                 .requestMatchers(new AntPathRequestMatcher("/catalog/**", "GET")).permitAll()
 

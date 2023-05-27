@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.model.dto.auth.request;
+package vsu.csf.rentyserver.model.dto.user.request;
 
 public record LoginRequest(
 
