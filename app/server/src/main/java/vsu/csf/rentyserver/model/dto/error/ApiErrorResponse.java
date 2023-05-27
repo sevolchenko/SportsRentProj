@@ -1,10 +1,10 @@
-package vsu.csf.rentyserver.model.dto;
+package vsu.csf.rentyserver.model.dto.error;
 
-import java.util.Map;
+import java.util.List;
 
 public record ApiErrorResponse(
 
-        Map<String, String> errors,
+        List<FieldErrorResponse> errors,
 
         String code,
 

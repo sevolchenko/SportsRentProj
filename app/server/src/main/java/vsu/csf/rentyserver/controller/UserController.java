@@ -1,5 +1,6 @@
 package vsu.csf.rentyserver.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
@@ -14,7 +15,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest request) {
+    public void register(@Valid @RequestBody RegisterRequest request) {
         userService.register(request);
     }
 
