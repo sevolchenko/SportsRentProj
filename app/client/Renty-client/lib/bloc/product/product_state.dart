@@ -1,14 +1,31 @@
 import 'package:client/api/dto/response/product.dart';
 
-class ProductState {
-  const ProductState({
-    this.productItem = const ProductResponse(),
-  });
+abstract class ProductState {}
 
+class ProductLoadingState extends ProductState {}
+
+class ProductLoadedState extends ProductState {
   final ProductResponse productItem;
-  ProductState copyWith({ProductResponse? productItem}) {
-    return ProductState(
-      productItem: productItem!,
-    );
-  }
+
+  ProductLoadedState({required this.productItem});
+}
+
+class ProductErrorState extends ProductState {
+  ProductErrorState({required this.errorMessage});
+  final String errorMessage;
+}
+
+
+
+class ProductsLoadingState extends ProductState {}
+
+class ProductsLoadedState extends ProductState {
+  final List<ProductResponse> products;
+
+  ProductsLoadedState({required this.products});
+}
+
+class ProductsErrorState extends ProductState {
+  ProductsErrorState({required this.errorMessage});
+  final String errorMessage;
 }

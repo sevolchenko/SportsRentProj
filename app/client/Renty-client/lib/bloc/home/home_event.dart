@@ -4,7 +4,9 @@ abstract class HomeEvent {
   const HomeEvent();
 }
 
-class HomeProductProjectionItem extends HomeEvent {
-  const HomeProductProjectionItem(this.productProjectionItem);
-  final List<ProductPreviewResponse>? productProjectionItem;
-}
+class HomeLoadEvent extends HomeEvent {}
+
+// class HomeLoadedEvent extends HomeEvent {
+//   const HomeLoadedEvent(this.productProjectionItem);
+//   final List<ProductPreviewResponse>? productProjectionItem;
+// }

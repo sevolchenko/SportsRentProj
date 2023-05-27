@@ -1,15 +1,15 @@
 import 'package:client/api/dto/response/product_preview.dart';
 
-class HomeState {
-  const HomeState({
-    this.productProjectionItem = const <ProductPreviewResponse>[],
-  });
+abstract class HomeState {}
 
-  final List<ProductPreviewResponse> productProjectionItem;
-  HomeState copyWith({List<ProductPreviewResponse>? productProjectionItem}) {
-    return HomeState(
-      productProjectionItem:
-          productProjectionItem ?? this.productProjectionItem,
-    );
-  }
+class HomeLoadingState extends HomeState {}
+
+class HomeLoadedState extends HomeState {
+  final List<ProductPreviewResponse> productsPreview;
+  HomeLoadedState({required this.productsPreview});
+}
+
+class HomeErrorState extends HomeState {
+  HomeErrorState({required this.errorMessage});
+  final String errorMessage;
 }
