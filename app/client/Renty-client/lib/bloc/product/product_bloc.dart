@@ -28,15 +28,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
 
     on<ProductSizeUpdateEvent>((event, emit) async {
-      SizeUpdateRequest sizeUpdateRequest =
-          SizeUpdateRequest(sizeName: event.product.sizes![event.sizeIndex].sizeName, total: event.newTotal);
+      SizeUpdateRequest sizeUpdateRequest = SizeUpdateRequest(
+          sizeName: event.product.sizes![event.sizeIndex].sizeName,
+          total: event.newTotal);
       var jsonData = sizeUpdateRequest.toJson();
       var code =
           await _productRepository.sizeCountUpdate(event.product.id!, jsonData);
       if (code != null) {
         event.product.sizes![event.sizeIndex].total = event.newTotal;
       }
-      // emit(ProductsLoadedState(products: products));
+      emit(ProductSizeCountUpdatedState(productItem: event.product));
     });
 
     // on<HomeProductItem>(_homeProductProjectionUtem);

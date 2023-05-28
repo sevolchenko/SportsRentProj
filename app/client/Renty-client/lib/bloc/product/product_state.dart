@@ -15,8 +15,6 @@ class ProductErrorState extends ProductState {
   final String errorMessage;
 }
 
-
-
 class ProductsLoadingState extends ProductState {}
 
 class ProductsLoadedState extends ProductState {
@@ -25,9 +23,8 @@ class ProductsLoadedState extends ProductState {
   ProductsLoadedState({required this.products});
 }
 
-
-class ProductSizeCountUpdatedState extends ProductState {
-
+class ProductSizeCountUpdatedState extends ProductLoadedState {
+  ProductSizeCountUpdatedState({required super.productItem});
 }
 
 class ProductsErrorState extends ProductState {
