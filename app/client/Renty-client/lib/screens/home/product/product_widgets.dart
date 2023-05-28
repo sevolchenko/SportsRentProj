@@ -10,9 +10,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget buildProduct(ProductResponse product) {
-  var image = product.images![0].image;
+  var image = product.images[0].image;
   List<String> size_names = [];
-  product.sizes!.forEach((size) {
+  product.sizes.forEach((size) {
     size_names.add(size.sizeName);
   });
   return Column(
@@ -24,12 +24,12 @@ Widget buildProduct(ProductResponse product) {
           border: Border.all(color: kPrimaryColor, width: 4),
         ),
         child: Image.memory(
-          base64Decode(product.images![0].image),
+          base64Decode(product.images[0].image),
           width: 130.h,
           height: 130.h,
         ),
       ),
-      buildTextInfo("Название", product.name!),
+      buildTextInfo("Название", product.name),
       Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -38,7 +38,7 @@ Widget buildProduct(ProductResponse product) {
         ),
         margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
         padding: EdgeInsets.all(10.w),
-        child: reusableText(product.description ?? "", textSize: 16),
+        child: reusableText(product.description, textSize: 16),
       ),
       buildTextInfo("Цена", "${product.price} руб/час"),
       SizedBox(height: 20.h),
@@ -67,7 +67,7 @@ Widget buildProduct(ProductResponse product) {
                     height: 5.h,
                   ),
                   Text(
-                    product.sizes![0].countAvailableNow.toString(),
+                    product.sizes[0].countAvailableNow.toString(),
                     style: GoogleFonts.raleway(
                         color: Colors.black,
                         fontStyle: FontStyle.italic,
@@ -94,7 +94,7 @@ Widget buildProduct(ProductResponse product) {
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 5.w),
                         child: Text(
-                          product.sizes![0].total.toString(),
+                          product.sizes[0].total.toString(),
                           style: GoogleFonts.raleway(
                               color: Colors.black,
                               fontStyle: FontStyle.italic,
@@ -143,7 +143,7 @@ Widget buildProduct(ProductResponse product) {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Text(
-                  product.sizes![0].total.toString(),
+                  product.sizes[0].total.toString(),
                   style: GoogleFonts.raleway(
                       color: Colors.black,
                       fontStyle: FontStyle.italic,

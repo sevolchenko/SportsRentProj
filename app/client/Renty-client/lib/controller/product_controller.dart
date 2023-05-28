@@ -18,10 +18,10 @@ class ProductController {
     context.read<ProductBloc>().add(ProductsLoadEvent());
   }
 
-  void productSizeUpdate(
-      ProductResponse product, int sizeIndex, int newTotal) async {
-    context
-        .read<ProductBloc>()
-        .add(ProductSizeUpdateEvent(product, sizeIndex, newTotal));
-  }
+  // void productSizeUpdate(
+  //     ProductResponse product, int sizeIndex, int newTotal) async {
+  //   context
+  //       .read<ProductBloc>()
+  //       .add(ProductSizeUpdateEvent(product, sizeIndex, newTotal));
+  // }
 }

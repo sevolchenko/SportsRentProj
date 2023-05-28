@@ -27,6 +27,10 @@ class ProductSizeCountUpdatedState extends ProductLoadedState {
   ProductSizeCountUpdatedState({required super.productItem});
 }
 
+class ProductSizeDeleteState extends ProductLoadedState {
+  ProductSizeDeleteState({required super.productItem});
+}
+
 class ProductsErrorState extends ProductState {
   ProductsErrorState({required this.errorMessage});
   final String errorMessage;

@@ -50,9 +50,9 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildProductWidget(ProductResponse? product) {
-    var currentSize = product!.sizes![0].sizeName;
+    var currentSize = product!.sizes[0].sizeName;
     List<String> sizeNames =
-        product.sizes!.map((size) => size.sizeName).toList();
+        product.sizes.map((size) => size.sizeName).toList();
     if (currentSize == "") {
       currentSize = sizeNames.first;
     }

@@ -34,7 +34,21 @@ class ProductApi {
   Future<int?> sizeCountUpdate(
       int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
-    var statusCode = await HttpUtil().patch(path, size, null);
+    var statusCode = await HttpUtil().patch(path, size);
+    try {
+      if (statusCode == 200) {
+        return statusCode;
+      }
+    } on DioError catch (e) {
+      toastInfo(msg: e.toString());
+    }
+    return null;
+  }
+
+  Future<int?> sizeDelete(
+      int productId, Map<String, dynamic> size) async {
+    var path = 'catalog/products/${productId}/sizes';
+    var statusCode = await HttpUtil().delete(path, size);
     try {
       if (statusCode == 200) {
         return statusCode;

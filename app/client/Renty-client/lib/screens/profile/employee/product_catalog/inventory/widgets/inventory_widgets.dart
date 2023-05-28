@@ -71,8 +71,8 @@ Widget productsGrid(ProductResponse product, BuildContext context) {
   return Row(
     children: [
       buildInventoryItem(
-          image: product.images?[0].image,
-          mainText: product.name!,
+          image: product.images[0].image,
+          mainText: product.name,
           price: "${product.price} Р/час"),
       Container(
         margin: EdgeInsets.only(left: 10.w),

@@ -3,22 +3,22 @@ import 'package:client/api/dto/response/image.dart';
 import 'package:client/api/dto/response/size.dart';
 
 class ProductResponse {
-  final int? id;
-  final String? name;
-  final String? description;
-  final int? price;
-  final List<SizeResponse>? sizes;
-  final CategoryPreviewResponse? category;
-  final List<ImageResponse>? images;
+  final int id;
+  final String name;
+  final String description;
+  final int price;
+  final List<SizeResponse> sizes;
+  final CategoryPreviewResponse category;
+  final List<ImageResponse> images;
 
   const ProductResponse(
-      {this.id,
-      this.name,
-      this.description,
-      this.price,
-      this.sizes,
-      this.category,
-      this.images});
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.price,
+      required this.sizes,
+      required this.category,
+      required this.images});
 
   factory ProductResponse.fromJson(Map<String, dynamic> json) {
     return ProductResponse(

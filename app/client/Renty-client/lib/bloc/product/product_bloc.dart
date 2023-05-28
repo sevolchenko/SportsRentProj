@@ -27,18 +27,30 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       },
     );
 
-    on<ProductSizeUpdateEvent>((event, emit) async {
-      SizeUpdateRequest sizeUpdateRequest = SizeUpdateRequest(
-          sizeName: event.product.sizes![event.sizeIndex].sizeName,
-          total: event.newTotal);
-      var jsonData = sizeUpdateRequest.toJson();
-      var code =
-          await _productRepository.sizeCountUpdate(event.product.id!, jsonData);
-      if (code != null) {
-        event.product.sizes![event.sizeIndex].total = event.newTotal;
-      }
-      emit(ProductSizeCountUpdatedState(productItem: event.product));
-    });
+    on<ProductSizeUpdateEvent>(
+      (event, emit) async {
+        SizeUpdateRequest sizeUpdateRequest = SizeUpdateRequest(
+            sizeName: event.product.sizes[event.sizeIndex].sizeName,
+            total: event.newTotal);
+        var jsonData = sizeUpdateRequest.toJson();
+        var code = await _productRepository.sizeCountUpdate(
+            event.product.id, jsonData);
+        if (code != null) {
+          event.product.sizes[event.sizeIndex].total = event.newTotal;
+        }
+        emit(ProductSizeCountUpdatedState(productItem: event.product));
+      },
+    );
+
+    on<ProductSizeDeleteEvent>(
+      (event, emit) async {
+        SizeDeleteRequest sizeDeleteRequest = SizeDeleteRequest(
+            sizeName: event.product.sizes[event.sizeIndex].sizeName);
+        var jsonData = sizeDeleteRequest.toJson();
+        _productRepository.sizeDelete(event.product.id, jsonData);
+        emit(ProductSizeDeleteState(productItem: event.product));
+      },
+    );
 
     // on<HomeProductItem>(_homeProductProjectionUtem);
   }

@@ -16,4 +16,8 @@ class ProductRepository {
   Future<int?> sizeCountUpdate(int id, Map<String, dynamic> size) {
     return _productApi.sizeCountUpdate(id, size);
   }
+
+  Future<int?> sizeDelete(int id, Map<String, dynamic> size) {
+    return _productApi.sizeDelete(id, size);
+  }
 }

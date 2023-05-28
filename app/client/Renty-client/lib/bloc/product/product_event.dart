@@ -1,4 +1,3 @@
-import 'package:client/api/dto/request/size.dart';
 import 'package:client/api/dto/response/product.dart';
 
 abstract class ProductEvent {
@@ -14,15 +13,14 @@ class ProductsLoadEvent extends ProductEvent {}
 
 class ProductSizeUpdateEvent extends ProductEvent {
   final ProductResponse product;
-  // final int productId;
   final int sizeIndex;
-  // final String sizeName;
   final int newTotal;
-  ProductSizeUpdateEvent(
-      this.product, this.sizeIndex,this.newTotal);
+  ProductSizeUpdateEvent(this.product, this.sizeIndex, this.newTotal);
 }
 
-// class HomeProductItem extends ProductEvent {
-//   const HomeProductItem(this.productItem);
-//   final ProductResponse? productItem;
-// }
+class ProductSizeDeleteEvent extends ProductEvent {
+  final ProductResponse product;
+  final int sizeIndex;
+
+  ProductSizeDeleteEvent(this.product, this.sizeIndex);
+}

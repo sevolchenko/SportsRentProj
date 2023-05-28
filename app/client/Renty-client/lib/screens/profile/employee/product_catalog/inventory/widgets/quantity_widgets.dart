@@ -21,8 +21,8 @@ Widget buildProductQuantityWidget(
           child: Container(
             margin: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 20.h),
             child: buildInventoryItem(
-                image: product.images?[0].image,
-                mainText: product.name ?? "",
+                image: product.images[0].image,
+                mainText: product.name,
                 price: "${product.price} Р/час"),
           ),
         ),
@@ -39,11 +39,11 @@ Widget buildProductQuantityWidget(
               childAspectRatio: 5,
             ),
             delegate: SliverChildBuilderDelegate(
-              childCount: product.sizes?.length,
+              childCount: product.sizes.length,
               (BuildContext context, int index) {
                 return GestureDetector(
                     child: buildSizesChangeWidget(productBloc, product,
-                        product.id!, index, product.sizes![index], context));
+                        product.id, index, product.sizes[index], context));
               },
             ),
           ),
@@ -130,7 +130,9 @@ Widget buildSizesChangeWidget(
           },
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            productBloc.add(ProductSizeDeleteEvent(product, sizeIndex));
+          },
           child: Container(
             margin: EdgeInsets.only(left: 15.w),
             child: const Icon(
