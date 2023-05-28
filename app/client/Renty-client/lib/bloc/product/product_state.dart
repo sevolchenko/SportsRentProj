@@ -25,6 +25,11 @@ class ProductsLoadedState extends ProductState {
   ProductsLoadedState({required this.products});
 }
 
+
+class ProductSizeCountUpdatedState extends ProductState {
+
+}
+
 class ProductsErrorState extends ProductState {
   ProductsErrorState({required this.errorMessage});
   final String errorMessage;

@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            reusableText("Имя", Colors.black),
+                            reusableText("Имя"),
                             // SizedBox(
                             //   height: 1.h,
                             // ),
@@ -53,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   .read<RegisterBloc>()
                                   .add(UserNameEvent(value));
                             }),
-                            reusableText("Почта", Colors.black),
+                            reusableText("Почта"),
 
                             buildTextField(
                                 "Введите электронную почту", 'email',
@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   .read<RegisterBloc>()
                                   .add(EmailEvent(value));
                             }),
-                            reusableText("Пароль", Colors.black),
+                            reusableText("Пароль"),
 
                             buildTextField("Введите пароль", 'password',
                                 (value) {
@@ -70,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   .read<RegisterBloc>()
                                   .add(PasswordEvent(value));
                             }),
-                            reusableText("Подтверждение пароля", Colors.black),
+                            reusableText("Подтверждение пароля"),
 
                             buildTextField(
                                 "Введите пароль снова", 'password',

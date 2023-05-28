@@ -29,8 +29,7 @@ class _RentalExtensionScreenState extends State<RentalExtensionScreen> {
         child: Column(
           children: [
             SizedBox(height: 70.h),
-            reusableText('Новое время окончания аренды', Colors.black,
-                textSize: 20),
+            reusableText('Новое время окончания аренды', textSize: 20),
             SizedBox(height: 10.h),
             buildTextField(
                 '24.04.2023, 19:00', 'time', bottomMargin: 0, (value) {}),

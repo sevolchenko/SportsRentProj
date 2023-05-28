@@ -1,15 +1,19 @@
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/size.dart';
+import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/product_size.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/inventory_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget buildProductQuantityWidget(
-    BuildContext context, ProductResponse product) {
+    ProductBloc productBloc, BuildContext context, ProductResponse product) {
   return Container(
     child: CustomScrollView(
       slivers: [
@@ -38,7 +42,8 @@ Widget buildProductQuantityWidget(
               childCount: product.sizes?.length,
               (BuildContext context, int index) {
                 return GestureDetector(
-                    child: buildSizesChangeWidget(product.sizes![index]));
+                    child: buildSizesChangeWidget(productBloc, product,
+                        product.id!, index, product.sizes![index], context));
               },
             ),
           ),
@@ -64,9 +69,15 @@ Widget buildProductQuantityWidget(
   );
 }
 
-Widget buildSizesChangeWidget(SizeResponse productSize) {
+Widget buildSizesChangeWidget(
+    ProductBloc productBloc,
+    ProductResponse product,
+    int productId,
+    int sizeIndex,
+    SizeResponse productSize,
+    BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 40.w),
+    margin: EdgeInsets.symmetric(horizontal: 30.w),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -82,12 +93,22 @@ Widget buildSizesChangeWidget(SizeResponse productSize) {
                 fontSize: 18.sp),
           ),
         ),
-        const Icon(
-          FontAwesomeIcons.minus,
-          size: 25,
+        IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.minus,
+            size: 25,
+          ),
+          onPressed: () {
+            if (productSize.total <= 1) {
+              toastInfo(msg: "Минимальное значение: 1");
+            }
+            productBloc.add(
+              ProductSizeUpdateEvent(product, sizeIndex,
+                  productSize.total > 1 ? productSize.total - 1 : 1),
+            );
+          },
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w),
           child: Text(
             productSize.total.toString(),
             style: GoogleFonts.raleway(
@@ -97,11 +118,16 @@ Widget buildSizesChangeWidget(SizeResponse productSize) {
                 fontSize: 22.sp),
           ),
         ),
-        Container(
-          child: const Icon(
+        IconButton(
+          icon: const Icon(
             FontAwesomeIcons.plus,
             size: 25,
           ),
+          onPressed: () {
+            productBloc.add(
+              ProductSizeUpdateEvent(product, sizeIndex, productSize.total + 1),
+            );
+          },
         ),
         GestureDetector(
           onTap: () {},

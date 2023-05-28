@@ -8,36 +8,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductController {
   final BuildContext context;
-  // ProductApi _productApi = ProductApi();
   ProductController({required this.context});
 
-  void init(int productId) async {
-    // EasyLoading.show(
-    //   indicator: CircularProgressIndicator(),
-    //   maskType: EasyLoadingMaskType.clear,
-    //   dismissOnTap: true,
-    // );
-    // var result = await _productApi.productById(productId);
-    // context.read<ProductBloc>().add(HomeProductItem(result));
-    // EasyLoading.dismiss();
-        context.read<ProductBloc>().add(ProductLoadEvent(productId));
+  void initProduct(int productId) async {
+    context.read<ProductBloc>().add(ProductLoadEvent(productId));
   }
 
-
-void initProducts() async {
-    // EasyLoading.show(
-    //   indicator: CircularProgressIndicator(),
-    //   maskType: EasyLoadingMaskType.clear,
-    //   dismissOnTap: true,
-    // );
-    // var result = await _productApi.productById(productId);
-    // context.read<ProductBloc>().add(HomeProductItem(result));
-    // EasyLoading.dismiss();
-        context.read<ProductBloc>().add(ProductsLoadEvent());
+  void initProducts() async {
+    context.read<ProductBloc>().add(ProductsLoadEvent());
   }
 
-  // Future<ProductResponse> getProductById(int productId) async {
-  //   final result = await _productApi.productById(productId);
-  //   return result;
-  // }
+  void productSizeUpdate(
+      ProductResponse product, int sizeIndex, int newTotal) async {
+    context
+        .read<ProductBloc>()
+        .add(ProductSizeUpdateEvent(product, sizeIndex, newTotal));
+  }
 }

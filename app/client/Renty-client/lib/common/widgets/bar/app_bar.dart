@@ -1,17 +1,29 @@
+import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool autoLeading;
+  final VoidCallback? backFun;
 
-  const MyAppBar({Key? key, required this.title, this.autoLeading = false})
+  const MyAppBar(
+      {Key? key, required this.title, this.backFun, this.autoLeading = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       // leadingWidth: 30.w,
+      leading: backFun == null
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          : IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: backFun,
+            ),
       automaticallyImplyLeading: autoLeading,
       // backgroundColor: Colors.white,
       title: Column(

@@ -1,7 +1,7 @@
 class SizeResponse {
   final int productId;
   final String sizeName;
-  final int total;
+  int total;
   final int countAvailableNow;
 
   SizeResponse(
@@ -18,4 +18,3 @@ class SizeResponse {
         countAvailableNow: json['count_available_now']);
   }
 }
-

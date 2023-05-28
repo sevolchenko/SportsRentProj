@@ -9,6 +9,7 @@ import 'package:client/common/widgets/icons.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/home/product/product_screen.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/product_size.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/inventory_widgets.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/quantity_widgets.dart';
@@ -31,11 +32,12 @@ class ProductQuantityScreen extends StatefulWidget {
 
 class _ProductQuantityScreenState extends State<ProductQuantityScreen> {
   late ProductController _productController;
+  final ProductBloc _productBloc = ProductBloc();
   @override
   void initState() {
     super.initState();
     _productController = ProductController(context: context);
-    _productController.init(widget.productId);
+    _productController.initProduct(widget.productId);
   }
 
   @override
@@ -59,11 +61,18 @@ class _ProductQuantityScreenState extends State<ProductQuantityScreen> {
   Widget _buildProductQuantity(BuildContext context, ProductResponse product) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: MyAppBar(
           title: "Редактирование количества",
           autoLeading: true,
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const InventoryScreen(),
+              ),
+            );
+          },
         ),
-        body: buildProductQuantityWidget(context, product),
+        body: buildProductQuantityWidget(_productBloc, context, product),
         bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
       ),
     );

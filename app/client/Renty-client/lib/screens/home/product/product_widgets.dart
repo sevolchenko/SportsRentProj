@@ -6,7 +6,8 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget buildProduct(ProductResponse product) {
   var image = product.images![0].image;
@@ -37,11 +38,11 @@ Widget buildProduct(ProductResponse product) {
         ),
         margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
         padding: EdgeInsets.all(10.w),
-        child:
-            reusableText(product.description ?? "", Colors.black, textSize: 16),
+        child: reusableText(product.description ?? "", textSize: 16),
       ),
       buildTextInfo("Цена", "${product.price} руб/час"),
       SizedBox(height: 20.h),
+      reusableText("Размер"),
       DropdownButton(
         items: size_names.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
@@ -49,18 +50,119 @@ Widget buildProduct(ProductResponse product) {
             child: Text(value),
           );
         }).toList(),
-        onChanged: (String? value) {
-        },
+        onChanged: (String? value) {},
       ),
-      reusableText('Время начала аренды', Colors.black, textSize: 20),
-      buildTextField('24.04.2023, 16:00', 'time', bottomMargin: 0, (value) {}),
       SizedBox(height: 20.h),
-      reusableText('Время окончания аренды', Colors.black, textSize: 20),
-      buildTextField('24.04.2023, 17:00', 'time', bottomMargin: 0, (value) {}),
-      buildTextInfo("Длительность аренды", "01:00:00"),
-      SizedBox(
-        height: 10.h,
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              height: 70.h,
+              child: Column(
+                children: [
+                  reusableText("Всего доступно"),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    product.sizes![0].countAvailableNow.toString(),
+                    style: GoogleFonts.raleway(
+                        color: Colors.black,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 22.sp),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 70.h,
+              child: Column(
+                children: [
+                  reusableText("Количество"),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.minus,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: Text(
+                          product.sizes![0].total.toString(),
+                          style: GoogleFonts.raleway(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 22.sp),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.plus,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
+      SizedBox(height: 20.h),
+      reusableText('Время начала аренды', textSize: 20),
+      SizedBox(
+        height: 5.h,
+      ),
+      buildTextField(
+          '24.04.2023, 16:00',
+          'time',
+          textInputType: TextInputType.datetime,
+          (value) {}),
+      Column(
+        children: [
+          reusableText("Часов аренды"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.minus,
+                  size: 24,
+                ),
+                onPressed: () {},
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Text(
+                  product.sizes![0].total.toString(),
+                  style: GoogleFonts.raleway(
+                      color: Colors.black,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 22.sp),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.plus,
+                  size: 24,
+                ),
+                onPressed: () {},
+              ),
+            ],
+          )
+        ],
+      ),
+      SizedBox(height: 20.h),
       buildButton("Уведомить по освобождении", "secondary", () {}),
       SizedBox(
         height: 20.h,

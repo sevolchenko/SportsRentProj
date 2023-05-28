@@ -27,15 +27,17 @@ class HttpUtil {
     return response;
   }
 
-  Future post(String path,
-      {dynamic data,
-      Map<String, dynamic>? queryParameters,
-      Options? options}) async {
+  Future post(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? autorization = getAuthorizationHeader();
-    if (autorization != null) {
-      requestOptions.headers!.addAll(autorization);
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
     }
     var response = await dio.post(
       path,
@@ -44,6 +46,19 @@ class HttpUtil {
       options: requestOptions,
     );
     return response;
+  }
+
+  Future patch(String path, dynamic data, Options? options) async {
+    Options requestsOptions = options ?? Options();
+    requestsOptions.headers = requestsOptions.headers ?? {};
+    var response = await dio.patch(path,
+        data: data,
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+              "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
+        }));
+    return response.statusCode;
   }
 
   Map<String, dynamic> getAuthorizationHeader() {

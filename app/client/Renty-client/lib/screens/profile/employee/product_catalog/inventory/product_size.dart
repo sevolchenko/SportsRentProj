@@ -34,7 +34,11 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
               SizedBox(
                 height: 30.h,
               ),
-              buildTextField('Введите количество', 'size', (value) {}),
+              buildTextField(
+                  'Введите количество',
+                  'size',
+                  textInputType: TextInputType.number,
+                  (value) {}),
               SizedBox(
                 height: 50.h,
               ),

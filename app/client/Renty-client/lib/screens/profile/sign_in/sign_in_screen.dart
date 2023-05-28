@@ -33,6 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
               backgroundColor: Colors.white,
               appBar: const MyAppBar(
                 title: 'Авторизация',
+                autoLeading: false,
               ),
               body: SingleChildScrollView(
                 child: Column(
@@ -45,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              reusableText("Почта", Colors.black),
+                              reusableText("Почта"),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -56,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     .read<SignInBloc>()
                                     .add(EmailEvent(value));
                               }, height: 58),
-                              reusableText("Пароль", Colors.black),
+                              reusableText("Пароль"),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -76,12 +77,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 // Navigator.of(context).pushNamed("/profile");
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const HomeScreen(),
+                                    builder: (context) => const HomeScreen(),
                                   ),
                                 );
-
-
                               }),
                               SizedBox(
                                 height: 20.h,
