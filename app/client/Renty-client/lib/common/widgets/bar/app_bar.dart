@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final bool autoLeading;
   final VoidCallback? backFun;
 
   const MyAppBar(
-      {Key? key, required this.title, this.backFun, this.autoLeading = false})
+      {Key? key, required this.title, this.backFun})
       : super(key: key);
 
   @override
@@ -24,7 +23,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: backFun,
             ),
-      automaticallyImplyLeading: autoLeading,
+      automaticallyImplyLeading: false,
       // backgroundColor: Colors.white,
       title: Column(
         children: [

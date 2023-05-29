@@ -23,7 +23,6 @@ class _RentalInfoScreenState extends State<RentalInfoScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Информация об аренде",
-          autoLeading: true,
         ),
         body: SingleChildScrollView(
           child: SizedBox(

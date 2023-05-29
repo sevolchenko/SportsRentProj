@@ -33,7 +33,6 @@ class _SignInScreenState extends State<SignInScreen> {
               backgroundColor: Colors.white,
               appBar: const MyAppBar(
                 title: 'Авторизация',
-                autoLeading: false,
               ),
               body: SingleChildScrollView(
                 child: Column(

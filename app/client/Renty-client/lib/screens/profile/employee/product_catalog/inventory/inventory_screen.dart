@@ -8,6 +8,7 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/icons.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
+import 'package:client/screens/profile/employee/product_catalog/catalog_menu.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/product_quantity.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/inventory_widgets.dart';
@@ -53,9 +54,15 @@ class _InventoryScreenState extends State<InventoryScreen> {
   Widget _buildProductsWidget(List<ProductResponse> products) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar:  MyAppBar(
           title: "Инвентарь",
-          autoLeading: true,
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CatalogMenu(),
+              ),
+            );
+          },
         ),
         body: Container(
           child: CustomScrollView(

@@ -22,7 +22,6 @@ class _RentalExtensionScreenState extends State<RentalExtensionScreen> {
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Продление срока аренды',
-        autoLeading: true,
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,

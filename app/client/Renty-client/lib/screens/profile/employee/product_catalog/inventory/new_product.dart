@@ -23,7 +23,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Новый товар",
-          autoLeading: true,
         ),
         body: SingleChildScrollView(
           child: SizedBox(

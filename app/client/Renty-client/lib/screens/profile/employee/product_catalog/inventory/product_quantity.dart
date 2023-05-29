@@ -63,7 +63,6 @@ class _ProductQuantityScreenState extends State<ProductQuantityScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: "Редактирование количества",
-          autoLeading: true,
           backFun: () {
             Navigator.of(context).push(
               MaterialPageRoute(

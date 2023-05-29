@@ -26,7 +26,6 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Завершение аренды',
-        autoLeading: true,
       ),
       body: Container(
         child: CustomScrollView(

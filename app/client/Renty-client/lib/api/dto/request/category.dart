@@ -9,3 +9,13 @@ class CategoryCreateRequest {
         'name': name,
       };
 }
+
+class CategoryDeleteRequest {
+  final int categoryId;
+
+  CategoryDeleteRequest({required this.categoryId});
+
+  Map<String, dynamic> toJson() => {
+        'category_id': categoryId,
+      };
+}

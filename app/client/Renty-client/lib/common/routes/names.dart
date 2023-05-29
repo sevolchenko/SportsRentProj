@@ -1,5 +1,4 @@
 class AppRoutes {
-  
   // static const APPLICATION = "/application";
   //sign in screen
   static const SIGN_IN = "/sign_in";
@@ -9,4 +8,8 @@ class AppRoutes {
   static const HOME = "/home";
 
   static const PROFILE = "/profile";
+
+  static const PRODUCT = "/product";
+
+  static const CATEGORIES = "/categories";
 }

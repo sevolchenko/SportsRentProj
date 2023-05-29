@@ -22,7 +22,6 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: 'Поиск по email',
-          autoLeading: true,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

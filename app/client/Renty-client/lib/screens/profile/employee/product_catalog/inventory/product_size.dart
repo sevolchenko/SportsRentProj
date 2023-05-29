@@ -21,7 +21,6 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Новый размер",
-          autoLeading: true,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

@@ -20,7 +20,9 @@ class _EmpoyeeMenuState extends State<EmpoyeeMenu> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: "Меню сотрудника", autoLeading: true,),
+        appBar: const MyAppBar(
+          title: "Меню сотрудника",
+        ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(

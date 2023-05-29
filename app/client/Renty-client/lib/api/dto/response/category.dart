@@ -1,6 +1,6 @@
 class CategoryPreviewResponse {
-  final int categoryId;
-  final String name;
+  final int? categoryId;
+  final String? name;
 
   CategoryPreviewResponse({required this.categoryId, required this.name});
 
@@ -23,7 +23,8 @@ class CategoryResponse {
   factory CategoryResponse.fromJson(Map<String, dynamic> json) {
     return CategoryResponse(
         categoryId: json['category_id'],
-        parentCategoty: json['parent_category'],
+        parentCategoty: json['parent_category'] =
+            CategoryPreviewResponse.fromJson(json['parent_category']),
         name: json['name']);
   }
 }
