@@ -1,3 +1,5 @@
+import 'package:client/api/dto/request/category.dart';
+
 abstract class CategoryEvent {
   const CategoryEvent();
 }
@@ -11,10 +13,15 @@ class CategoriesLoadEvent extends CategoryEvent {}
 //   CategoryAddEvent(this.categoryId, this.sizeIndex);
 // }
 
-
-class CategoryDeleteEvent extends CategoryEvent {
+class DeleteCategoryEvent extends CategoryEvent {
   final int categoryId;
-  final int sizeIndex;
 
-  CategoryDeleteEvent(this.categoryId, this.sizeIndex);
+  DeleteCategoryEvent(this.categoryId);
+}
+
+class CreateCategoryEvent extends CategoryEvent {
+  final int parentCategotyId;
+  final String name;
+
+  CreateCategoryEvent(this.parentCategotyId, this.name);
 }

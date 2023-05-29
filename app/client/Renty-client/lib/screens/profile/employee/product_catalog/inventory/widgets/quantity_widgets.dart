@@ -13,7 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget buildProductQuantityWidget(
-    ProductBloc productBloc, BuildContext context, ProductResponse product) {
+    BuildContext context, ProductResponse product) {
   return Container(
     child: CustomScrollView(
       slivers: [
@@ -42,8 +42,8 @@ Widget buildProductQuantityWidget(
               childCount: product.sizes.length,
               (BuildContext context, int index) {
                 return GestureDetector(
-                    child: buildSizesChangeWidget(productBloc, product,
-                        product.id, index, product.sizes[index], context));
+                    child: buildSizesChangeWidget(product, product.id, index,
+                        product.sizes[index], context));
               },
             ),
           ),
@@ -69,13 +69,8 @@ Widget buildProductQuantityWidget(
   );
 }
 
-Widget buildSizesChangeWidget(
-    ProductBloc productBloc,
-    ProductResponse product,
-    int productId,
-    int sizeIndex,
-    SizeResponse productSize,
-    BuildContext context) {
+Widget buildSizesChangeWidget(ProductResponse product, int productId,
+    int sizeIndex, SizeResponse productSize, BuildContext context) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 30.w),
     child: Row(
@@ -102,10 +97,10 @@ Widget buildSizesChangeWidget(
             if (productSize.total <= 1) {
               toastInfo(msg: "Минимальное значение: 1");
             }
-            productBloc.add(
-              ProductSizeUpdateEvent(product, sizeIndex,
-                  productSize.total > 1 ? productSize.total - 1 : 1),
-            );
+            context.read<ProductBloc>().add(
+                  ProductSizeUpdateEvent(product, sizeIndex,
+                      productSize.total > 1 ? productSize.total - 1 : 1),
+                );
           },
         ),
         Container(
@@ -124,14 +119,17 @@ Widget buildSizesChangeWidget(
             size: 25,
           ),
           onPressed: () {
-            productBloc.add(
-              ProductSizeUpdateEvent(product, sizeIndex, productSize.total + 1),
-            );
+            context.read<ProductBloc>().add(
+                  ProductSizeUpdateEvent(
+                      product, sizeIndex, productSize.total + 1),
+                );
           },
         ),
         GestureDetector(
           onTap: () {
-            productBloc.add(ProductSizeDeleteEvent(product, sizeIndex));
+            context
+                .read<ProductBloc>()
+                .add(ProductSizeDeleteEvent(product, sizeIndex));
           },
           child: Container(
             margin: EdgeInsets.only(left: 15.w),

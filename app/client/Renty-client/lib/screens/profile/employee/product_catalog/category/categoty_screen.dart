@@ -1,26 +1,18 @@
 import 'package:client/api/dto/response/category.dart';
+import 'package:client/api/repository/category_repository.dart';
 import 'package:client/bloc/categoty/category_bloc.dart';
 import 'package:client/bloc/categoty/category_state.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/common/widgets/icons.dart';
-import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/category_controller.dart';
-import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/catalog_menu.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/new_category.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/widgets/category_widgets.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_size.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -31,13 +23,23 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   late CategoryController _categoryController;
+  late CategoryRepository _categoryRepository;
+  List<CategoryResponse> categories = [];
+
   @override
   void initState() {
     super.initState();
     _categoryController = CategoryController(context: context);
     _categoryController.initCategories();
 
+    _loadCategories();
+
     // bloc.getProductById(widget.productId);
+  }
+
+  void _loadCategories() async {
+    _categoryRepository = CategoryRepository();
+    categories = await _categoryRepository.getCategories();
   }
 
   @override
@@ -101,7 +103,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const NewCategoryScreen(),
+                          builder: (context) =>
+                              NewCategoryScreen(categories: categories),
                         ),
                       );
                     },

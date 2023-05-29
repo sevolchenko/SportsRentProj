@@ -13,7 +13,6 @@ import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/home/product/product_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductScreen extends StatefulWidget {
   final int productId;

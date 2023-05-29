@@ -43,30 +43,39 @@ class HttpUtil {
       path,
       data: data,
       queryParameters: queryParameters,
-      options: requestOptions,
+      // options: requestOptions,
+      options: Options(headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
+      }),
     );
     return response;
   }
 
   Future patch(String path, dynamic data) async {
-    var response = await dio.patch(path,
-        data: data,
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-              "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
-        }));
+    var response = await dio.patch(
+      path,
+      data: data,
+      options: Options(headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
+      }),
+    );
     return response.statusCode;
   }
 
   Future delete(String path, dynamic data) async {
-    var response = await dio.delete(path,
-        data: data,
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-              "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
-        }));
+    var response = await dio.delete(
+      path,
+      data: data,
+      options: Options(headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
+      }),
+    );
     return response.statusCode;
   }
 
@@ -74,7 +83,7 @@ class HttpUtil {
     var headers = <String, dynamic>{};
     var accessToken = Global.storageService.getUserToken();
     if (accessToken.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $accessToken';
+      headers['Authorization'] = accessToken;
     }
     return headers;
   }

@@ -11,4 +11,8 @@ class CategoryRepository {
   Future<int?> deleteCategory(int id) {
     return _categorytApi.deleteCategoryById(id);
   }
+
+  Future<int?> createCategory(Map<String, dynamic> body) {
+    return _categorytApi.createCategory(body);
+  }
 }

@@ -27,4 +27,17 @@ class CategoryApi {
     }
     return null;
   }
+
+  Future<int?> createCategory(Map<String, dynamic> body) async {
+    var path = 'catalog/categories';
+    var statusCode = await HttpUtil().post(path, data: body);
+    try {
+      if (statusCode == 200) {
+        return statusCode;
+      } 
+    } on DioError catch (e) {
+      toastInfo(msg: e.toString());
+    }
+    return null;
+  }
 }

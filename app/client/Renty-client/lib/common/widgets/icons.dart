@@ -17,7 +17,7 @@ Widget buildTrashIcon(context, void Function() func) {
                   child: const Text("Отмена"),
                 ),
                 TextButton(
-                  onPressed: () => func,
+                  onPressed: () => func(),
                   child: const Text("Удалить"),
                 ),
               ],

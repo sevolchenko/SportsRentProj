@@ -10,8 +10,12 @@ class CategoriesLoadedState extends CategoryState {
   CategoriesLoadedState({required this.categories});
 }
 
-class CategoryDeleteState extends CategoriesLoadedState {
-  CategoryDeleteState({required super.categories});
+class CreateCategoryState extends CategoryState {
+  CreateCategoryState();
+}
+
+class DeleteCategoryState extends CategoryState {
+  DeleteCategoryState();
 }
 
 class CategoriesErrorState extends CategoryState {

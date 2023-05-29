@@ -23,7 +23,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   void removeUserData() {
-    context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
+    // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
     Global.storageService.remove(AppConstants.STORAGE_USER_TOKEN_KEY);
     Global.storageService.remove(AppConstants.STORAGE_USER_PROFILE_KEY);
     Navigator.of(context)
