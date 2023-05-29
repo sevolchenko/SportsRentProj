@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,7 +23,6 @@ import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.error.FieldErrorResponse;
 
-import javax.naming.AuthenticationException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,6 +80,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AlreadyRegisteredUserException.class)
     protected ResponseEntity<Object> handleAlreadyRegisteredUserException(AlreadyRegisteredUserException ex) {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("rent_id", ex.getMessage())), HttpStatus.FORBIDDEN);
     }
 
 

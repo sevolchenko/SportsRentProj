@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.model.entity;
+package vsu.csf.rentyserver.model.entity.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.DeleteSizeRequest;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -73,8 +74,8 @@ public class CatalogController {
 
     @DeleteMapping("/products/{product_id}/sizes")
     SizeResponse deleteTotalForProduct(@PathVariable("product_id") Long productId,
-                                       @RequestBody String sizeName) {
-        return catalogService.deleteSizeForProduct(productId, sizeName);
+                                       @RequestBody DeleteSizeRequest request) {
+        return catalogService.deleteSizeForProduct(productId, request);
     }
 
 

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import vsu.csf.rentyserver.model.entity.enumeration.Permission;
 import vsu.csf.rentyserver.security.JwtAuthenticationFilter;
 
 @Configuration
@@ -35,12 +36,16 @@ public class SecurityConfiguration {
 
                 .requestMatchers(new AntPathRequestMatcher("/users/register")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/users/me")).authenticated()
-                .requestMatchers(new AntPathRequestMatcher("/users/find")).hasAuthority("write")
+                .requestMatchers(new AntPathRequestMatcher("/users/find")).hasAuthority(Permission.WRITE.getPermission())
 
                 .requestMatchers(new AntPathRequestMatcher("/catalog/**", "GET")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/catalog/**")).hasAuthority(Permission.WRITE.getPermission())
 
-                .requestMatchers(new AntPathRequestMatcher("/**", "GET")).hasAuthority("read")
-                .requestMatchers(new AntPathRequestMatcher("/**")).hasAuthority("write")
+                .requestMatchers(new AntPathRequestMatcher("/rents/my/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/rents/**")).hasAuthority(Permission.WRITE.getPermission())
+
+                .requestMatchers(new AntPathRequestMatcher("/**", "GET")).hasAuthority(Permission.READ.getPermission())
+                .requestMatchers(new AntPathRequestMatcher("/**")).hasAuthority(Permission.WRITE.getPermission())
                 .and()
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

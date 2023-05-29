@@ -9,6 +9,7 @@ import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.DeleteSizeRequest;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -172,15 +173,15 @@ public class CatalogService {
         return sizeMapper.map(saved);
     }
 
-    public SizeResponse deleteSizeForProduct(Long productId, String sizeName) {
-        log.info("Delete size {} to product id {} called", sizeName, productId);
+    public SizeResponse deleteSizeForProduct(Long productId, DeleteSizeRequest request) {
+        log.info("Delete size {} to product id {} called", request.sizeName(), productId);
 
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         var sizeId = new SizeId()
                 .setProduct(product)
-                .setName(sizeName);
+                .setName(request.sizeName());
 
         var deleted = sizesRepository.removeSizeBySizeIdEquals(sizeId);
 
