@@ -22,13 +22,13 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserResponse getMe(Authentication authentication) {
+    public UserResponse findMe(Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
         return userService.findById(user.getUserId());
     }
 
     @GetMapping("/find")
-    public UserResponse findById(@RequestParam("email") String email) {
+    public UserResponse findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
     }
 
