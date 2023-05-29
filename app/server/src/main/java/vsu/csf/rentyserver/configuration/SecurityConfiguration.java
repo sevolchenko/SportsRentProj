@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                 .requestMatchers(new AntPathRequestMatcher("/auth/logout")).authenticated()
 
                 .requestMatchers(new AntPathRequestMatcher("/users/register")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/users/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/users/me")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/users/find")).hasAuthority("write")
 
                 .requestMatchers(new AntPathRequestMatcher("/catalog/**", "GET")).permitAll()
 

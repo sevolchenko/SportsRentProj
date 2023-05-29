@@ -2,9 +2,11 @@ package vsu.csf.rentyserver.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
 import vsu.csf.rentyserver.model.dto.user.response.UserResponse;
+import vsu.csf.rentyserver.security.SecurityUser;
 import vsu.csf.rentyserver.service.UserService;
 
 @RestController
@@ -19,9 +21,10 @@ public class UserController {
         userService.register(request);
     }
 
-    @GetMapping
-    public UserResponse findById(@RequestParam("user_id") Long userId) {
-        return userService.findById(userId);
+    @GetMapping("/me")
+    public UserResponse getMe(Authentication authentication) {
+        var user = (SecurityUser) authentication.getPrincipal();
+        return userService.findById(user.getUserId());
     }
 
     @GetMapping("/find")

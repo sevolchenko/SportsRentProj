@@ -8,10 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import vsu.csf.rentyserver.model.entity.Permission;
 
 import java.io.IOException;
 
@@ -35,36 +35,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         } else {
             log.info("Token validation for user {} is successful", jwtTokenProvider.getUsername(token));
 
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-            if (authentication != null) {
-
-                if (servletRequest.getParameter("user_id") != null) {
-                    var authUser = ((SecurityUser) authentication.getPrincipal());
-                    Long userId = authUser.getUserId();
-                    Long asksForUserId = Long.parseLong(servletRequest.getParameter("user_id"));
-
-                    log.info("User id {} with authorities {} is trying to access {}'s data",
-                            userId, authUser.getAuthorities(), asksForUserId);
-
-                    if (authentication.isAuthenticated()) {
-
-                        if (authentication.getAuthorities().contains(Permission.WRITE.getAuthority()) ||
-                                (authentication.getAuthorities().contains(Permission.READ.getAuthority()) &&
-                                        userId.equals(asksForUserId))) {
-                            SecurityContextHolder.getContext().setAuthentication(authentication);
-                        }
-                    }
-
-                } else {
+            try {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
 
+            } catch (AuthenticationException ex) {
+                SecurityContextHolder.clearContext();
+                throw ex;
             }
 
         }
-
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
