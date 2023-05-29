@@ -13,5 +13,6 @@
     <include file="fill_product_table.sql" relativeToChangelogFile="true"/>
     <include file="fill_size_table.sql" relativeToChangelogFile="true"/>
     <include file="fill_image_table.sql" relativeToChangelogFile="true"/>
+    <include file="fill_user_table.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

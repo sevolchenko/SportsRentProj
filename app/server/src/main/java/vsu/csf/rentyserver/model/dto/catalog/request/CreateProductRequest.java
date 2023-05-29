@@ -1,6 +1,7 @@
 package vsu.csf.rentyserver.model.dto.catalog.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -20,6 +21,7 @@ public record CreateProductRequest(
         @JsonProperty("category_id")
         Long categoryId,
 
+        @Valid
         List<CreateImageRequest> images
 
 ) {

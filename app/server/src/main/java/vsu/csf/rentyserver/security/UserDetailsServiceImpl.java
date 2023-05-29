@@ -25,7 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public static UserDetails fromUser(AppUser user) {
-        return new User(
+        return new SecurityUser(
+                user.getUserId(),
                 user.getEmail(),
                 user.getPassword(),
                 true, true,

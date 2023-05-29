@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,12 +18,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
-import vsu.csf.rentyserver.model.dto.ApiErrorResponse;
+import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
+import vsu.csf.rentyserver.model.dto.error.FieldErrorResponse;
 
 import javax.naming.AuthenticationException;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -36,7 +35,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-        return buildApiErrorResponse(ex, Map.of("error", "Wrong response"), HttpStatus.BAD_REQUEST);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("error", "Wrong response")), HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -46,43 +45,44 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         return buildApiErrorResponse(ex,
                 ex.getFieldErrors().stream()
-                        .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)),
+                        .map((fieldError -> FieldErrorResponse.of(fieldError.getField(), fieldError.getDefaultMessage())))
+                        .toList(),
                 HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        return buildApiErrorResponse(ex, Map.of("error", "Wrong response parameters"), HttpStatus.BAD_REQUEST);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("error", "Wrong response parameters")), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateElementException.class)
     protected ResponseEntity<Object> handleDuplicateElementException(DuplicateElementException ex) {
-        return buildApiErrorResponse(ex, Map.of(ex.getVarName(), ex.getMessage()), HttpStatus.CONFLICT);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of(ex.getVarName(), ex.getMessage())), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> handleNoSuchChatException(NoSuchElementException ex) {
-        return buildApiErrorResponse(ex, Map.of(ex.getVarName(), ex.getMessage()), HttpStatus.NOT_FOUND);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of(ex.getVarName(), ex.getMessage())), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
-        return buildApiErrorResponse(ex, Map.of("login", ex.getMessage()), HttpStatus.UNAUTHORIZED);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex) {
-        return buildApiErrorResponse(ex, Map.of("login", ex.getMessage()), HttpStatus.FORBIDDEN);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(AlreadyRegisteredUserException.class)
     protected ResponseEntity<Object> handleAlreadyRegisteredUserException(AlreadyRegisteredUserException ex) {
-        return buildApiErrorResponse(ex, Map.of("login", ex.getMessage()), HttpStatus.CONFLICT);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.CONFLICT);
     }
 
 
-    private ResponseEntity<Object> buildApiErrorResponse(Exception ex, Map<String, String> errors, HttpStatus status) {
+    private ResponseEntity<Object> buildApiErrorResponse(Exception ex, List<FieldErrorResponse> errors, HttpStatus status) {
         log.warn("Received errors: {}; Response code: {}; Exception: {}: {} {};",
                 errors,
                 status,

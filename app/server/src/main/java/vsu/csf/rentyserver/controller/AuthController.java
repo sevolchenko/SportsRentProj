@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vsu.csf.rentyserver.model.dto.auth.request.LoginRequest;
-import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
+import vsu.csf.rentyserver.model.dto.user.request.LoginRequest;
 import vsu.csf.rentyserver.model.dto.auth.response.LoginResponse;
 import vsu.csf.rentyserver.service.AuthService;
 
@@ -35,11 +34,6 @@ public class AuthController {
 
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
-    }
-
-    @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest request) {
-        authService.register(request);
     }
 
 }
