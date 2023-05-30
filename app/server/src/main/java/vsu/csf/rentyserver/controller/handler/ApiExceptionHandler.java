@@ -1,6 +1,7 @@
 package vsu.csf.rentyserver.controller.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -93,6 +94,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("rent_id", ex.getMessage())), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(PSQLException.class)
+    protected ResponseEntity<Object> handlePSQLException(PSQLException ex) {
+        return buildApiErrorResponse(ex,
+                List.of(FieldErrorResponse.of(ex.getServerErrorMessage().getTable(), ex.getServerErrorMessage().getDetail())),
+                HttpStatus.CONFLICT);
+    }
 
     private ResponseEntity<Object> buildApiErrorResponse(Exception ex, List<FieldErrorResponse> errors, HttpStatus status) {
         log.warn("Received errors: {}; Response code: {}; Exception: {}: {} {};",

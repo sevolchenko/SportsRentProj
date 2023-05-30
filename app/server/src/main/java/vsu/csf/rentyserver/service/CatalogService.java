@@ -27,6 +27,7 @@ import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
 import vsu.csf.rentyserver.repository.SizesRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -183,7 +184,12 @@ public class CatalogService {
                 .setProduct(product)
                 .setName(request.sizeName());
 
-        var deleted = sizesRepository.removeSizeBySizeIdEquals(sizeId);
+        var sizes = new ArrayList<>(product.getSizes());
+        sizes.removeIf((size) -> size.getSizeId().equals(sizeId));
+
+        product.setSizes(sizes);
+
+        var deleted = sizesRepository.deleteSizeBySizeIdEquals(sizeId);
 
         if (deleted.isEmpty()) {
             throw new NoSuchElementException("size", Size.class, sizeId);

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface SizesRepository extends JpaRepository<Size, SizeId> {
 
-    List<Size> removeSizeBySizeIdEquals(SizeId sizeId);
+    List<Size> deleteSizeBySizeIdEquals(SizeId sizeId);
 
 }

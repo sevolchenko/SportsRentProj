@@ -48,4 +48,9 @@ public class RentProcessor {
         return countOfAvailableAt(size, OffsetDateTime.now());
     }
 
+    public Integer update() {
+        // TODO: 30.05.2023 rent update
+        return 0;
+    }
+
 }
