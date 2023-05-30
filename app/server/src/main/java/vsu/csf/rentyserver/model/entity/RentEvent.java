@@ -39,13 +39,10 @@ public class RentEvent {
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", insertable = false, updatable=false)
     private Product product;
 
-
-    // TODO: 30.05.2023 object not readable, ERROR: null value in column "size_name" of relation "rent_event" violates not-null constraint
     @ManyToOne
-    @MapsId("SizeId")
     @JoinColumns({
             @JoinColumn(name="product_id", referencedColumnName="product_id"),
             @JoinColumn(name="size_name", referencedColumnName="name")
