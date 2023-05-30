@@ -6,7 +6,6 @@ application:
 
 spring:
   jpa:
-    show-sql: true
     database: postgresql
 
   datasource:

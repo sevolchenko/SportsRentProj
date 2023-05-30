@@ -16,6 +16,8 @@ public class RentUpdaterScheduler {
     private void update() {
         log.info("Checking for rents updates");
 
-        rentProcessor.update();
+        var updatedCount = rentProcessor.update();
+
+        log.info("Updated {} rents", updatedCount);
     }
 }
