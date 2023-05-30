@@ -31,11 +31,6 @@ class _ProductQuantityScreenState extends State<ProductQuantityScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {

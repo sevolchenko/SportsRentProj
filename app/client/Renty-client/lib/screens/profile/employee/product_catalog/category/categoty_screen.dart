@@ -1,6 +1,7 @@
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/repository/category_repository.dart';
 import 'package:client/bloc/categoty/category_bloc.dart';
+import 'package:client/bloc/categoty/category_event.dart';
 import 'package:client/bloc/categoty/category_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
@@ -56,6 +57,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget _buildCategoriesWidget(List<CategoryResponse> categories) {
+    context.read<CategoryBloc>().add(CategoriesLoadEvent());
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(

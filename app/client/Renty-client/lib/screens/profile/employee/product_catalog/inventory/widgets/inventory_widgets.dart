@@ -33,8 +33,7 @@ Widget buildInventoryItem(
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                        width: 2.0,
-                        color: Colors.black.withOpacity(0.6)),
+                        width: 2.0, color: Colors.black.withOpacity(0.6)),
                   ),
                 ),
                 child: Text(
@@ -67,7 +66,7 @@ Widget buildInventoryItem(
   );
 }
 
-Widget productsGrid(ProductResponse product, BuildContext context) {
+Widget inventoryItemGrid(ProductResponse product, BuildContext context) {
   return Row(
     children: [
       buildInventoryItem(

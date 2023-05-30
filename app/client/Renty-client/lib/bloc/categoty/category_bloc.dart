@@ -19,9 +19,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     on<DeleteCategoryEvent>(
       (event, emit) async {
-        // CategoryDeleteRequest categoryDeleteRequest =
-        //     CategoryDeleteRequest(categoryId: event.categoryId);
-        // categoryDeleteRequest.toJson();
         _categoryRepository.deleteCategory(event.categoryId);
         emit(DeleteCategoryState());
       },
@@ -30,7 +27,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<CreateCategoryEvent>((event, emit) async {
       CategoryCreateRequest categoryCreateRequest = CategoryCreateRequest(
           parentCategoryId: event.parentCategotyId, name: event.name);
-
       _categoryRepository.createCategory(categoryCreateRequest.toJson());
       emit(CreateCategoryState());
     });

@@ -3,8 +3,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductSizeScreen extends StatefulWidget {
@@ -15,6 +14,8 @@ class ProductSizeScreen extends StatefulWidget {
 }
 
 class _ProductSizeScreenState extends State<ProductSizeScreen> {
+
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,13 +30,13 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
               SizedBox(
                 height: 70.h,
               ),
-              buildTextField('Введите размер', '', (value) {}), //TODO тип ввода
+              buildTextField('Введите размер', 'size', (value) {}),
               SizedBox(
                 height: 30.h,
               ),
               buildTextField(
                   'Введите количество',
-                  'size',
+                  'quantity',
                   textInputType: TextInputType.number,
                   (value) {}),
               SizedBox(

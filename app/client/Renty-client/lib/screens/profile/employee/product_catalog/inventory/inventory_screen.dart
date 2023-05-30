@@ -9,7 +9,7 @@ import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/profile/employee/product_catalog/catalog_menu.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_quantity.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/quantity_editing.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/inventory_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +53,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   Widget _buildProductsWidget(List<ProductResponse> products) {
     return SafeArea(
       child: Scaffold(
-        appBar:  MyAppBar(
+        appBar: MyAppBar(
           title: "Инвентарь",
           backFun: () {
             Navigator.of(context).push(
@@ -97,7 +97,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                             ),
                           );
                         },
-                        child: productsGrid(products[index], context),
+                        child: inventoryItemGrid(products[index], context),
                       );
                     },
                   ),
