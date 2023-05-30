@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,8 +17,8 @@ public class Receipt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "receipt_id")
-    private String receiptId;
+    @Column(name = "receipt_id", columnDefinition = "uuid")
+    private UUID receiptId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,9 +28,8 @@ public class Receipt {
     @JoinColumn(name = "employee_id")
     private AppUser employee;
 
-    @CreatedDate
     @Column(name = "created_at")
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @Column(name = "pay_link")
     private String payLink;

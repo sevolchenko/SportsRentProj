@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vsu.csf.rentyserver.component.RentProcessor;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
+import vsu.csf.rentyserver.exception.NotAvailableSizeException;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
@@ -34,6 +36,8 @@ public class RentService {
     private final AppUsersRepository usersRepository;
     private final ProductsRepository productsRepository;
     private final SizesRepository sizesRepository;
+
+    private final RentProcessor rentProcessor;
 
     private final RentMapper rentMapper;
 
@@ -76,7 +80,7 @@ public class RentService {
         var user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
 
-        for (CreateRentRequest request: requests) {
+        for (CreateRentRequest request : requests) {
             log.info("Create rent {} by user {} called", request, userId);
 
             var product = productsRepository.findById(request.productId())
@@ -89,7 +93,14 @@ public class RentService {
             var size = sizesRepository.findById(sizeId)
                     .orElseThrow(() -> new NoSuchElementException("size", Size.class, sizeId));
 
-            var rentEvent = new RentEvent()
+            Integer availableCount = rentProcessor.countOfAvailableAt(
+                    size, request.startTime(), request.endTime());
+
+            if (availableCount < request.count()) {
+                throw new NotAvailableSizeException(request.sizeName(), request.count(), availableCount);
+            }
+
+            var rent = new RentEvent()
                     .setUser(user)
                     .setStartTime(request.startTime())
                     .setEndTime(request.endTime())
@@ -98,7 +109,7 @@ public class RentService {
                     .setCount(request.count())
                     .setPrice(product.getPrice());
 
-            var saved = eventRepository.save(rentEvent);
+            var saved = eventRepository.save(rent);
 
             events.add(saved);
 
@@ -109,9 +120,18 @@ public class RentService {
     }
 
     public RentResponse prolong(Long rentId, ProlongRentRequest request) {
+        log.info("Prolong rent {} to time", request);
 
         var rent = eventRepository.findById(rentId)
                 .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
+
+        Integer availableCount = rentProcessor.countOfAvailableAt(
+                rent.getSize(), rent.getStartTime(), request.endTime());
+
+        if (availableCount < 0) { // because of curr rent counts too
+            throw new NotAvailableSizeException(rent.getSize().getSizeId().getName(),
+                    rent.getSize().getTotal(), availableCount);
+        }
 
         rent.setEndTime(request.endTime());
 

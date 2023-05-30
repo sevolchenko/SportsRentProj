@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
+import vsu.csf.rentyserver.exception.NotAvailableSizeException;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.error.FieldErrorResponse;
 
@@ -65,6 +66,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> handleNoSuchChatException(NoSuchElementException ex) {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of(ex.getVarName(), ex.getMessage())), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotAvailableSizeException.class)
+    protected ResponseEntity<Object> handleNotAvailableSizeException(NotAvailableSizeException ex) {
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("count", ex.getMessage())), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

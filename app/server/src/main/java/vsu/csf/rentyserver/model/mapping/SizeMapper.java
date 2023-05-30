@@ -18,7 +18,7 @@ public abstract class SizeMapper {
 
     @Mapping(target = "productId", source = "sizeId.product.productId")
     @Mapping(target = "sizeName", source = "sizeId.name")
-    @Mapping(target = "countAvailableNow", expression = "java(rentProcessor.getCountOfAvailable(size))")
+    @Mapping(target = "countAvailableNow", expression = "java(rentProcessor.countOfAvailableNow(size))")
     public abstract SizeResponse map(Size size);
 
     public abstract List<SizeResponse> map(List<Size> list);
