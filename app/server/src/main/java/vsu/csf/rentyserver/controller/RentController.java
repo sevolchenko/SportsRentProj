@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
@@ -95,7 +94,7 @@ public class RentController {
     }
 
     @PatchMapping("/{user_id}/{rent_id}/finish")
-    ReceiptResponse finish(@PathVariable("user_id") Long userId,
+    RentResponse finish(@PathVariable("user_id") Long userId,
                            @PathVariable("rent_id") Long rentId,
                            Authentication authentication) {
         if (!rentService.owns(userId, rentId)) {
@@ -109,7 +108,7 @@ public class RentController {
     }
 
     @PatchMapping("/{user_id}/finish/batch")
-    ReceiptResponse finish(@PathVariable("user_id") Long userId,
+    List<RentResponse> finish(@PathVariable("user_id") Long userId,
                            @RequestBody List<Long> rentIds,
                            Authentication authentication) {
 

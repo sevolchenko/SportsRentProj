@@ -9,14 +9,12 @@ import vsu.csf.rentyserver.component.RentUpdaterScheduler;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.NotAvailableSizeException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
-import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 import vsu.csf.rentyserver.model.entity.*;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 import vsu.csf.rentyserver.model.entity.id.SizeId;
-import vsu.csf.rentyserver.model.mapping.ReceiptMapper;
 import vsu.csf.rentyserver.model.mapping.RentMapper;
 import vsu.csf.rentyserver.repository.*;
 
@@ -41,7 +39,6 @@ public class RentService {
     private final RentUpdaterScheduler rentUpdaterScheduler;
 
     private final RentMapper rentMapper;
-    private final ReceiptMapper receiptMapper;
 
     @Transactional(readOnly = true)
     public List<RentResponse> getAll(Long userId) {
@@ -132,11 +129,11 @@ public class RentService {
 
     }
 
-    public ReceiptResponse finish(Long userId, Long employeeId, Long rentId) {
-        return finish(userId, employeeId, List.of(rentId));
+    public RentResponse finish(Long userId, Long employeeId, Long rentId) {
+        return finish(userId, employeeId, List.of(rentId)).get(0);
     }
 
-    public ReceiptResponse finish(Long userId, Long employeeId, List<Long> rentIds) {
+    public List<RentResponse> finish(Long userId, Long employeeId, List<Long> rentIds) {
 
         var employee = usersRepository.findById(employeeId)
                 .orElseThrow(() -> new NoSuchElementException("employee", AppUser.class, employeeId));
@@ -154,9 +151,9 @@ public class RentService {
 
         receipt.setRents(rents);
 
-        var saved = receiptsRepository.save(receipt);
+        receiptsRepository.save(receipt);
 
-        return receiptMapper.map(saved);
+        return rentMapper.map(rents);
     }
 
     private RentEvent finish(Receipt receipt, Long rentId) {

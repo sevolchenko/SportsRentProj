@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import vsu.csf.rentyserver.model.dto.user.response.UserResponse;
 import vsu.csf.rentyserver.model.entity.enumeration.ReceiptStatus;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public record ReceiptResponse(
@@ -14,6 +15,9 @@ public record ReceiptResponse(
 
         @JsonProperty("pay_link")
         String payLink,
+
+        @JsonProperty("created_at")
+        OffsetDateTime createdAt,
 
         ReceiptStatus status,
 
