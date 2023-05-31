@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.model.entity.RentEvent;
 import vsu.csf.rentyserver.model.entity.Size;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
-import vsu.csf.rentyserver.repository.RentEventRepository;
+import vsu.csf.rentyserver.repository.RentEventsRepository;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class RentProcessor {
 
-    private final RentEventRepository eventRepository;
+    private final RentEventsRepository eventRepository;
 
     @Transactional(readOnly = true)
     public Integer countOfAvailableAt(Size size, OffsetDateTime startTime, OffsetDateTime endTime) {
@@ -65,7 +65,7 @@ public class RentProcessor {
         events.forEach((rent) -> {
             switch (rent.getStatus()) {
                 case CREATED -> {
-                    if (rent.getStartTime().isAfter(OffsetDateTime.now())) {
+                    if (rent.getStartTime().isBefore(OffsetDateTime.now())) {
                         log.info("Rent {} started", rent.getRentId());
 
                         rent.setStatus(RentStatus.ONGOING);

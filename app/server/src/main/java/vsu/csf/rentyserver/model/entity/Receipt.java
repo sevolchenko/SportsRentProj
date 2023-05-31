@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import vsu.csf.rentyserver.model.entity.enumeration.ReceiptStatus;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,10 +33,11 @@ public class Receipt {
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    @Column(name = "pay_link")
-    private String payLink;
-
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ReceiptStatus status = ReceiptStatus.CREATED;
+
+    @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY)
+    private List<RentEvent> rents;
 
 }

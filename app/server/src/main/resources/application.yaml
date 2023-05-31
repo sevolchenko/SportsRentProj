@@ -3,6 +3,9 @@ application:
     secret-key: '7638792F423F4528482B4B6250655368566D597133743677397A24432646294A'
     jwt-expires-after: P90D
   rent-check-delay: PT30S
+  fine:
+    percent: 0.1
+    per: PT1M
 
 spring:
   jpa:

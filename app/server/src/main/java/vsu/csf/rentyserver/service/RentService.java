@@ -7,21 +7,19 @@ import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.component.RentProcessor;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.NotAvailableSizeException;
+import vsu.csf.rentyserver.exception.WrongRentStatusException;
+import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
-import vsu.csf.rentyserver.model.entity.AppUser;
-import vsu.csf.rentyserver.model.entity.Product;
-import vsu.csf.rentyserver.model.entity.RentEvent;
-import vsu.csf.rentyserver.model.entity.Size;
+import vsu.csf.rentyserver.model.entity.*;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 import vsu.csf.rentyserver.model.entity.id.SizeId;
+import vsu.csf.rentyserver.model.mapping.ReceiptMapper;
 import vsu.csf.rentyserver.model.mapping.RentMapper;
-import vsu.csf.rentyserver.repository.AppUsersRepository;
-import vsu.csf.rentyserver.repository.ProductsRepository;
-import vsu.csf.rentyserver.repository.RentEventRepository;
-import vsu.csf.rentyserver.repository.SizesRepository;
+import vsu.csf.rentyserver.repository.*;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,14 +30,16 @@ import java.util.Set;
 @Transactional
 public class RentService {
 
-    private final RentEventRepository eventRepository;
+    private final RentEventsRepository eventRepository;
     private final AppUsersRepository usersRepository;
     private final ProductsRepository productsRepository;
     private final SizesRepository sizesRepository;
+    private final ReceiptsRepository receiptsRepository;
 
     private final RentProcessor rentProcessor;
 
     private final RentMapper rentMapper;
+    private final ReceiptMapper receiptMapper;
 
     @Transactional(readOnly = true)
     public List<RentResponse> getAll(Long userId) {
@@ -73,50 +73,100 @@ public class RentService {
                 .getUser().getUserId().equals(userId);
     }
 
-    public List<RentResponse> create(Long userId, List<CreateRentRequest> requests) {
-
-        List<RentEvent> events = new ArrayList<>();
+    public RentResponse create(Long userId, CreateRentRequest request) {
 
         var user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
 
-        for (CreateRentRequest request : requests) {
-            log.info("Create rent {} by user {} called", request, userId);
+        return create(user, request);
+    }
 
-            var product = productsRepository.findById(request.productId())
-                    .orElseThrow(() -> new NoSuchElementException("product", Product.class, request.productId()));
+    public List<RentResponse> create(Long userId, List<CreateRentRequest> requests) {
+        var user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
 
-            var sizeId = new SizeId()
-                    .setName(request.sizeName())
-                    .setProduct(product);
+        List<RentResponse> events = new ArrayList<>();
 
-            var size = sizesRepository.findById(sizeId)
-                    .orElseThrow(() -> new NoSuchElementException("size", Size.class, sizeId));
+        requests.forEach((request -> events.add(create(user, request))));
 
-            Integer availableCount = rentProcessor.countOfAvailableAt(
-                    size, request.startTime(), request.endTime());
+        return events;
+    }
 
-            if (availableCount < request.count()) {
-                throw new NotAvailableSizeException(request.sizeName(), request.count(), availableCount);
-            }
+    private RentResponse create(AppUser user, CreateRentRequest request) {
 
-            var rent = new RentEvent()
-                    .setUser(user)
-                    .setStartTime(request.startTime())
-                    .setEndTime(request.endTime())
-                    .setProduct(product)
-                    .setSize(size)
-                    .setCount(request.count())
-                    .setPrice(product.getPrice());
+        log.info("Create rent {} by user {} called", request, user.getUserId());
 
-            var saved = eventRepository.save(rent);
+        var product = productsRepository.findById(request.productId())
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, request.productId()));
 
-            events.add(saved);
+        var sizeId = new SizeId()
+                .setName(request.sizeName())
+                .setProduct(product);
 
+        var size = sizesRepository.findById(sizeId)
+                .orElseThrow(() -> new NoSuchElementException("size", Size.class, sizeId));
+
+        Integer availableCount = rentProcessor.countOfAvailableAt(
+                size, request.startTime(), request.endTime());
+
+        if (availableCount < request.count()) {
+            throw new NotAvailableSizeException(request.sizeName(), request.count(), availableCount);
         }
 
-        return rentMapper.map(events);
+        var rent = new RentEvent()
+                .setUser(user)
+                .setStartTime(request.startTime())
+                .setEndTime(request.endTime())
+                .setProduct(product)
+                .setSize(size)
+                .setCount(request.count())
+                .setPrice(product.getPrice());
 
+        var saved = eventRepository.save(rent);
+
+        return rentMapper.map(saved);
+
+    }
+
+    public ReceiptResponse finish(Long userId, Long employeeId, Long rentId) {
+        return finish(userId, employeeId, List.of(rentId));
+    }
+
+    public ReceiptResponse finish(Long userId, Long employeeId, List<Long> rentIds) {
+
+        var employee = usersRepository.findById(employeeId)
+                .orElseThrow(() -> new NoSuchElementException("employee", AppUser.class, employeeId));
+
+        var user = usersRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
+
+        Receipt receipt = new Receipt()
+                .setUser(user)
+                .setEmployee(employee);
+
+        List<RentEvent> rents = new ArrayList<>();
+
+        rentIds.forEach((rentId) -> rents.add(finish(receipt, rentId)));
+
+        receipt.setRents(rents);
+
+        var saved = receiptsRepository.save(receipt);
+
+        return receiptMapper.map(saved);
+    }
+
+    private RentEvent finish(Receipt receipt, Long rentId) {
+        var rent = eventRepository.findById(rentId)
+                .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
+
+        if (!(rent.getStatus() == RentStatus.ONGOING || rent.getStatus() == RentStatus.EXPIRED)) {
+            throw new WrongRentStatusException(rentId, rent.getStatus());
+        }
+
+        return rent
+                .setFinishedAt(OffsetDateTime.now())
+                .setReceipt(receipt)
+                .setStatus(RentStatus.AWAITING_PAYMENT);
     }
 
     public RentResponse prolong(Long rentId, ProlongRentRequest request) {

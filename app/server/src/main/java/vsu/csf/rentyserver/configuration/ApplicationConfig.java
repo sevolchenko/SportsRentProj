@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
+import vsu.csf.rentyserver.configuration.properties.FineProperties;
 import vsu.csf.rentyserver.configuration.properties.SecurityProperties;
 
 import java.time.Duration;
@@ -14,7 +15,9 @@ public record ApplicationConfig (
 
         @NotNull SecurityProperties security,
 
-        @NotNull Duration rentCheckDelay
+        @NotNull Duration rentCheckDelay,
+
+        @NotNull FineProperties fine
 
 ) {
 
@@ -26,6 +29,11 @@ public record ApplicationConfig (
     @Bean(name = "rentCheckDelay")
     public Duration rentCheckDelay() {
         return rentCheckDelay;
+    }
+
+    @Bean
+    public FineProperties fineProperties() {
+        return fine;
     }
 
 }

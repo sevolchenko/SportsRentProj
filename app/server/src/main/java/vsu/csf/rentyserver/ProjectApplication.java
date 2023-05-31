@@ -7,8 +7,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 import vsu.csf.rentyserver.configuration.ApplicationConfig;
 
-import java.net.InetAddress;
-
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationConfig.class)
 @EnableScheduling
@@ -19,8 +17,6 @@ public class ProjectApplication {
         var ctx = SpringApplication.run(ProjectApplication.class, args);
         ApplicationConfig config = ctx.getBean(ApplicationConfig.class);
         log.info("{}", config);
-
-        log.info(InetAddress.getLoopbackAddress().getHostName());
     }
 
 }

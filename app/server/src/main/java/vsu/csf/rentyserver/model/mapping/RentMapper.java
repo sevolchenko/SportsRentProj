@@ -1,10 +1,17 @@
 package vsu.csf.rentyserver.model.mapping;
 
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import vsu.csf.rentyserver.configuration.MapperConfiguration;
+import vsu.csf.rentyserver.configuration.properties.FineProperties;
+import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptItemResponse;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 import vsu.csf.rentyserver.model.entity.RentEvent;
 
+import java.time.Duration;
 import java.util.List;
 
 @Mapper(config = MapperConfiguration.class,
@@ -12,11 +19,34 @@ import java.util.List;
                 ProductMapper.class,
                 UserMapper.class,
                 SizeMapper.class
+        },
+        imports = {
+                Duration.class,
+                Period.class
         })
-public interface RentMapper {
+public abstract class RentMapper {
 
-    //@Mapping(target = "product", expression = "java(productMapper.mapToPreview(rentEvent.getProduct()))")
-    RentResponse map(RentEvent rentEvent);
+    @Autowired
+    PeriodFormatter periodFormatter;
 
-    List<RentResponse> map(List<RentEvent> rentEvents);
+    @Autowired
+    FineProperties fineProperties;
+
+    public abstract RentResponse map(RentEvent rentEvent);
+
+    public abstract List<RentResponse> map(List<RentEvent> rentEvents);
+
+    @Mapping(target = "duration",
+            expression = "java(Duration.between(rentEvent.getStartTime(), rentEvent.getFinishedAt()))")
+    @Mapping(target = "prettyDuration",
+            expression = "java(periodFormatter.print(Period.parse(duration.toString())))")
+    @Mapping(target = "fine",
+            expression = "java((int) (rentEvent.getStatus() == RentStatus.EXPIRED ? " +
+                    "duration" +
+                    ".minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))" +
+                    ".dividedBy(fineProperties.per()) * rentEvent.getPrice() * fineProperties.percent() : 0))")
+    public abstract ReceiptItemResponse mapToReceiptItem(RentEvent rentEvent);
+
+    public abstract List<ReceiptItemResponse> mapToReceiptItem(List<RentEvent> rentEvents);
+
 }

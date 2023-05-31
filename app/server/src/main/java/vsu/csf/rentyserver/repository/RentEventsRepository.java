@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface RentEventRepository extends JpaRepository<RentEvent, Long> {
+public interface RentEventsRepository extends JpaRepository<RentEvent, Long> {
 
     List<RentEvent> findRentEventsByUser_userIdEquals(Long userId);
 

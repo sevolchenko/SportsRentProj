@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
-import vsu.csf.rentyserver.exception.DuplicateElementException;
-import vsu.csf.rentyserver.exception.NoSuchElementException;
-import vsu.csf.rentyserver.exception.NotAvailableSizeException;
+import vsu.csf.rentyserver.exception.*;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.error.FieldErrorResponse;
 
@@ -91,7 +88,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("rent_id", ex.getMessage())), HttpStatus.FORBIDDEN);
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(WrongRentStatusException.class)
+    protected ResponseEntity<Object> handleWrongRentStatusException(WrongRentStatusException ex) {
+        return buildApiErrorResponse(ex, List.of(
+                FieldErrorResponse.of("status", ex.getStatus().name())
+        ), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(PSQLException.class)

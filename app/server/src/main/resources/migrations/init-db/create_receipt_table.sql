@@ -7,6 +7,5 @@ create table receipt
     user_id     bigint                   not null references app_user (user_id),
     employee_id bigint                   not null references app_user (user_id),
     created_at  timestamp with time zone not null,
-    pay_link    varchar                  not null,
     status      varchar                  not null default ('CREATED')
 );
