@@ -10,6 +10,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/home/product/datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,9 +26,8 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<String> strSizes = ["One", "Two"];
   // late ProductController _productController;
-
+  late DateTime _selectedDateTime = DateTime.now();
   late int _selectedSizeIndex;
   @override
   void initState() {
@@ -35,6 +35,12 @@ class _ProductScreenState extends State<ProductScreen> {
     // _productController = ProductController(context: context);
     // _productController.initProduct(widget.productId);
     _selectedSizeIndex = 0;
+  }
+
+  void _handleDateTimeChanged(DateTime dateTime) {
+    setState(() {
+      _selectedDateTime = dateTime;
+    });
   }
 
   @override
@@ -52,12 +58,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget _buildProductWidget(
       ProductResponse product, List<SizeResponse> sizes) {
-    // var currentSize = product!.sizes[0].sizeName;
-    // List<String> sizeNames =
-    //     product.sizes.map((size) => size.sizeName).toList();
-    // if (currentSize == "") {
-    //   currentSize = sizeNames.first;
-    // }
     return SafeArea(
       child: Scaffold(
         appBar: const MyAppBar(
@@ -74,10 +74,6 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget buildProduct(ProductResponse product, List<SizeResponse> sizes) {
-    // List<String> size_names = [];
-    // product.sizes.forEach((size) {
-    //   size_names.add(size.sizeName);
-    // });
     return Column(
       children: [
         Container(
@@ -147,7 +143,8 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 5.h,
                     ),
                     Text(
-                      product.sizes[0].countAvailableNow.toString(),
+                      product.sizes[_selectedSizeIndex].countAvailableNow
+                          .toString(),
                       style: GoogleFonts.raleway(
                           color: Colors.black,
                           fontStyle: FontStyle.italic,
@@ -202,11 +199,11 @@ class _ProductScreenState extends State<ProductScreen> {
         SizedBox(
           height: 5.h,
         ),
-        buildTextField(
-            '24.04.2023, 16:00',
-            'time',
-            textInputType: TextInputType.datetime,
-            (value) {}),
+        Container(
+          margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+          alignment: Alignment.center,
+          child: MyDateTimePicker(onSaved: _handleDateTimeChanged),
+        ),
         Column(
           children: [
             reusableText("Часов аренды"),
@@ -243,7 +240,9 @@ class _ProductScreenState extends State<ProductScreen> {
           ],
         ),
         SizedBox(height: 20.h),
-        buildButton("Уведомить по освобождении", "secondary", () {}),
+        buildButton("Уведомить по освобождении", "secondary", () {
+          print(_selectedDateTime);
+        }),
         SizedBox(
           height: 20.h,
         ),

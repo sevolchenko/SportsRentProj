@@ -1,7 +1,4 @@
 import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/size.dart';
-import 'package:client/api/repository/product_repository.dart';
-import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/size/size_event.dart';
 import 'package:client/bloc/size/size_state.dart';

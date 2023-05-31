@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget reusableText(String text, {Color color = Colors.black, double textSize = 14}) {
+Widget reusableText(String text,
+    {Color color = Colors.black, double textSize = 16}) {
   return Container(
-    margin: EdgeInsets.only(bottom: 5.h),
+    margin: EdgeInsets.only(bottom: 10.h),
     child: Text(
       text,
       overflow: TextOverflow.fade,

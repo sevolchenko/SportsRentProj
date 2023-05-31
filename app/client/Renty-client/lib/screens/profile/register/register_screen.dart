@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     // buildThirdPartyLogin(context),
                     Container(
-                        margin: EdgeInsets.only(top: 40.h),
+                        margin: EdgeInsets.only(top: 20.h),
                         padding: EdgeInsets.only(left: 25.w, right: 25.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,16 +46,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // SizedBox(
                             //   height: 1.h,
                             // ),
-                            buildTextField("Введите Ваше имя", 'name',
-                                (value) {
+                            buildTextField("Введите Ваше имя", 'name', (value) {
                               context
                                   .read<RegisterBloc>()
                                   .add(UserNameEvent(value));
                             }),
                             reusableText("Почта"),
 
-                            buildTextField(
-                                "Введите электронную почту", 'email',
+                            buildTextField("Введите электронную почту", 'email',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
@@ -71,27 +69,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
                             reusableText("Подтверждение пароля"),
 
-                            buildTextField(
-                                "Введите пароль снова", 'password',
+                            buildTextField("Введите пароль снова", 'password',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
                                   .add(RePasswordEvent(value));
                             }),
 
-                            buildButton("Зарегистрироваться", "primary", () {
-                              // RegisterController(context: context)
-                              //     .handleRegister();
+                            buildButton(
+                              "Зарегистрироваться",
+                              "primary",
+                              () {
+                                // RegisterController(context: context)
+                                //     .handleRegister();
 
-                              // Navigator.of(context).pushNamed("/application");
+                                // Navigator.of(context).pushNamed("/application");
 
-                              Navigator.of(context).push(
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignInScreen(),
+                                    builder: (context) => const SignInScreen(),
                                   ),
                                 );
-                            }),
+                              },
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            )
                           ],
                         ))
                   ]),
