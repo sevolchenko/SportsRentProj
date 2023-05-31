@@ -95,7 +95,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleWrongRentStatusException(WrongRentStatusException ex) {
         return buildApiErrorResponse(ex, List.of(
                 FieldErrorResponse.of("status", ex.getStatus().name())
-        ), HttpStatus.FORBIDDEN);
+        ), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(PSQLException.class)

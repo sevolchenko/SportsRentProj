@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import vsu.csf.rentyserver.exception.NoSuchElementException;
+import vsu.csf.rentyserver.exception.WrongRentStatusException;
 import vsu.csf.rentyserver.model.entity.RentEvent;
 import vsu.csf.rentyserver.model.entity.Size;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
@@ -12,7 +14,6 @@ import vsu.csf.rentyserver.repository.RentEventsRepository;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Transactional
@@ -57,33 +58,36 @@ public class RentProcessor {
         return countOfAvailableAt(size, OffsetDateTime.now());
     }
 
-    public Integer update() {
-        AtomicInteger count = new AtomicInteger();
 
-        var events = eventRepository.findAll();
+    public void startRent(Long rentId) {
+        var rent = eventRepository.findById(rentId)
+                .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
 
-        events.forEach((rent) -> {
-            switch (rent.getStatus()) {
-                case CREATED -> {
-                    if (rent.getStartTime().isBefore(OffsetDateTime.now())) {
-                        log.info("Rent {} started", rent.getRentId());
+        if (rent.getStatus() != RentStatus.CREATED) {
+            throw new WrongRentStatusException(rentId, rent.getStatus());
+        }
+        rent.setStatus(RentStatus.ONGOING);
 
-                        rent.setStatus(RentStatus.ONGOING);
-                        count.getAndIncrement();
-                    }
-                }
-                case ONGOING -> {
-                    if (rent.getEndTime().isBefore(OffsetDateTime.now())) {
-                        log.info("Rent {} expired", rent.getRentId());
+        log.info("Rent {} started", rentId);
+    }
 
-                        rent.setStatus(RentStatus.EXPIRED);
-                        count.getAndIncrement();
-                    }
-                }
-            }
-        });
+    public void expireRent(Long rentId) {
 
-        return count.get();
+        var rent = eventRepository.findById(rentId)
+                .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
+
+        if (rent.getStatus() == RentStatus.AWAITING_PAYMENT || rent.getStatus() == RentStatus.FINISHED) {
+            log.info("Rent {} already finished", rentId);
+            return;
+        }
+
+        if (rent.getStatus() != RentStatus.ONGOING) {
+            throw new WrongRentStatusException(rentId, rent.getStatus());
+        }
+
+        rent.setStatus(RentStatus.EXPIRED);
+
+        log.info("Rent {} expired", rentId);
     }
 
 }

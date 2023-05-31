@@ -7,18 +7,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JodaConfiguration {
-
+    // TODO: 31.05.2023 make it more pretty
     @Bean
     public PeriodFormatter periodFormatter() {
         return new PeriodFormatterBuilder()
                 .appendDays()
-                .appendSuffix("d")
+                .appendSuffix("days")
                 .appendHours()
-                .appendSuffix("h")
+                .appendSuffix("hours")
                 .appendMinutes()
-                .appendSuffix("m")
-                .appendSeconds()
-                .appendSuffix("s")
+                .appendSuffix("minutes")
                 .toFormatter();
     }
 

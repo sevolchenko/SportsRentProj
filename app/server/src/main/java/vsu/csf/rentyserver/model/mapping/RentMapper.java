@@ -41,10 +41,10 @@ public abstract class RentMapper {
     @Mapping(target = "prettyDuration",
             expression = "java(periodFormatter.print(Period.parse(duration.toString())))")
     @Mapping(target = "fine",
-            expression = "java((int) (rentEvent.getStatus() == RentStatus.EXPIRED ? " +
-                    "duration" +
+            expression = "java((int) (duration" +
                     ".minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))" +
-                    ".dividedBy(fineProperties.per()) * rentEvent.getPrice() * fineProperties.percent() : 0))")
+                    ".dividedBy(fineProperties.per()) * rentEvent.getPrice() * fineProperties.percent()" +
+                    "))")
     public abstract ReceiptItemResponse mapToReceiptItem(RentEvent rentEvent);
 
     public abstract List<ReceiptItemResponse> mapToReceiptItem(List<RentEvent> rentEvents);

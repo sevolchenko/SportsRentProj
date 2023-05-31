@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.component.RentProcessor;
+import vsu.csf.rentyserver.component.RentUpdaterScheduler;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.NotAvailableSizeException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
@@ -37,6 +38,7 @@ public class RentService {
     private final ReceiptsRepository receiptsRepository;
 
     private final RentProcessor rentProcessor;
+    private final RentUpdaterScheduler rentUpdaterScheduler;
 
     private final RentMapper rentMapper;
     private final ReceiptMapper receiptMapper;
@@ -123,6 +125,8 @@ public class RentService {
                 .setPrice(product.getPrice());
 
         var saved = eventRepository.save(rent);
+
+        rentUpdaterScheduler.addRentTrack(rent.getRentId(), rent.getStartTime(), rent.getEndTime());
 
         return rentMapper.map(saved);
 

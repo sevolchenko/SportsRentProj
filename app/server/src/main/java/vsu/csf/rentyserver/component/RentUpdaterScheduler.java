@@ -2,8 +2,12 @@ package vsu.csf.rentyserver.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -11,13 +15,25 @@ import org.springframework.stereotype.Component;
 public class RentUpdaterScheduler {
 
     private final RentProcessor rentProcessor;
+    private final ScheduledExecutorService executor;
 
-    @Scheduled(fixedDelayString = "#{@rentCheckDelay}")
-    private void update() {
-        log.info("Checking for rents updates");
+    public void addRentTrack(Long rentId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        executor.schedule(
+                () -> {
+                    log.info("Start rent {} called", rentId);
+                    rentProcessor.startRent(rentId);
+                },
+                Duration.between(OffsetDateTime.now(), startTime).toMillis(),
+                TimeUnit.MILLISECONDS
+        );
 
-        var updatedCount = rentProcessor.update();
-
-        log.info("Updated {} rents", updatedCount);
+        executor.schedule(
+                () -> {
+                    log.info("Exprire rent {} called", rentId);
+                    rentProcessor.expireRent(rentId);
+                },
+                Duration.between(OffsetDateTime.now(), endTime).toMillis(),
+                TimeUnit.MILLISECONDS
+        );
     }
 }
