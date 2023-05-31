@@ -2,6 +2,7 @@ package vsu.csf.rentyserver.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/rents")
 @RequiredArgsConstructor
+@Slf4j
 public class RentController {
 
     private final RentService rentService;
@@ -72,18 +74,33 @@ public class RentController {
     }
 
     @GetMapping("/{user_id}")
-    List<RentResponse> get(@PathVariable("user_id") Long userId) {
+    List<RentResponse> get(@PathVariable("user_id") Long userId,
+                           Authentication authentication) {
+        log.info("Employee {} requests all rents for user {}",
+                ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                userId);
+
         return rentService.getAll(userId);
     }
 
     @GetMapping("/{user_id}/ongoing")
-    List<RentResponse> getOngoing(@PathVariable("user_id") Long userId) {
+    List<RentResponse> getOngoing(@PathVariable("user_id") Long userId,
+                                  Authentication authentication) {
+        log.info("Employee {} requests ongoing rents for user {}",
+                ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                userId);
+
         return rentService.getOngoing(userId);
     }
 
     @GetMapping("/{user_id}/{rent_id}")
     RentResponse getById(@PathVariable("user_id") Long userId,
-                         @PathVariable("rent_id") Long rentId) {
+                         @PathVariable("rent_id") Long rentId,
+                         Authentication authentication) {
+        log.info("Employee {} requests for rent {} for user {}",
+                ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                rentId,
+                userId);
 
         if (!rentService.owns(userId, rentId)) {
             throw new AccessDeniedException("It's not %d user's rent"
