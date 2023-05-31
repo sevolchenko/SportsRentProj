@@ -81,4 +81,18 @@ class ProductApi {
     }
     return null;
   }
+
+  Future<int?> productCreate(Map<String, dynamic> body) async {
+    var path = 'catalog/products';
+    var response = await HttpUtil().post(path, data: body);
+    try {
+      if (response.statusCode == 200) {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при создании продукта");
+    }
+    return null;
+  }
+
 }

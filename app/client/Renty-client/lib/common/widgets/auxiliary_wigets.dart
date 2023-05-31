@@ -36,7 +36,7 @@ Widget buildLoadingWidget() {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Error occured: $error"),
+        Text("Произошла ошибка: $error"),
       ],
     ));
   }

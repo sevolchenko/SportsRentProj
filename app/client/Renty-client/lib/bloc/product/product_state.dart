@@ -1,3 +1,4 @@
+import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/size.dart';
 
@@ -28,4 +29,17 @@ class ProductsLoadedState extends ProductState {
 class ProductsErrorState extends ProductState {
   ProductsErrorState({required this.errorMessage});
   final String errorMessage;
+}
+
+class ProductInCreateState extends ProductState {
+  final List<CategoryResponse> categories;
+  ProductInCreateState({required this.categories});
+}
+
+class CreateProductState extends ProductState {
+  CreateProductState();
+}
+
+class DeleteProductState extends ProductState {
+  DeleteProductState();
 }

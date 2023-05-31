@@ -1,5 +1,6 @@
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';

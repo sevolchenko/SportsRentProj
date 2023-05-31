@@ -29,4 +29,9 @@ class ProductRepository {
   Future<void> sizeCreate(int id, Map<String, dynamic> size) async {
     await _productApi.sizeCreate(id, size);
   }
+
+  Future<void> productCreate(Map<String, dynamic> body) async {
+    await _productApi.productCreate(body);
+  }
+
 }

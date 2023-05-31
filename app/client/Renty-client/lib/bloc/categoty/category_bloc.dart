@@ -10,6 +10,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   late List<CategoryResponse> categories;
 
   CategoryBloc() : super(CategoriesLoadingState()) {
+    
     on<CategoriesLoadEvent>(
       (event, emit) async {
         categories = await _categoryRepository.getCategories();

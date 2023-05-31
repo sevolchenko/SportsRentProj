@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _homeController = HomeController(context: context);
     _homeController.init();
-    // bloc.getProductsPreview();
   }
 
   @override
