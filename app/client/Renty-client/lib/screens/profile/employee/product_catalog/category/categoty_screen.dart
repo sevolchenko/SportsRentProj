@@ -34,8 +34,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     _categoryController.initCategories();
 
     _loadCategories();
-
-    // bloc.getProductById(widget.productId);
   }
 
   void _loadCategories() async {

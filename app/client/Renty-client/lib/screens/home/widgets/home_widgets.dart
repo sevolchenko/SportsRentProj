@@ -69,10 +69,6 @@ Widget productsPreviewGrid(ProductPreviewResponse item) {
     ),
     child: Column(
       children: [
-        // Container(
-        //   margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
-        //   child: Image.asset("assets/images/image_2.png"),
-        // ),
         ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),

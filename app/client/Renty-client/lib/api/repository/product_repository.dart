@@ -1,6 +1,7 @@
 import 'package:client/api/apis/product_api.dart';
-import 'package:client/api/dto/request/size.dart';
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/size.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 
 class ProductRepository {
   final ProductApi _productApi = ProductApi();
@@ -13,11 +14,19 @@ class ProductRepository {
     return _productApi.products();
   }
 
-  Future<int?> sizeCountUpdate(int id, Map<String, dynamic> size) {
-    return _productApi.sizeCountUpdate(id, size);
+  Future<List<SizeResponse>> getProductSizes(int productId) {
+    return _productApi.productSizes(productId);
   }
 
-  Future<int?> sizeDelete(int id, Map<String, dynamic> size) {
-    return _productApi.sizeDelete(id, size);
+  Future<void> sizeCountUpdate(int id, Map<String, dynamic> size) async {
+    await _productApi.sizeCountUpdate(id, size);
+  }
+
+  Future<void> sizeDelete(int id, Map<String, dynamic> size) async {
+    await _productApi.sizeDelete(id, size);
+  }
+
+  Future<void> sizeCreate(int id, Map<String, dynamic> size) async {
+    await _productApi.sizeCreate(id, size);
   }
 }

@@ -50,14 +50,17 @@ Widget buildCategoryWidget(CategoryResponse category, BuildContext context) {
         child: buildTrashIcon(
           context,
           () {
-            context.read<CategoryBloc>().add(DeleteCategoryEvent(
-                  category.categoryId,
-                ));
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const CategoryScreen(),
-              ),
-            );
+            context.read<CategoryBloc>().add(
+                  DeleteCategoryEvent(
+                    category.categoryId,
+                  ),
+                );
+            Navigator.of(context).pop();
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const CategoryScreen(),
+            //   ),
+            // );
           },
         ),
       )

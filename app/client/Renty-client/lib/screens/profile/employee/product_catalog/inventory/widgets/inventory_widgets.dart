@@ -75,7 +75,9 @@ Widget inventoryItemGrid(ProductResponse product, BuildContext context) {
           price: "${product.price} Р/час"),
       Container(
         margin: EdgeInsets.only(left: 10.w),
-        child: buildTrashIcon(context, () {}),
+        child: buildTrashIcon(context, () {
+          // Todo удаление 
+        }),
       ),
     ],
   );

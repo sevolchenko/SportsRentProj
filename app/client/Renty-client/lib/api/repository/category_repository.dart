@@ -1,5 +1,6 @@
 import 'package:client/api/apis/category_api.dart';
 import 'package:client/api/dto/response/category.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 
 class CategoryRepository {
   final CategoryApi _categorytApi = CategoryApi();
@@ -8,11 +9,11 @@ class CategoryRepository {
     return _categorytApi.getCategories();
   }
 
-  Future<int?> deleteCategory(int id) {
-    return _categorytApi.deleteCategoryById(id);
+  Future<void> deleteCategory(int id) async {
+    await _categorytApi.deleteCategoryById(id);
   }
 
-  Future<int?> createCategory(Map<String, dynamic> body) {
-    return _categorytApi.createCategory(body);
+  Future<void> createCategory(Map<String, dynamic> body) async {
+    await _categorytApi.createCategory(body);
   }
 }

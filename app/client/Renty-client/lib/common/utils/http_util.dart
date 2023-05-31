@@ -23,7 +23,14 @@ class HttpUtil {
   }
 
   Future get(String path) async {
-    var response = dio.get(path);
+    var response = dio.get(
+      path,
+      options: Options(headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl",
+      }),
+    );
     return response;
   }
 

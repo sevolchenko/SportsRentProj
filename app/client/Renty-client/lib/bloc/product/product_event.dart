@@ -11,16 +11,8 @@ class ProductLoadEvent extends ProductEvent {
 
 class ProductsLoadEvent extends ProductEvent {}
 
-class ProductSizeUpdateEvent extends ProductEvent {
-  final ProductResponse product;
-  final int sizeIndex;
-  final int newTotal;
-  ProductSizeUpdateEvent(this.product, this.sizeIndex, this.newTotal);
-}
 
-class ProductSizeDeleteEvent extends ProductEvent {
-  final ProductResponse product;
-  final int sizeIndex;
 
-  ProductSizeDeleteEvent(this.product, this.sizeIndex);
-}
+
+
+

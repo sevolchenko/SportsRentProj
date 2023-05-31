@@ -10,14 +10,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   late ProductResponse product;
   late List<ProductResponse> products;
 
-  // final sizeCountController = StreamController<String>();
-  // Stream<String> get sizeCountStream => sizeCountController.stream;
-
   ProductBloc() : super(ProductLoadingState()) {
     on<ProductLoadEvent>(
       (event, emit) async {
         product = await _productRepository.getProductById(event.productId);
-        emit(ProductLoadedState(productItem: product));
+        emit(ProductLoadedState(productItem: product, sizes: product.sizes));
       },
     );
     on<ProductsLoadEvent>(
@@ -25,32 +22,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         products = await _productRepository.getProducts();
         emit(ProductsLoadedState(products: products));
       },
-    );
+    ); 
 
-    on<ProductSizeUpdateEvent>(
-      (event, emit) async {
-        SizeUpdateRequest sizeUpdateRequest = SizeUpdateRequest(
-            sizeName: event.product.sizes[event.sizeIndex].sizeName,
-            total: event.newTotal);
-        var jsonData = sizeUpdateRequest.toJson();
-        var code = await _productRepository.sizeCountUpdate(
-            event.product.id, jsonData);
-        if (code != null) {
-          event.product.sizes[event.sizeIndex].total = event.newTotal;
-        }
-        emit(ProductSizeCountUpdatedState(productItem: event.product));
-      },
-    );
 
-    on<ProductSizeDeleteEvent>(
-      (event, emit) async {
-        SizeDeleteRequest sizeDeleteRequest = SizeDeleteRequest(
-            sizeName: event.product.sizes[event.sizeIndex].sizeName);
-        var jsonData = sizeDeleteRequest.toJson();
-        _productRepository.sizeDelete(event.product.id, jsonData);
-        emit(ProductSizeDeleteState(productItem: event.product));
-      },
-    );
 
     // on<HomeProductItem>(_homeProductProjectionUtem);
   }

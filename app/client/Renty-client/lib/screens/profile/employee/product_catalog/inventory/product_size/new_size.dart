@@ -1,23 +1,48 @@
+import 'package:client/api/dto/response/product.dart';
+import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_state.dart';
+import 'package:client/bloc/size/size_bloc.dart';
+import 'package:client/bloc/size/size_event.dart';
+import 'package:client/bloc/size/size_state.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductSizeScreen extends StatefulWidget {
-  const ProductSizeScreen({super.key});
+  final ProductResponse? product;
+
+  const ProductSizeScreen({super.key, this.product});
 
   @override
   State<ProductSizeScreen> createState() => _ProductSizeScreenState();
 }
 
 class _ProductSizeScreenState extends State<ProductSizeScreen> {
+  late String _sizeName = "";
+  late int _sizeCount = 0;
 
-  
+  @override
+  void initState() {
+    super.initState();
+    // context.read<SizeBloc>().add(());
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SizeBloc, SizeState>(
+      builder: (context, state) {
+        return _buildNewSizeWidget();
+      },
+    );
+  }
+
+  Widget _buildNewSizeWidget() {
     return SafeArea(
       child: Scaffold(
         appBar: const MyAppBar(
@@ -28,29 +53,30 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 70.h,
+                height: 50.h,
               ),
-              buildTextField('Введите размер', 'size', (value) {}),
+              buildTextField('Введите размер', 'size', (value) {
+                _sizeName = value;
+              }),
               SizedBox(
                 height: 30.h,
               ),
-              buildTextField(
-                  'Введите количество',
-                  'quantity',
-                  textInputType: TextInputType.number,
-                  (value) {}),
+              buildTextField('Введите количество', 'quantity',
+                  textInputType: TextInputType.number, (value) {
+                _sizeCount = int.parse(value);
+              }),
               SizedBox(
-                height: 50.h,
+                height: 20.h,
               ),
               buildButton(
                 "Добавить",
                 "primary",
                 () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const RentScreen(),
-                  //   ),
-                  // );
+                  context.read<SizeBloc>().add(ProductSizeCreateEvent(
+                      widget.product!.id, _sizeName, _sizeCount));
+                  setState(() {
+                  });
+                  toastInfo(msg: "Размер ${_sizeName} успешно добавлен");
                 },
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/size.dart';
 
 abstract class ProductState {}
 
@@ -6,8 +7,9 @@ class ProductLoadingState extends ProductState {}
 
 class ProductLoadedState extends ProductState {
   final ProductResponse productItem;
+  final List<SizeResponse> sizes;
 
-  ProductLoadedState({required this.productItem});
+  ProductLoadedState({required this.productItem, required this.sizes});
 }
 
 class ProductErrorState extends ProductState {
@@ -21,14 +23,6 @@ class ProductsLoadedState extends ProductState {
   final List<ProductResponse> products;
 
   ProductsLoadedState({required this.products});
-}
-
-class ProductSizeCountUpdatedState extends ProductLoadedState {
-  ProductSizeCountUpdatedState({required super.productItem});
-}
-
-class ProductSizeDeleteState extends ProductLoadedState {
-  ProductSizeDeleteState({required super.productItem});
 }
 
 class ProductsErrorState extends ProductState {

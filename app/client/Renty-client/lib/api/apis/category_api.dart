@@ -23,20 +23,20 @@ class CategoryApi {
         return statusCode;
       } 
     } on DioError catch (e) {
-      toastInfo(msg: e.toString());
+      toastInfo(msg: "Ошибка при удалении категории");
     }
     return null;
   }
 
   Future<int?> createCategory(Map<String, dynamic> body) async {
     var path = 'catalog/categories';
-    var statusCode = await HttpUtil().post(path, data: body);
+    var response = await HttpUtil().post(path, data: body);
     try {
-      if (statusCode == 200) {
-        return statusCode;
+      if (response.statusCode == 200) {
+        return response.statusCode;
       } 
     } on DioError catch (e) {
-      toastInfo(msg: e.toString());
+      toastInfo(msg:  "Ошибка при создании категории");
     }
     return null;
   }

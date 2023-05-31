@@ -12,4 +12,6 @@ class AppRoutes {
   static const PRODUCT = "/product";
 
   static const CATEGORIES = "/categories";
+
+  static const PRODUCT_NEW_SIZE = "/inventory/new_size";
 }

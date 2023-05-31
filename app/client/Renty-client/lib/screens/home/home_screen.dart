@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_state.dart';
+import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/controller/home_controller.dart';
@@ -79,6 +81,10 @@ Widget _buildProductPreviewWidget(
                   (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+                        context
+                            .read<ProductBloc>()
+                            .add(ProductLoadEvent(productsPreview[index].productId));
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
