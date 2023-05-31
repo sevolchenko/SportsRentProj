@@ -1,7 +1,5 @@
 package vsu.csf.rentyserver.model.mapping;
 
-import org.joda.time.Period;
-import org.joda.time.format.PeriodFormatter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import vsu.csf.rentyserver.configuration.properties.FineProperties;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptItemResponse;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 import vsu.csf.rentyserver.model.entity.RentEvent;
+import vsu.csf.rentyserver.util.DurationUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -22,12 +21,9 @@ import java.util.List;
         },
         imports = {
                 Duration.class,
-                Period.class
+                DurationUtils.class
         })
 public abstract class RentMapper {
-
-    @Autowired
-    PeriodFormatter periodFormatter;
 
     @Autowired
     FineProperties fineProperties;
@@ -37,9 +33,9 @@ public abstract class RentMapper {
     public abstract List<RentResponse> map(List<RentEvent> rentEvents);
 
     @Mapping(target = "duration",
-            expression = "java(Duration.between(rentEvent.getStartTime(), rentEvent.getFinishedAt()))")
+            expression = "java(Duration.between(rentEvent.getStartTime(), rentEvent.getFinishedAt()).withNanos(0))")
     @Mapping(target = "prettyDuration",
-            expression = "java(periodFormatter.print(Period.parse(duration.toString())))")
+            expression = "java(DurationUtils.formatDuration(duration))")
     @Mapping(target = "fine",
             expression = "java((int) (duration" +
                     ".minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))" +

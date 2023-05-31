@@ -20,7 +20,6 @@
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
         <spring-dotenv.version>3.0.0</spring-dotenv.version>
         <springdoc.version>2.0.2</springdoc.version>
-        <joda-time.version>2.12.5</joda-time.version>
         <testcontainers.version>1.16.3</testcontainers.version>
         <junit.version>4.13.2</junit.version>
         <mockito.version>5.2.0</mockito.version>
@@ -58,11 +57,6 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
         </dependency>
 
         <dependency>
