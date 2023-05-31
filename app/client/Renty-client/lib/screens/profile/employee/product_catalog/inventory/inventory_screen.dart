@@ -93,7 +93,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductQuantityScreen(
-                                  product: products[index]),
+                                  productId: products[index].id),
                             ),
                           );
                         },

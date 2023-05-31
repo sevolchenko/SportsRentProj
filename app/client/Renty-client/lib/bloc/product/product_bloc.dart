@@ -1,4 +1,3 @@
-import 'package:client/api/dto/request/size.dart';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/bloc/product/product_event.dart';

@@ -7,7 +7,6 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/profile/employee/product_catalog/category/categoty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,9 +53,6 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
               ),
               buildTextField('Введите название', 'category', (value) {
                 _categoryname = value;
-                // context
-                //     .read<CategoryBloc>()
-                //     .add(CreateCategoryEvent(_selectedCategoryId, value));
               }),
               SizedBox(
                 height: 30.h,
@@ -96,16 +92,10 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                 () {
                   context.read<CategoryBloc>().add(
                       CreateCategoryEvent(_selectedCategoryId, _categoryname));
-                  toastInfo(
-                      msg: "Новая категория успешно добавлена");
+                  toastInfo(msg: "Новая категория успешно добавлена");
                   setState(() {
                     _selectedCategoryId = categories[0].categoryId;
                   });
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CategoryScreen(),
-                    ),
-                  );
                 },
               ),
             ],

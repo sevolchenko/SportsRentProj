@@ -109,6 +109,7 @@ Widget buildSizesChangeWidget(ProductResponse product,
                     ProductSizeUpdateEvent(product, sizeIndex,
                         productSize.total > 1 ? productSize.total - 1 : 1),
                   );
+                  
             },
           ),
           Container(

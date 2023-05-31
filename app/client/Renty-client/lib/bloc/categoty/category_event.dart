@@ -1,5 +1,3 @@
-import 'package:client/api/dto/request/category.dart';
-
 abstract class CategoryEvent {
   const CategoryEvent();
 }

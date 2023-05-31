@@ -4,6 +4,12 @@ abstract class SizeEvent {
   const SizeEvent();
 }
 
+class SizesLoadEvent extends SizeEvent {
+  final int productId;
+
+  SizesLoadEvent(this.productId);
+}
+
 class ProductSizeCreateEvent extends SizeEvent {
   final int productId;
   final String sizeName;

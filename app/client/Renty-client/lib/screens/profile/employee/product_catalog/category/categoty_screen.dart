@@ -24,22 +24,14 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   late CategoryController _categoryController;
-  late CategoryRepository _categoryRepository;
-  List<CategoryResponse> categories = [];
 
   @override
   void initState() {
     super.initState();
     _categoryController = CategoryController(context: context);
     _categoryController.initCategories();
-
-    _loadCategories();
   }
 
-  void _loadCategories() async {
-    _categoryRepository = CategoryRepository();
-    categories = await _categoryRepository.getCategories();
-  }
 
   @override
   Widget build(BuildContext context) {
