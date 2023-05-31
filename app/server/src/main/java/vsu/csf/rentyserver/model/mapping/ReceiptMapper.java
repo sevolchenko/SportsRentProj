@@ -14,7 +14,7 @@ import vsu.csf.rentyserver.model.entity.Receipt;
 public interface ReceiptMapper {
 
     @Mapping(target = "payLink", expression = "java(\"/pay?=%s\".formatted(receipt.getReceiptId()))")
-    @Mapping(target = "sum", expression = "java(items.stream().mapToInt((item) -> item.price() * item.count() + item.fine()).sum())")
+    @Mapping(target = "sum", expression = "java(rents.stream().mapToInt((rent) -> rent.price() * rent.count() + rent.fine()).sum())")
     ReceiptResponse map(Receipt receipt);
 
 }

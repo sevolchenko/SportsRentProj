@@ -156,6 +156,8 @@ public class RentService {
     }
 
     private RentEvent finish(Receipt receipt, Long rentId) {
+        log.info("Finish rent {} to receipt {} called", rentId, receipt.getReceiptId());
+
         var rent = eventRepository.findById(rentId)
                 .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
 
