@@ -10,14 +10,6 @@ class CategoriesLoadedState extends CategoryState {
   CategoriesLoadedState({required this.categories});
 }
 
-class CreateCategoryState extends CategoryState {
-  CreateCategoryState();
-}
-
-class DeleteCategoryState extends CategoryState {
-  DeleteCategoryState();
-}
-
 class CategoriesErrorState extends CategoryState {
   CategoriesErrorState({required this.errorMessage});
   final String errorMessage;

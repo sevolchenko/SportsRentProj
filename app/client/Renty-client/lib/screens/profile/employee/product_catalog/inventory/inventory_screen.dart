@@ -1,6 +1,5 @@
-import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/bloc/product/product_bloc.dart';
-import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
@@ -30,7 +29,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   void initState() {
     super.initState();
     _homeController = ProductController(context: context);
-    _homeController.initProducts();
+    _homeController.initProductsPreviews();
   }
 
   @override
@@ -42,8 +41,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        if (state is ProductsLoadedState) {
-          return _buildProductsWidget(state.products);
+        if (state is ProductsPreviewsLoadedState) {
+          return _buildProductsWidget(state.productsPreviews);
         } else {
           return buildLoadingWidget();
         }
@@ -51,8 +50,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
-  Widget _buildProductsWidget(List<ProductResponse> products) {
-    context.read<ProductBloc>().add(ProductsLoadEvent());
+  Widget _buildProductsWidget(List<ProductPreviewResponse> productsPreviews) {
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(
@@ -87,19 +85,20 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     childAspectRatio: 2.5,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    childCount: products.length,
+                    childCount: productsPreviews.length,
                     (BuildContext context, int index) {
+                      ProductPreviewResponse productPreview = productsPreviews[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductQuantityScreen(
-                                  productId: products[index].id),
+                                  productId: productPreview.productId),
                             ),
                           );
                         },
-                        child: inventoryItemGrid(products[index], context),
+                        child: inventoryItemGrid(productPreview, context),
                       );
                     },
                   ),

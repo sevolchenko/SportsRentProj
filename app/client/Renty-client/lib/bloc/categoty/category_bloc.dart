@@ -10,7 +10,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   late List<CategoryResponse> categories;
 
   CategoryBloc() : super(CategoriesLoadingState()) {
-    
     on<CategoriesLoadEvent>(
       (event, emit) async {
         categories = await _categoryRepository.getCategories();
@@ -20,16 +19,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     on<DeleteCategoryEvent>(
       (event, emit) async {
-        _categoryRepository.deleteCategory(event.categoryId);
-        emit(DeleteCategoryState());
+        await _categoryRepository.deleteCategory(event.categoryId);
+        categories = await _categoryRepository.getCategories();
+        emit(CategoriesLoadedState(categories: categories));
       },
     );
 
     on<CreateCategoryEvent>((event, emit) async {
       CategoryCreateRequest categoryCreateRequest = CategoryCreateRequest(
           parentCategoryId: event.parentCategotyId, name: event.name);
-      _categoryRepository.createCategory(categoryCreateRequest.toJson());
-      emit(CreateCategoryState());
+      await _categoryRepository.createCategory(categoryCreateRequest.toJson());
+      categories = await _categoryRepository.getCategories();
+      emit(CategoriesLoadedState(categories: categories));
     });
   }
 }

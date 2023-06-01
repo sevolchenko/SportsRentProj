@@ -1,5 +1,6 @@
 import 'package:client/api/apis/product_api.dart';
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/api/dto/response/size.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 
@@ -12,6 +13,10 @@ class ProductRepository {
 
   Future<List<ProductResponse>> getProducts() {
     return _productApi.products();
+  }
+
+  Future<List<ProductPreviewResponse>> getProductsPreviews() {
+    return _productApi.productsPreviews();
   }
 
   Future<List<SizeResponse>> getProductSizes(int productId) {

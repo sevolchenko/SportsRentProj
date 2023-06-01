@@ -14,6 +14,8 @@ class ProductLoadEvent extends ProductEvent {
 
 class ProductsLoadEvent extends ProductEvent {}
 
+class ProductsPreviewsLoadEvent extends ProductEvent {}
+
 class DeleteProductEvent extends ProductEvent {
   final int productId;
 

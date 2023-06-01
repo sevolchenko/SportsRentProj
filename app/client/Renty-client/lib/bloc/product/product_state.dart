@@ -1,5 +1,6 @@
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/api/dto/response/size.dart';
 
 abstract class ProductState {}
@@ -19,6 +20,12 @@ class ProductErrorState extends ProductState {
 }
 
 class ProductsLoadingState extends ProductState {}
+
+class ProductsPreviewsLoadedState extends ProductState {
+  final List<ProductPreviewResponse> productsPreviews;
+
+  ProductsPreviewsLoadedState({required this.productsPreviews});
+}
 
 class ProductsLoadedState extends ProductState {
   final List<ProductResponse> products;

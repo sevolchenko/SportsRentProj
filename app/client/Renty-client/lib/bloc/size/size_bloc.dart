@@ -1,6 +1,5 @@
 import 'package:client/api/dto/request/size.dart';
 import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/size.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/bloc/size/size_event.dart';
 import 'package:client/bloc/size/size_state.dart';
@@ -23,9 +22,9 @@ class SizeBloc extends Bloc<SizeEvent, SizeState> {
         SizeCreateRequest sizeDeleteRequest = SizeCreateRequest(
             sizeName: event.sizeName, total: event.productsCount);
         var jsonData = sizeDeleteRequest.toJson();
-        _productRepository.sizeCreate(event.productId, jsonData);
+        await _productRepository.sizeCreate(event.productId, jsonData);
         product = await _productRepository.getProductById(event.productId);
-        emit(ProductSizeCreateState());
+        emit(SizesLoadedState(product: product));
       },
     );
 
@@ -34,9 +33,9 @@ class SizeBloc extends Bloc<SizeEvent, SizeState> {
         SizeDeleteRequest sizeDeleteRequest =
             SizeDeleteRequest(sizeName: event.sizeName);
         var jsonData = sizeDeleteRequest.toJson();
-        _productRepository.sizeDelete(event.productId, jsonData);
+        await _productRepository.sizeDelete(event.productId, jsonData);
         product = await _productRepository.getProductById(event.productId);
-        emit(ProductSizeDeleteState());
+        emit(SizesLoadedState(product: product));
       },
     );
 
@@ -45,10 +44,11 @@ class SizeBloc extends Bloc<SizeEvent, SizeState> {
         SizeUpdateRequest sizeUpdateRequest = SizeUpdateRequest(
             sizeName: event.product.sizes[event.sizeIndex].sizeName,
             total: event.newTotal);
+        event.product.sizes[event.sizeIndex].total = event.newTotal;
         var jsonData = sizeUpdateRequest.toJson();
         await _productRepository.sizeCountUpdate(event.product.id, jsonData);
-        event.product.sizes[event.sizeIndex].total = event.newTotal;
-        emit(ProductSizeCountUpdatedState());
+        product = await _productRepository.getProductById(event.product.id);
+        emit(SizesLoadedState(product: product));
       },
     );
   }

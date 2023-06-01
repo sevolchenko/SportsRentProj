@@ -45,8 +45,8 @@ Widget buildProductQuantityWidget(
               childCount: product.sizes.length,
               (BuildContext context, int index) {
                 return GestureDetector(
-                    child: buildSizesChangeWidget(product, index,
-                        product.sizes[index], context));
+                    child: buildSizesChangeWidget(
+                        product, index, product.sizes[index], context));
               },
             ),
           ),
@@ -74,8 +74,8 @@ Widget buildProductQuantityWidget(
   );
 }
 
-Widget buildSizesChangeWidget(ProductResponse product, 
-    int sizeIndex, SizeResponse productSize, BuildContext context) {
+Widget buildSizesChangeWidget(ProductResponse product, int sizeIndex,
+    SizeResponse productSize, BuildContext context) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 30.w),
     child: Container(
@@ -104,12 +104,12 @@ Widget buildSizesChangeWidget(ProductResponse product,
             onPressed: () {
               if (productSize.total <= 1) {
                 toastInfo(msg: "Минимальное значение: 1");
+                return;
               }
               context.read<SizeBloc>().add(
                     ProductSizeUpdateEvent(product, sizeIndex,
                         productSize.total > 1 ? productSize.total - 1 : 1),
                   );
-                  
             },
           ),
           Container(
@@ -150,18 +150,10 @@ Widget buildSizesChangeWidget(ProductResponse product,
                         TextButton(
                           onPressed: () {
                             context.read<SizeBloc>().add(
-                                  ProductSizeDeleteEvent(
-                                      product.id, product.sizes[sizeIndex].sizeName),
+                                  ProductSizeDeleteEvent(product.id,
+                                      product.sizes[sizeIndex].sizeName),
                                 );
                             Navigator.of(context).pop();
-                            // context
-                            //     .read<ProductBloc>()
-                            //     .add(ProductLoadEvent(product.id));
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const InventoryScreen(),
-                            //   ),
-                            // );
                           },
                           child: const Text("Удалить"),
                         ),

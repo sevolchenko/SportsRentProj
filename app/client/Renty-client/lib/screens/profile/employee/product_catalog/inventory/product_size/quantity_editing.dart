@@ -47,7 +47,6 @@ class _ProductQuantityScreenState extends State<ProductQuantityScreen> {
   }
 
   Widget _buildProductQuantity(BuildContext context, ProductResponse product) {
-    context.read<SizeBloc>().add(SizesLoadEvent(product.id));
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(

@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/home/home_state.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
+import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/controller/home_controller.dart';
+import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/home/product/product_screen.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +25,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late HomeController _homeController;
+  late ProductController _productController;
+  // late ProductResponse _selectedProduct;
 
   @override
   void initState() {
     super.initState();
-
-    _homeController = HomeController(context: context);
-    _homeController.init();
+    _productController = ProductController(context: context);
+    _productController.initProductsPreviews();
   }
 
   @override
@@ -39,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        if (state is HomeLoadedState) {
-          return _buildProductPreviewWidget(state.productsPreview);
+        if (state is ProductsPreviewsLoadedState) {
+          return _buildProductPreviewWidget(state.productsPreviews);
         } else {
           return buildLoadingWidget();
         }
@@ -52,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Widget _buildProductPreviewWidget(
-    List<ProductPreviewResponse>? productsPreview) {
+    List<ProductPreviewResponse>? productsPreviews) {
   return SafeArea(
     child: Scaffold(
       backgroundColor: Colors.white,
@@ -76,23 +79,25 @@ Widget _buildProductPreviewWidget(
                   childAspectRatio: 0.7,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  childCount: productsPreview?.length,
+                  childCount: productsPreviews?.length,
                   (BuildContext context, int index) {
+                    ProductPreviewResponse productPreview =
+                        productsPreviews![index];
                     return GestureDetector(
                       onTap: () {
-                        context
-                            .read<ProductBloc>()
-                            .add(ProductLoadEvent(productsPreview[index].productId));
+                        // context
+                        //     .read<ProductBloc>()
+                        //     .add(ProductLoadEvent(productPreview.productId));
 
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProductScreen(
-                                productId: productsPreview[index].productId),
+                                productId: productPreview.productId),
                           ),
                         );
                       },
-                      child: productsPreviewGrid(productsPreview![index]),
+                      child: productsPreviewGrid(productPreview),
                     );
                   },
                 ),

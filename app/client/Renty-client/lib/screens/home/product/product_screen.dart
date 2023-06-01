@@ -9,6 +9,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/home/product/datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +26,14 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  // late ProductController _productController;
+  late ProductController _productController;
   late DateTime _selectedDateTime = DateTime.now();
   late int _selectedSizeIndex;
   @override
   void initState() {
     super.initState();
-    // _productController = ProductController(context: context);
-    // _productController.initProduct(widget.productId);
+    _productController = ProductController(context: context);
+    _productController.initProduct(widget.productId);
     _selectedSizeIndex = 0;
   }
 

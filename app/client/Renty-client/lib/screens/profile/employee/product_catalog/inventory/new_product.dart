@@ -52,7 +52,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        // TODO не заходит в нужное состояние
         if (state is ProductInCreateState) {
           _selectedCategoryId = state.categories[0].categoryId;
           return _buildProductCreateWidget(state.categories);
@@ -119,11 +118,12 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 Container(
                   width: 200.w,
                   height: 200.h,
+                  margin: EdgeInsets.only(top: 20.h),
                   decoration: BoxDecoration(
                     border: Border.all(color: kPrimaryColor, width: 4),
                   ),
                   child: _loadedPhoto == ""
-                      ? Image.asset("assets/images/image_2.png")
+                      ? Image.asset("assets/images/no_picture.jpg")
                       : Image.memory(
                           base64Decode(_loadedPhoto),
                           width: 130.h,
@@ -188,11 +188,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
                         _selectedCategoryId = categories[0].categoryId;
                       },
                     );
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const InventoryScreen(),
-                    //   ),
-                    // );
                   },
                 ),
                 SizedBox(

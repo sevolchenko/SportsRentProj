@@ -1,6 +1,7 @@
 import 'package:client/api/dto/request/product.dart';
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/api/repository/category_repository.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/bloc/product/product_event.dart';
@@ -12,9 +13,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final CategoryRepository _categoryRepository = CategoryRepository();
   late ProductResponse product;
   late List<ProductResponse> products;
+  late List<ProductPreviewResponse> productsPreviews;
   late List<CategoryResponse> categories;
 
   ProductBloc() : super(ProductLoadingState()) {
+    on<ProductsPreviewsLoadEvent>(
+      (event, emit) async {
+        productsPreviews = await _productRepository.getProductsPreviews();
+        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      },
+    );
+
     on<ProductsLoadEvent>(
       (event, emit) async {
         products = await _productRepository.getProducts();
@@ -42,16 +51,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           price: event.price,
           categoryId: event.categoryId,
           images: event.images);
-      _productRepository.productCreate(productCreateRequest.toJson());
-      products = await _productRepository.getProducts();
-      emit(CreateProductState());
+      await _productRepository.productCreate(productCreateRequest.toJson());
+      productsPreviews = await _productRepository.getProductsPreviews();
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
     });
 
     on<DeleteProductEvent>((event, emit) async {
-      _productRepository.productDelete(event.productId);
-      products = await _productRepository.getProducts();
-      emit(CreateProductState());
-      // products = await _productRepository.getProducts();
+      await _productRepository.productDelete(event.productId);
+      productsPreviews = await _productRepository.getProductsPreviews();
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
     });
 
     // on<HomeProductItem>(_homeProductProjectionUtem);

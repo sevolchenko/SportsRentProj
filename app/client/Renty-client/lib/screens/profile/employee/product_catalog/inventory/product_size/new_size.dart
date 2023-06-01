@@ -75,13 +75,7 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
                 () {
                   context.read<SizeBloc>().add(ProductSizeCreateEvent(
                       widget.product!.id, _sizeName, _sizeCount));
-                  // setState(() {});
                   toastInfo(msg: "Размер ${_sizeName} успешно добавлен");
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => ProductQuantityScreen(product: widget.product,),
-                  //   ),
-                  // );
                 },
               ),
             ],

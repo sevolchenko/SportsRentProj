@@ -32,7 +32,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     _categoryController.initCategories();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(
@@ -47,7 +46,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget _buildCategoriesWidget(List<CategoryResponse> categories) {
-    context.read<CategoryBloc>().add(CategoriesLoadEvent());
+    // context.read<CategoryBloc>().add(CategoriesLoadEvent());
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(

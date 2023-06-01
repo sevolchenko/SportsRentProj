@@ -1,4 +1,5 @@
 import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/common/values/colors.dart';
@@ -69,17 +70,20 @@ Widget buildInventoryItem(
   );
 }
 
-Widget inventoryItemGrid(ProductResponse product, BuildContext context) {
+Widget inventoryItemGrid(ProductPreviewResponse product, BuildContext context) {
   return Row(
     children: [
       buildInventoryItem(
-          image: product.images[0].image,
+          image: product.mainImage!.image,
           mainText: product.name,
           price: "${product.price} Р/час"),
       Container(
         margin: EdgeInsets.only(left: 10.w),
         child: buildTrashIcon(context, () {
-          context.read<ProductBloc>().add(DeleteProductEvent(product.id));
+          context
+              .read<ProductBloc>()
+              .add(DeleteProductEvent(product.productId));
+          Navigator.of(context).pop();
         }),
       ),
     ],
