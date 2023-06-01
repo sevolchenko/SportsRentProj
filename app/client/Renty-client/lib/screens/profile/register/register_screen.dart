@@ -30,7 +30,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             backgroundColor: Colors.white,
             appBar: const MyAppBar(
               title: 'Регистрация',
-              autoLeading: true,
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -38,31 +37,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     // buildThirdPartyLogin(context),
                     Container(
-                        margin: EdgeInsets.only(top: 40.h),
+                        margin: EdgeInsets.only(top: 20.h),
                         padding: EdgeInsets.only(left: 25.w, right: 25.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            reusableText("Имя", Colors.black),
+                            reusableText("Имя"),
                             // SizedBox(
                             //   height: 1.h,
                             // ),
-                            buildTextField("Введите Ваше имя", 'name',
-                                (value) {
+                            buildTextField("Введите Ваше имя", 'name', (value) {
                               context
                                   .read<RegisterBloc>()
                                   .add(UserNameEvent(value));
                             }),
-                            reusableText("Почта", Colors.black),
+                            reusableText("Почта"),
 
-                            buildTextField(
-                                "Введите электронную почту", 'email',
+                            buildTextField("Введите электронную почту", 'email',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
                                   .add(EmailEvent(value));
                             }),
-                            reusableText("Пароль", Colors.black),
+                            reusableText("Пароль"),
 
                             buildTextField("Введите пароль", 'password',
                                 (value) {
@@ -70,29 +67,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   .read<RegisterBloc>()
                                   .add(PasswordEvent(value));
                             }),
-                            reusableText("Подтверждение пароля", Colors.black),
+                            reusableText("Подтверждение пароля"),
 
-                            buildTextField(
-                                "Введите пароль снова", 'password',
+                            buildTextField("Введите пароль снова", 'password',
                                 (value) {
                               context
                                   .read<RegisterBloc>()
                                   .add(RePasswordEvent(value));
                             }),
 
-                            buildButton("Зарегистрироваться", "primary", () {
-                              // RegisterController(context: context)
-                              //     .handleRegister();
+                            buildButton(
+                              "Зарегистрироваться",
+                              "primary",
+                              () {
+                                // RegisterController(context: context)
+                                //     .handleRegister();
 
-                              // Navigator.of(context).pushNamed("/application");
+                                // Navigator.of(context).pushNamed("/application");
 
-                              Navigator.of(context).push(
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignInScreen(),
+                                    builder: (context) => const SignInScreen(),
                                   ),
                                 );
-                            }),
+                              },
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            )
                           ],
                         ))
                   ]),

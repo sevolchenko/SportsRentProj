@@ -1,19 +1,19 @@
-import 'package:client/common/values/colors.dart';
+import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_state.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/common/widgets/icons.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/home/widgets/home_widgets.dart';
+import 'package:client/controller/product_controller.dart';
+import 'package:client/screens/profile/employee/product_catalog/catalog_menu.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_quantity.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/quantity_editing.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/widgets/inventory_widgets.dart';
-import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
@@ -23,13 +23,45 @@ class InventoryScreen extends StatefulWidget {
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
+  late ProductController _homeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _homeController = ProductController(context: context);
+    _homeController.initProductsPreviews();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProductBloc, ProductState>(
+      builder: (context, state) {
+        if (state is ProductsPreviewsLoadedState) {
+          return _buildProductsWidget(state.productsPreviews);
+        } else {
+          return buildLoadingWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildProductsWidget(List<ProductPreviewResponse> productsPreviews) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: MyAppBar(
           title: "Инвентарь",
-          autoLeading: true,
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CatalogMenu(),
+              ),
+            );
+          },
         ),
         body: Container(
           child: CustomScrollView(
@@ -50,30 +82,23 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     crossAxisCount: 1,
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 15,
-                    childAspectRatio: 3,
+                    childAspectRatio: 2.5,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    childCount: 10,
+                    childCount: productsPreviews.length,
                     (BuildContext context, int index) {
+                      ProductPreviewResponse productPreview = productsPreviews[index];
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
+                          Navigator.push(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductQuantityScreen(),
+                              builder: (context) => ProductQuantityScreen(
+                                  productId: productPreview.productId),
                             ),
                           );
                         },
-                        child: Row(
-                          children: [
-                            buildInventoryItem(
-                                imagePath: "assets/images/image_2.png", mainText: 'Велосипед горный Stels Focus', price: "1000 Р/час"),
-                            Container(
-                              margin: EdgeInsets.only(left: 10.w),
-                              child: buildTrashIcon(() {}),
-                            ),
-                          ],
-                        ),
+                        child: inventoryItemGrid(productPreview, context),
                       );
                     },
                   ),

@@ -1,13 +1,18 @@
 //unify BlocProvider and routes and screens
-import 'package:client/bloc/application/application_bloc.dart';
+import 'package:client/bloc/categoty/category_bloc.dart';
 import 'package:client/bloc/home/home_bloc.dart';
+import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/profile/profile_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/sign_in/sign_in_bloc.dart';
+import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/common/routes/names.dart';
 import 'package:client/global.dart';
 import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
+import 'package:client/screens/home/product/product_screen.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/categoty_screen.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/new_size.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
@@ -33,6 +38,12 @@ class AppScreens {
             create: (_) => HomeBloc(),
           )),
       ScreenEntity(
+          route: AppRoutes.PRODUCT,
+          screen: const ProductScreen(),
+          bloc: BlocProvider(
+            create: (_) => ProductBloc(),
+          )),
+      ScreenEntity(
           route: AppRoutes.SIGN_IN,
           screen: const SignInScreen(),
           bloc: BlocProvider(
@@ -49,6 +60,18 @@ class AppScreens {
           screen: const ProfileScreen(),
           bloc: BlocProvider(
             create: (_) => ProfileBloc(),
+          )),
+      ScreenEntity(
+          route: AppRoutes.CATEGORIES,
+          screen: const CategoryScreen(),
+          bloc: BlocProvider(
+            create: (_) => CategoryBloc(),
+          )),
+      ScreenEntity(
+          route: AppRoutes.PRODUCT_NEW_SIZE,
+          screen: const ProductSizeScreen(),
+          bloc: BlocProvider(
+            create: (_) => SizeBloc(),
           )),
       // ScreenEntity(
       //     route: AppRoutes.APPLICATION,

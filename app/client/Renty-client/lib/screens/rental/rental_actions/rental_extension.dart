@@ -22,15 +22,13 @@ class _RentalExtensionScreenState extends State<RentalExtensionScreen> {
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Продление срока аренды',
-        autoLeading: true,
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
             SizedBox(height: 70.h),
-            reusableText('Новое время окончания аренды', Colors.black,
-                textSize: 20),
+            reusableText('Новое время окончания аренды', textSize: 20),
             SizedBox(height: 10.h),
             buildTextField(
                 '24.04.2023, 19:00', 'time', bottomMargin: 0, (value) {}),

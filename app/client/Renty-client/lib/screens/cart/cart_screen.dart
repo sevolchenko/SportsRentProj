@@ -4,7 +4,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/screens/cart/widgets/cart_widgets.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_quantity.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/quantity_editing.dart';
 import 'package:client/screens/rental/rental_actions/rental_info.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
@@ -37,14 +37,7 @@ class CartScreen extends StatelessWidget {
                   childCount: 10,
                   (BuildContext context, int index) {
                     return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductQuantityScreen(),
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.w),

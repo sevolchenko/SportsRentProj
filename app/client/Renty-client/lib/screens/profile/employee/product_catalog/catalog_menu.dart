@@ -1,7 +1,7 @@
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/screens/profile/employee/product_catalog/category/categoty_managment.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/categoty_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -22,7 +22,6 @@ class _CatalogMenuState extends State<CatalogMenu> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Управление каталогом",
-          autoLeading: true,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -51,7 +50,7 @@ class _CatalogMenuState extends State<CatalogMenu> {
                 () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const CategoryManagmentScreen(),
+                      builder: (context) => const CategoryScreen(),
                     ),
                   );
                 },

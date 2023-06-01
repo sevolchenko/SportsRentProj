@@ -20,7 +20,6 @@ class _RentalPaymentScreenState extends State<RentalPaymentScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: 'Оплата аренды',
-          autoLeading: true,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

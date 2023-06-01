@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:client/api/dto/response/product_preview.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +37,7 @@ Widget sortAndFilter() {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: (){},
+          onTap: () {},
           child: SizedBox(
               width: 20.w,
               height: 20.h,
@@ -44,7 +47,7 @@ Widget sortAndFilter() {
               )),
         ),
         GestureDetector(
-          onTap: (){},
+          onTap: () {},
           child: SizedBox(
               width: 20.w,
               height: 20.h,
@@ -58,7 +61,7 @@ Widget sortAndFilter() {
   );
 }
 
-Widget productsGrid() {
+Widget productsPreviewGrid(ProductPreviewResponse item) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
@@ -66,17 +69,13 @@ Widget productsGrid() {
     ),
     child: Column(
       children: [
-        // Container(
-        //   margin: EdgeInsets.only(top: 5.h, left: 3.w, right: 3.w),
-        //   child: Image.asset("assets/images/image_2.png"),
-        // ),
         ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-          child: Image.asset(
-            "assets/images/image_2.png",
-            // width: 90.h,
-            // height: 90.h,
+          child: Image.memory(
+            base64Decode(item.mainImage!.image),
+            width: 130.h,
+            height: 130.h,
           ),
         ),
         const Divider(
@@ -84,18 +83,20 @@ Widget productsGrid() {
           thickness: 3,
           color: kPrimaryColor,
         ),
-        Container(
-          padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
-          child: Text(
-            "Велосипед горный Stels Focus",
-            maxLines: 2,
-            overflow: TextOverflow.fade,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.raleway(
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
+            child: Text(
+              item.name,
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.raleway(
                 color: Colors.black,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.normal,
-                fontSize: 14.sp,
+                fontSize: 16.sp,
+              ),
             ),
           ),
         ),
@@ -107,10 +108,10 @@ Widget productsGrid() {
           color: Colors.black,
         ),
         Container(
-          padding: EdgeInsets.only(top: 2.h, right: 10.w),
+          padding: EdgeInsets.only(top: 2.h, right: 10.w, bottom: 3.h),
           alignment: Alignment.centerRight,
           child: Text(
-            "1000 Р/час",
+            "${item.price.toString()} Р/час",
             maxLines: 2,
             overflow: TextOverflow.fade,
             style: GoogleFonts.raleway(

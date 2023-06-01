@@ -3,15 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// GoogleFonts googleFontStyle() {
-//   return GoogleFonts(
-
-//   );
-// }
-
-Widget reusableText(String text, Color color, {double textSize = 14}) {
+Widget reusableText(String text,
+    {Color color = Colors.black, double textSize = 16}) {
   return Container(
-    margin: EdgeInsets.only(bottom: 5.h),
+    margin: EdgeInsets.only(bottom: 10.h),
     child: Text(
       text,
       overflow: TextOverflow.fade,
@@ -23,7 +18,9 @@ Widget reusableText(String text, Color color, {double textSize = 14}) {
 
 Widget buildTextField(
     String hintText, String textType, void Function(String value)? func,
-    {double height = 50, double bottomMargin = 30}) {
+    {double height = 50,
+    double bottomMargin = 30,
+    TextInputType textInputType = TextInputType.multiline}) {
   return Container(
     margin: EdgeInsets.only(bottom: bottomMargin.h),
     width: 313.w,
@@ -40,7 +37,7 @@ Widget buildTextField(
           child: TextField(
             onChanged: (value) => func!(value),
             textAlign: TextAlign.left,
-            keyboardType: TextInputType.multiline,
+            keyboardType: textInputType,
             decoration: InputDecoration(
               hintText: hintText,
               border: const OutlineInputBorder(
@@ -78,7 +75,7 @@ Widget buildTextInfo(String title, String content) {
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(top: 30.h, left: 20.w, right: 20.w),
-          child: reusableText(title, Colors.black),
+          child: reusableText(title),
         ),
         Container(
           alignment: Alignment.centerLeft,

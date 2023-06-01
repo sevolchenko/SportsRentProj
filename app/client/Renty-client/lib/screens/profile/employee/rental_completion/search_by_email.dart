@@ -20,7 +20,9 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: 'Поиск по email', autoLeading: true,),
+        appBar: const MyAppBar(
+          title: 'Поиск по email',
+        ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Container(
@@ -29,13 +31,14 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                reusableText("Почта", Colors.black),
+                reusableText("Почта"),
                 SizedBox(
                   height: 5.h,
                 ),
                 buildTextField(
                     "Введите электронную почту клиента",
                     'email',
+                    textInputType: TextInputType.emailAddress,
                     height: 58,
                     (value) {}),
                 SizedBox(
