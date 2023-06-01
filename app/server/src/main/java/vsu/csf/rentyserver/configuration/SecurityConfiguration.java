@@ -44,6 +44,9 @@ public class SecurityConfiguration {
                 .requestMatchers(new AntPathRequestMatcher("/rents/my/**")).authenticated()
                 .requestMatchers(new AntPathRequestMatcher("/rents/**")).hasAuthority(Permission.WRITE.getPermission())
 
+                .requestMatchers(new AntPathRequestMatcher("/receipts/my/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/receipts/**")).hasAuthority(Permission.WRITE.getPermission())
+
                 .requestMatchers(new AntPathRequestMatcher("/**", "GET")).hasAuthority(Permission.READ.getPermission())
                 .requestMatchers(new AntPathRequestMatcher("/**")).hasAuthority(Permission.WRITE.getPermission())
                 .and()

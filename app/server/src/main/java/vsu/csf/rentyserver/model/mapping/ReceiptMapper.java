@@ -6,6 +6,8 @@ import vsu.csf.rentyserver.configuration.MapperConfiguration;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.entity.Receipt;
 
+import java.util.List;
+
 @Mapper(config = MapperConfiguration.class,
         uses = {
                 UserMapper.class,
@@ -17,4 +19,5 @@ public interface ReceiptMapper {
     @Mapping(target = "sum", expression = "java(rents.stream().mapToInt((rent) -> rent.price() * rent.count() + rent.fine()).sum())")
     ReceiptResponse map(Receipt receipt);
 
+    List<ReceiptResponse> map(List<Receipt> receipts);
 }
