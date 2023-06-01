@@ -1,10 +1,10 @@
 import 'package:client/api/dto/response/category.dart';
-import 'package:client/bloc/categoty/category_bloc.dart';
-import 'package:client/bloc/categoty/category_event.dart';
+import 'package:client/bloc/category/category_bloc.dart';
+import 'package:client/bloc/category/category_event.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/icons.dart';
 import 'package:client/screens/home/home_screen.dart';
-import 'package:client/screens/profile/employee/product_catalog/category/categoty_screen.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +34,7 @@ Widget buildCategoryWidget(CategoryResponse category, BuildContext context) {
             ),
             Container(
               child: Text(
-                category.parentCategoty.name ?? "",
+                category.parentcategory.name ?? "",
                 style: GoogleFonts.raleway(
                     color: Colors.black,
                     fontStyle: FontStyle.italic,

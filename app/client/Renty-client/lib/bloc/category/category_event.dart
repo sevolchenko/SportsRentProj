@@ -11,8 +11,8 @@ class DeleteCategoryEvent extends CategoryEvent {
 }
 
 class CreateCategoryEvent extends CategoryEvent {
-  final int parentCategotyId;
+  final int parentCategoryId;
   final String name;
 
-  CreateCategoryEvent(this.parentCategotyId, this.name);
+  CreateCategoryEvent(this.parentCategoryId, this.name);
 }

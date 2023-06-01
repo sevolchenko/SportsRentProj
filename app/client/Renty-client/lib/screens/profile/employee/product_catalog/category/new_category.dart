@@ -1,7 +1,7 @@
 import 'package:client/api/dto/response/category.dart';
-import 'package:client/bloc/categoty/category_bloc.dart';
-import 'package:client/bloc/categoty/category_event.dart';
-import 'package:client/bloc/categoty/category_state.dart';
+import 'package:client/bloc/category/category_bloc.dart';
+import 'package:client/bloc/category/category_event.dart';
+import 'package:client/bloc/category/category_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
