@@ -3,6 +3,7 @@ package vsu.csf.rentyserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
@@ -13,6 +14,7 @@ import vsu.csf.rentyserver.repository.AppUsersRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final AppUsersRepository usersRepository;
@@ -35,6 +37,7 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
     public UserResponse findById(Long userId) {
 
         var user = usersRepository.findById(userId)
@@ -43,6 +46,7 @@ public class UserService {
         return userMapper.map(user);
     }
 
+    @Transactional(readOnly = true)
     public UserResponse findByEmail(String email) {
 
         var user = usersRepository.findByEmail(email)

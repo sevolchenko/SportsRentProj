@@ -2,6 +2,7 @@ package vsu.csf.rentyserver.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
@@ -12,6 +13,7 @@ import vsu.csf.rentyserver.service.UserService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -27,8 +29,13 @@ public class UserController {
         return userService.findById(user.getUserId());
     }
 
-    @GetMapping("/find")
-    public UserResponse findByEmail(@RequestParam("email") String email) {
+    @GetMapping("/search")
+    public UserResponse findByEmail(@RequestParam("email") String email,
+                                    Authentication authentication) {
+        log.info("Employee {} searching user by email {}",
+                ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                email);
+
         return userService.findByEmail(email);
     }
 

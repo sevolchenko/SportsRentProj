@@ -48,12 +48,12 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date validity = new Date(now.getTime() + securityProperties.jwtExpiresAfter().toMillis());
 
-        return Jwts.builder()
+        return "Bearer %s".formatted(Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(getSecretKey())
-                .compact();
+                .compact());
     }
 
     public boolean validateToken(String token) {
@@ -72,6 +72,10 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        String header = request.getHeader("Authorization");
+        if (header == null) {
+            return null;
+        }
+        return header.substring("Bearer ".length());
     }
 }

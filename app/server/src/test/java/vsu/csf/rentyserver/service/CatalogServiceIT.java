@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.IntegrationEnvironment;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateImageRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.*;
 import vsu.csf.rentyserver.model.entity.Category;
 import vsu.csf.rentyserver.model.entity.Image;
 import vsu.csf.rentyserver.model.entity.Product;
@@ -936,7 +933,7 @@ public class CatalogServiceIT extends IntegrationEnvironment {
         productsRepository.saveAndFlush(product);
 
         //when
-        var response = catalogService.deleteSizeForProduct(product.getProductId(), size1.getSizeId().getName());
+        var response = catalogService.deleteSizeForProduct(product.getProductId(), new DeleteSizeRequest(size1.getSizeId().getName()));
 
         //then
         assertThat(response, is(notNullValue()));

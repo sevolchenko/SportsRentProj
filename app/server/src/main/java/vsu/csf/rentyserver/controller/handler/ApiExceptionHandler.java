@@ -1,6 +1,7 @@
 package vsu.csf.rentyserver.controller.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -8,20 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
-import vsu.csf.rentyserver.exception.DuplicateElementException;
-import vsu.csf.rentyserver.exception.NoSuchElementException;
+import vsu.csf.rentyserver.exception.*;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.error.FieldErrorResponse;
 
-import javax.naming.AuthenticationException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,6 +66,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of(ex.getVarName(), ex.getMessage())), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NotAvailableSizeException.class)
+    protected ResponseEntity<Object> handleNotAvailableSizeException(NotAvailableSizeException ex) {
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("count", ex.getMessage())), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.UNAUTHORIZED);
@@ -81,6 +86,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        return buildApiErrorResponse(ex, List.of(FieldErrorResponse.of("login", ex.getMessage())), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(WrongRentStatusException.class)
+    protected ResponseEntity<Object> handleWrongRentStatusException(WrongRentStatusException ex) {
+        return buildApiErrorResponse(ex, List.of(
+                FieldErrorResponse.of("status", ex.getStatus().name())
+        ), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(PSQLException.class)
+    protected ResponseEntity<Object> handlePSQLException(PSQLException ex) {
+        return buildApiErrorResponse(ex,
+                List.of(FieldErrorResponse.of(ex.getServerErrorMessage().getTable(), ex.getServerErrorMessage().getDetail())),
+                HttpStatus.CONFLICT);
+    }
 
     private ResponseEntity<Object> buildApiErrorResponse(Exception ex, List<FieldErrorResponse> errors, HttpStatus status) {
         log.warn("Received errors: {}; Response code: {}; Exception: {}: {} {};",

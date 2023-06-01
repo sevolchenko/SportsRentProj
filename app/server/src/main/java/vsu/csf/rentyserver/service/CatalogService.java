@@ -9,6 +9,7 @@ import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
 import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.DeleteSizeRequest;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -26,6 +27,7 @@ import vsu.csf.rentyserver.repository.CategoriesRepository;
 import vsu.csf.rentyserver.repository.ProductsRepository;
 import vsu.csf.rentyserver.repository.SizesRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -172,17 +174,22 @@ public class CatalogService {
         return sizeMapper.map(saved);
     }
 
-    public SizeResponse deleteSizeForProduct(Long productId, String sizeName) {
-        log.info("Delete size {} to product id {} called", sizeName, productId);
+    public SizeResponse deleteSizeForProduct(Long productId, DeleteSizeRequest request) {
+        log.info("Delete size {} to product id {} called", request.sizeName(), productId);
 
         var product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
         var sizeId = new SizeId()
                 .setProduct(product)
-                .setName(sizeName);
+                .setName(request.sizeName());
 
-        var deleted = sizesRepository.removeSizeBySizeIdEquals(sizeId);
+        var sizes = new ArrayList<>(product.getSizes());
+        sizes.removeIf((size) -> size.getSizeId().equals(sizeId));
+
+        product.setSizes(sizes);
+
+        var deleted = sizesRepository.deleteSizeBySizeIdEquals(sizeId);
 
         if (deleted.isEmpty()) {
             throw new NoSuchElementException("size", Size.class, sizeId);
