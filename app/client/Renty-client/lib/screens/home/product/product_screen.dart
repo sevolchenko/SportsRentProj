@@ -104,29 +104,31 @@ class _ProductScreenState extends State<ProductScreen> {
         reusableText("Размер"),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 30.w),
-          child: DropdownButtonFormField(
-            value: _selectedSizeIndex,
-            hint: Text('Выберите размер'),
-            items: sizes.map((size) {
-              return DropdownMenuItem(
-                value: sizes.indexOf(size),
-                child: Text(
-                  size.sizeName,
-                  style: GoogleFonts.raleway(
-                    color: Colors.black,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.sp,
-                  ),
+          child: sizes.length == 0
+              ? Text("Размеры отсутсвуют")
+              : DropdownButtonFormField(
+                  value: _selectedSizeIndex,
+                  hint: Text('Выберите размер'),
+                  items: sizes.map((size) {
+                    return DropdownMenuItem(
+                      value: sizes.indexOf(size),
+                      child: Text(
+                        size.sizeName,
+                        style: GoogleFonts.raleway(
+                          color: Colors.black,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedSizeIndex = value ?? 0;
+                    });
+                  },
                 ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedSizeIndex = value ?? 0;
-              });
-            },
-          ),
         ),
         SizedBox(height: 20.h),
         Container(
@@ -142,15 +144,17 @@ class _ProductScreenState extends State<ProductScreen> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    Text(
-                      product.sizes[_selectedSizeIndex].countAvailableNow
-                          .toString(),
-                      style: GoogleFonts.raleway(
-                          color: Colors.black,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 22.sp),
-                    ),
+                    sizes.length == 0
+                        ? Text("Недоступно")
+                        : Text(
+                            product.sizes[_selectedSizeIndex].countAvailableNow
+                                .toString(),
+                            style: GoogleFonts.raleway(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 22.sp),
+                          ),
                   ],
                 ),
               ),
@@ -170,14 +174,16 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(
-                            product.sizes[0].total.toString(),
-                            style: GoogleFonts.raleway(
-                                color: Colors.black,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 22.sp),
-                          ),
+                          child: sizes.length == 0
+                              ? Text("Всего 0")
+                              : Text(
+                                  product.sizes[0].total.toString(),
+                                  style: GoogleFonts.raleway(
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 22.sp),
+                                ),
                         ),
                         IconButton(
                           icon: const Icon(
