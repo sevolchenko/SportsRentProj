@@ -5,13 +5,13 @@ import 'package:client/bloc/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  late List<ProductPreviewResponse> products;
+  late List<ProductPreviewResponse> productPreviews;
   final HomeRepository _homeRepository = HomeRepository();
   HomeBloc() : super(HomeLoadingState()) {
     on<HomeLoadEvent>(
       (event, emit) async {
-        products = await _homeRepository.getProducts();
-        emit(HomeLoadedState(productsPreview: products));
+        productPreviews = await _homeRepository.getProducts();
+        emit(HomeLoadedState(productsPreview: productPreviews));
       },
     );
   }

@@ -95,4 +95,16 @@ class ProductApi {
     return null;
   }
 
+  Future<int?> productDelete(int id) async {
+    var path = 'catalog/products/${id}';
+    var code = await HttpUtil().delete(path, null);
+    try {
+      if (code == 200) {
+        return code;
+      }
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при удалении продукта");
+    }
+    return null;
+  }
 }

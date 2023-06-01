@@ -1,4 +1,4 @@
-import 'package:client/api/dto/request/product_create.dart';
+import 'package:client/api/dto/request/product.dart';
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/repository/category_repository.dart';
@@ -43,6 +43,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           categoryId: event.categoryId,
           images: event.images);
       _productRepository.productCreate(productCreateRequest.toJson());
+      products = await _productRepository.getProducts();
+      emit(CreateProductState());
+    });
+
+    on<DeleteProductEvent>((event, emit) async {
+      _productRepository.productDelete(event.productId);
+      products = await _productRepository.getProducts();
       emit(CreateProductState());
       // products = await _productRepository.getProducts();
     });

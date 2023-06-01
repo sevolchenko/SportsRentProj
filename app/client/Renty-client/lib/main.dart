@@ -17,7 +17,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -28,12 +27,13 @@ class MyApp extends StatelessWidget {
 
           builder: EasyLoading.init(),
           theme: ThemeData(
-              appBarTheme: const AppBarTheme(
-                  iconTheme: IconThemeData(
-                    color: Colors.black,
-                  ),
-                  elevation: 0,
-                  backgroundColor: Colors.white)),
+            appBarTheme: const AppBarTheme(
+                iconTheme: IconThemeData(
+                  color: Colors.black,
+                ),
+                elevation: 0,
+                backgroundColor: Colors.white),
+          ),
           title: 'My App',
           // home: const HomeScreen(),
           onGenerateRoute: AppScreens.GenerateRouteSettings,

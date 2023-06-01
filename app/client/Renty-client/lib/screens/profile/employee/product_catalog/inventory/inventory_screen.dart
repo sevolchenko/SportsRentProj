@@ -52,6 +52,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   }
 
   Widget _buildProductsWidget(List<ProductResponse> products) {
+    context.read<ProductBloc>().add(ProductsLoadEvent());
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(

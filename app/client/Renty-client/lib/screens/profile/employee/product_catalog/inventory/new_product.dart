@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:client/api/dto/request/image_create.dart';
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
@@ -13,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewProductScreen extends StatefulWidget {
   const NewProductScreen({super.key});
@@ -23,15 +29,23 @@ class NewProductScreen extends StatefulWidget {
 
 class _NewProductScreenState extends State<NewProductScreen> {
   late final ProductController _productController;
-  // List<CategoryResponse> categories = [];
+
+  late String _enteredName;
+  List<ImageCreateRequest> _images = [];
+  ImageCreateRequest _image = ImageCreateRequest(position: 1, image: "");
+  String _loadedPhoto = "";
+  late int _price;
+  String _description = "";
+
   late int _selectedCategoryId;
+
+  final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     _productController = ProductController(context: context);
     _productController.initNewProduct();
-    _selectedCategoryId = 0;
   }
 
   @override
@@ -40,6 +54,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
       builder: (context, state) {
         // TODO не заходит в нужное состояние
         if (state is ProductInCreateState) {
+          _selectedCategoryId = state.categories[0].categoryId;
           return _buildProductCreateWidget(state.categories);
         } else {
           return buildLoadingWidget();
@@ -69,8 +84,9 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                buildTextField(
-                    'Введите название', 'name', (value) {}), //TODO тип ввода
+                buildTextField('Введите название', 'name', (value) {
+                  _enteredName = value;
+                }),
                 SizedBox(
                   height: 5.h,
                 ),
@@ -78,10 +94,10 @@ class _NewProductScreenState extends State<NewProductScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 30.w),
                   child: DropdownButtonFormField(
                     value: _selectedCategoryId,
-                    hint: Text('Выберите категорию'),
+                    hint: const Text('Выберите категорию'),
                     items: categories.map((category) {
                       return DropdownMenuItem(
-                        value: categories.indexOf(category),
+                        value: category.categoryId,
                         child: Text(
                           category.name,
                           style: GoogleFonts.raleway(
@@ -106,7 +122,13 @@ class _NewProductScreenState extends State<NewProductScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(color: kPrimaryColor, width: 4),
                   ),
-                  child: Image.asset("assets/images/image_2.png"),
+                  child: _loadedPhoto == ""
+                      ? Image.asset("assets/images/image_2.png")
+                      : Image.memory(
+                          base64Decode(_loadedPhoto),
+                          width: 130.h,
+                          height: 130.h,
+                        ),
                 ),
                 SizedBox(
                   height: 30.h,
@@ -114,27 +136,63 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 buildButton(
                   "Добавить фото",
                   "secondary",
-                  () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const RentScreen(),
-                    //   ),
-                    // );
+                  () async {
+                    final pickedFile =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    if (pickedFile != null) {
+                      final image = File(pickedFile.path);
+                      List<int> imageBytes = image.readAsBytesSync();
+                      _loadedPhoto = base64Encode(imageBytes);
+                      _image.image = _loadedPhoto;
+                      _image.position = 1;
+                      _images.add(_image);
+                    }
+                    setState(() {});
                   },
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                buildTextField('Введите цену за один час', 'price', (value) {}),
+                buildTextField('Введите цену за один час', 'price',
+                    textInputType: TextInputType.number, (value) {
+                  _price = int.parse(value);
+                }),
+                buildTextField('Введите описание', 'text', (value) {
+                  _description = value;
+                  // setState(() {});
+                }),
+                _description == ""
+                    ? Container()
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                          border: Border.all(color: kPrimaryColor, width: 2),
+                        ),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 20.h),
+                        padding: EdgeInsets.all(10.w),
+                        child: reusableText(_description, textSize: 16),
+                      ),
                 buildButton(
                   "Добавить",
                   "primary",
                   () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const InventoryScreen(),
-                      ),
+                    context.read<ProductBloc>().add(
+                          CreateProductEvent(_selectedCategoryId, _enteredName,
+                              _description, _price, _images),
+                        );
+                    toastInfo(msg: "Новый товар успешно добавлен");
+                    setState(
+                      () {
+                        _selectedCategoryId = categories[0].categoryId;
+                      },
                     );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const InventoryScreen(),
+                    //   ),
+                    // );
                   },
                 ),
                 SizedBox(

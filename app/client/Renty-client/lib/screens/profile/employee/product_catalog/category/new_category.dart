@@ -93,9 +93,11 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                   context.read<CategoryBloc>().add(
                       CreateCategoryEvent(_selectedCategoryId, _categoryname));
                   toastInfo(msg: "Новая категория успешно добавлена");
-                  setState(() {
-                    _selectedCategoryId = categories[0].categoryId;
-                  });
+                  setState(
+                    () {
+                      _selectedCategoryId = categories[0].categoryId;
+                    },
+                  );
                 },
               ),
             ],

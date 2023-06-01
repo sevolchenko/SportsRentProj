@@ -1,6 +1,6 @@
 class ImageCreateRequest {
-  final int position;
-  final String image;
+  int position;
+  String image;
 
   ImageCreateRequest({required this.position, required this.image});
 

@@ -34,4 +34,8 @@ class ProductRepository {
     await _productApi.productCreate(body);
   }
 
+  Future<void> productDelete(int id) async {
+    await _productApi.productDelete(id);
+  }
+
 }

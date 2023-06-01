@@ -24,3 +24,4 @@ class ProductCreateRequest {
         'images': images,
       };
 }
+
