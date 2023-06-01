@@ -2,6 +2,8 @@ package vsu.csf.rentyserver.model.mapping;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import vsu.csf.rentyserver.component.ProductProcessor;
 import vsu.csf.rentyserver.configuration.MapperConfiguration;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -15,19 +17,21 @@ import java.util.List;
                 CategoryMapper.class,
                 ImageMapper.class
         })
-public interface ProductMapper {
+public abstract class ProductMapper {
 
+    @Autowired
+    ProductProcessor productProcessor;
 
-    ProductResponse map(Product product);
+    public abstract ProductResponse map(Product product);
 
-    List<ProductResponse> map(List<Product> products);
+    public abstract List<ProductResponse> map(List<Product> products);
 
-    // TODO: 12.05.2023 fill busyNow
-    @Mapping(target = "busyNow", expression = "java(false)")
+    @Mapping(target = "busyNow", expression = "java(productProcessor.countOfAvailableSizes(product) == 0)")
     @Mapping(target = "mainImage",
-            expression = "java(product.getImages() != null ? imageMapper.map(product.getImages().get(0)) : null)")
-    ProductPreviewResponse mapToPreview(Product product);
+            expression = "java((product.getImages() != null && product.getImages().size() > 0) ? " +
+                    "imageMapper.map(product.getImages().get(0)) : null)")
+    public abstract ProductPreviewResponse mapToPreview(Product product);
 
-    List<ProductPreviewResponse> mapToPreview(List<Product> products);
+    public abstract List<ProductPreviewResponse> mapToPreview(List<Product> products);
 }
 
