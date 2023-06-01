@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import vsu.csf.rentyserver.configuration.properties.FineProperties;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
 import vsu.csf.rentyserver.model.entity.RentEvent;
@@ -11,6 +12,7 @@ import vsu.csf.rentyserver.model.entity.Size;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 import vsu.csf.rentyserver.repository.RentEventsRepository;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,9 @@ import java.util.List;
 public class RentProcessor {
 
     private final RentEventsRepository eventRepository;
+
+    private final FineProperties fineProperties;
+
 
     @Transactional(readOnly = true)
     public Integer countOfAvailableAt(Size size, OffsetDateTime startTime, OffsetDateTime endTime) {
@@ -88,6 +93,20 @@ public class RentProcessor {
         rent.setStatus(RentStatus.EXPIRED);
 
         log.info("Rent {} expired", rentId);
+    }
+
+    public Duration countDuration(RentEvent rentEvent) {
+        return Duration.between(rentEvent.getStartTime(), rentEvent.getFinishedAt()).withNanos(0);
+    }
+
+    public Integer countFine(RentEvent rentEvent) {
+
+        var duration = countDuration(rentEvent);
+
+        return (int) (duration
+                .minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))
+                .dividedBy(fineProperties.per()) *
+                rentEvent.getPrice() * fineProperties.percent());
     }
 
 }
