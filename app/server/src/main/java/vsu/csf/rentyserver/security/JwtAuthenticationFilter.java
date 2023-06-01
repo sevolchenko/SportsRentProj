@@ -27,8 +27,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
         if (token == null) {
-            log.warn("Token is null");
-
+            if (!((HttpServletRequest) servletRequest).getServletPath().contains("swagger")) {
+                log.warn("Token is null");
+            }
         } else if (!jwtTokenProvider.validateToken(token)) {
             log.warn("Token from user {} is invalid", jwtTokenProvider.getUsername(token));
 

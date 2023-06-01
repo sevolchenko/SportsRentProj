@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.controller;
+package vsu.csf.rentyserver.controller.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vsu.csf.rentyserver.controller.IAuthController;
 import vsu.csf.rentyserver.model.dto.user.request.LoginRequest;
 import vsu.csf.rentyserver.model.dto.auth.response.LoginResponse;
 import vsu.csf.rentyserver.service.AuthService;
@@ -17,7 +18,7 @@ import vsu.csf.rentyserver.service.AuthService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class AuthController {
+public class AuthController implements IAuthController {
 
     private final AuthService authService;
 

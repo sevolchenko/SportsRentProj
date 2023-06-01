@@ -21,3 +21,5 @@ spring:
 springdoc:
   swagger-ui:
     path: '/swagger-ui'
+    operationsSorter: method
+    tagsSorter: alpha

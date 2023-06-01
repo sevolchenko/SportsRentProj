@@ -1,10 +1,11 @@
-package vsu.csf.rentyserver.controller;
+package vsu.csf.rentyserver.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import vsu.csf.rentyserver.controller.IReceiptController;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.security.SecurityUser;
 import vsu.csf.rentyserver.service.ReceiptService;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RequestMapping("/receipts")
 @Slf4j
 @RequiredArgsConstructor
-public class ReceiptController {
+public class ReceiptController implements IReceiptController {
 
     private final ReceiptService receiptService;
 
@@ -65,9 +66,9 @@ public class ReceiptController {
     }
 
     @GetMapping("/{user_id}/{receipt_id}")
-    public ReceiptResponse getByUserIdByReceiptId(@PathVariable("user_id") Long userId,
-                                                  @PathVariable("receipt_id") UUID receiptId,
-                                                  Authentication authentication) {
+    public ReceiptResponse getReceiptByUserIdAndReceiptId(@PathVariable("user_id") Long userId,
+                                                          @PathVariable("receipt_id") UUID receiptId,
+                                                          Authentication authentication) {
         log.info("Employee {} requests receipt by id {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
                 receiptId);

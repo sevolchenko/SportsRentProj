@@ -1,4 +1,4 @@
-package vsu.csf.rentyserver.controller;
+package vsu.csf.rentyserver.controller.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import vsu.csf.rentyserver.controller.IRentController;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
@@ -18,25 +19,25 @@ import java.util.List;
 @RequestMapping("/rents")
 @RequiredArgsConstructor
 @Slf4j
-public class RentController {
+public class RentController implements IRentController {
 
     private final RentService rentService;
 
     @GetMapping("/my")
-    List<RentResponse> getMy(Authentication authentication) {
+    public List<RentResponse> getMy(Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
         return rentService.getAll(user.getUserId());
     }
 
     @GetMapping("/my/ongoing")
-    List<RentResponse> getMyOngoing(Authentication authentication) {
+    public List<RentResponse> getMyOngoing(Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
         return rentService.getOngoing(user.getUserId());
     }
 
     @GetMapping("/my/{rent_id}")
-    RentResponse getMyById(@PathVariable("rent_id") Long rentId,
-                           Authentication authentication) {
+    public RentResponse getMyRentById(@PathVariable("rent_id") Long rentId,
+                                      Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
 
         if (!rentService.owns(user.getUserId(), rentId)) {
@@ -47,21 +48,21 @@ public class RentController {
     }
 
     @PostMapping("/my/start")
-    RentResponse create(@Valid @RequestBody CreateRentRequest request,
+    public RentResponse start(@Valid @RequestBody CreateRentRequest request,
                               Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
         return rentService.create(user.getUserId(), request);
     }
 
     @PostMapping("/my/start/batch")
-    List<RentResponse> create(@Valid @RequestBody List<CreateRentRequest> request,
-                              Authentication authentication) {
+    public List<RentResponse> start(@Valid @RequestBody List<CreateRentRequest> request,
+                                    Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
         return rentService.create(user.getUserId(), request);
     }
 
     @PatchMapping("/my/{rent_id}/prolong")
-    RentResponse prolong(@PathVariable("rent_id") Long rentId,
+    public RentResponse prolong(@PathVariable("rent_id") Long rentId,
                          @Valid @RequestBody ProlongRentRequest request,
                          Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
@@ -74,7 +75,7 @@ public class RentController {
     }
 
     @GetMapping("/{user_id}")
-    List<RentResponse> get(@PathVariable("user_id") Long userId,
+    public List<RentResponse> get(@PathVariable("user_id") Long userId,
                            Authentication authentication) {
         log.info("Employee {} requests all rents for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
@@ -84,7 +85,7 @@ public class RentController {
     }
 
     @GetMapping("/{user_id}/ongoing")
-    List<RentResponse> getOngoing(@PathVariable("user_id") Long userId,
+    public List<RentResponse> getOngoing(@PathVariable("user_id") Long userId,
                                   Authentication authentication) {
         log.info("Employee {} requests ongoing rents for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
@@ -94,7 +95,7 @@ public class RentController {
     }
 
     @GetMapping("/{user_id}/{rent_id}")
-    RentResponse getById(@PathVariable("user_id") Long userId,
+    public RentResponse getById(@PathVariable("user_id") Long userId,
                          @PathVariable("rent_id") Long rentId,
                          Authentication authentication) {
         log.info("Employee {} requests for rent {} for user {}",
@@ -111,7 +112,7 @@ public class RentController {
     }
 
     @PatchMapping("/{user_id}/{rent_id}/finish")
-    RentResponse finish(@PathVariable("user_id") Long userId,
+    public RentResponse finish(@PathVariable("user_id") Long userId,
                            @PathVariable("rent_id") Long rentId,
                            Authentication authentication) {
         if (!rentService.owns(userId, rentId)) {
@@ -125,7 +126,7 @@ public class RentController {
     }
 
     @PatchMapping("/{user_id}/finish/batch")
-    List<RentResponse> finish(@PathVariable("user_id") Long userId,
+    public List<RentResponse> finish(@PathVariable("user_id") Long userId,
                            @RequestBody List<Long> rentIds,
                            Authentication authentication) {
 
