@@ -19,9 +19,8 @@ import org.springframework.context.annotation.Configuration;
 @SecurityScheme(
         name = "JWT",
         description = """
-                Чтобы получить токен, воспользуйтесь /auth/login
-                Используйте данные { "email": "se.volchenko@ya.ru", "password": "sergey" }
-                
+                Чтобы получить токен, воспользуйтесь адресом /auth/login<br>
+                Используйте данные { "email": "default.employee@email.com", "password": "employee123" }
                 """,
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
