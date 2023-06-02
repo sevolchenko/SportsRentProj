@@ -175,6 +175,7 @@ public interface IRentController {
                     )
             })
     @ApiResponse(responseCode = "200", description = "Аренды завершены")
+    @SecurityRequirement(name = "JWT")
     List<RentResponse> finish(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
                               @Parameter(name = "rent_id", description = "Идентификаторы аренд") List<Long> rentIds,
                               Authentication authentication);
