@@ -11,6 +11,9 @@ public class ProductProcessor {
     private final RentProcessor rentProcessor;
 
     public Integer countOfAvailableSizes(Product product) {
+        if (product.getSizes() == null) {
+            return 0;
+        }
         return product.getSizes()
                 .stream()
                 .mapToInt(rentProcessor::countOfAvailableNow)

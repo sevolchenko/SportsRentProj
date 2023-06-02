@@ -1,13 +1,11 @@
 package vsu.csf.rentyserver.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.StreamUtils;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.IntegrationEnvironment;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
@@ -37,8 +35,7 @@ import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-public class CatalogServiceIT extends IntegrationEnvironment {
+public class CatalogServiceITest extends IntegrationEnvironment {
 
     @Autowired
     private CatalogService catalogService;

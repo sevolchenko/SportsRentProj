@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThrows;
 @SpringBootTest
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-public class UserServiceIT extends IntegrationEnvironment {
+public class UserServiceITest extends IntegrationEnvironment {
 
     @Autowired
     private UserService userService;
