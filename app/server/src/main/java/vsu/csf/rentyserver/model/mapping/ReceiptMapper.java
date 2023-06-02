@@ -2,6 +2,8 @@ package vsu.csf.rentyserver.model.mapping;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import vsu.csf.rentyserver.component.ReceiptProcessor;
 import vsu.csf.rentyserver.configuration.MapperConfiguration;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.entity.Receipt;
@@ -13,11 +15,14 @@ import java.util.List;
                 UserMapper.class,
                 RentMapper.class
         })
-public interface ReceiptMapper {
+public abstract class ReceiptMapper {
+
+    @Autowired
+    ReceiptProcessor receiptProcessor;
 
     @Mapping(target = "payLink", expression = "java(\"/pay?=receipt_id%s\".formatted(receipt.getReceiptId()))")
-    @Mapping(target = "sum", expression = "java(rents.stream().mapToInt((rent) -> rent.price() * rent.count() + rent.fine()).sum())")
-    ReceiptResponse map(Receipt receipt);
+    @Mapping(target = "sum", expression = "java(receiptProcessor.countSum(rents))")
+    public abstract ReceiptResponse map(Receipt receipt);
 
-    List<ReceiptResponse> map(List<Receipt> receipts);
+    public abstract List<ReceiptResponse> map(List<Receipt> receipts);
 }

@@ -14,7 +14,8 @@ import vsu.csf.rentyserver.model.entity.enumeration.Role;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY,
+            generator = "user_sequence")
     @Column(name = "user_id")
     private Long userId;
 

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import vsu.csf.rentyserver.configuration.properties.FineProperties;
+import vsu.csf.rentyserver.configuration.properties.RentProperties;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
 import vsu.csf.rentyserver.model.entity.RentEvent;
@@ -25,7 +25,7 @@ public class RentProcessor {
 
     private final RentEventsRepository eventRepository;
 
-    private final FineProperties fineProperties;
+    private final RentProperties rentProperties;
 
 
     @Transactional(readOnly = true)
@@ -105,8 +105,8 @@ public class RentProcessor {
 
         return (int) (duration
                 .minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))
-                .dividedBy(fineProperties.per()) *
-                rentEvent.getPrice() * fineProperties.percent());
+                .dividedBy(rentProperties.fine().per()) *
+                rentEvent.getPrice() * rentProperties.fine().percent());
     }
 
 }

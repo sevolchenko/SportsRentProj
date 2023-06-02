@@ -17,7 +17,8 @@ import java.time.OffsetDateTime;
 public class RentEvent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY,
+            generator = "rent_sequence")
     @Column(name = "rent_id")
     private Long rentId;
 
@@ -39,13 +40,13 @@ public class RentEvent {
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "product_id", insertable = false, updatable=false)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name="product_id", referencedColumnName="product_id"),
-            @JoinColumn(name="size_name", referencedColumnName="name")
+            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+            @JoinColumn(name = "size_name", referencedColumnName = "name")
     })
     private Size size;
 
