@@ -1,13 +1,16 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:client/api/dto/response/user/user.dart';
 
-@immutable
-abstract class UserState extends Equatable {
-  const UserState();
-
-  List<Object?> get props => [];
-}
-
-class UserInitState extends UserState {}
+abstract class UserState {}
 
 class UserLoadingState extends UserState {}
+
+class UserLoadedState extends UserState {
+  final UserResponse user;
+
+  UserLoadedState({required this.user});
+}
+
+class UserErrorState extends UserState {
+  UserErrorState({required this.errorMessage});
+  final String errorMessage;
+}

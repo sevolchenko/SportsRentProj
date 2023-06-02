@@ -1,9 +1,7 @@
-import 'package:client/bloc/sign_in/sign_in_bloc.dart';
-import 'package:client/bloc/sign_in/sign_in_event.dart';
-import 'package:client/bloc/sign_in/sign_in_state.dart';
-import 'package:client/controller/sign_in_controller.dart';
-import 'package:client/screens/application/application.dart';
-import 'package:client/screens/home/home_screen.dart';
+import 'package:client/api/dto/request/user/login.dart';
+import 'package:client/bloc/auth/auth_bloc.dart';
+import 'package:client/bloc/auth/auth_event.dart';
+import 'package:client/bloc/auth/auth_state.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
@@ -14,17 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _LoginScreenState extends State<LoginScreen> {
+  late String email;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SignInBloc, SignInState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return Container(
           color: Colors.white,
@@ -52,9 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               buildTextField(
                                   "Введите электронную почту", 'email',
                                   (value) {
-                                context
-                                    .read<SignInBloc>()
-                                    .add(EmailEvent(value));
+                                email = value;
                               }, height: 58),
                               reusableText("Пароль"),
                               SizedBox(
@@ -62,9 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               buildTextField("Введите пароль", 'password',
                                   (value) {
-                                context
-                                    .read<SignInBloc>()
-                                    .add(PasswordEvent(value));
+                                password = value;
                               }, height: 58),
                               SizedBox(
                                 height: 20.h,
@@ -74,10 +71,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 //     .handleSignIn("email");
 
                                 // Navigator.of(context).pushNamed("/profile");
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(),
-                                  ),
+                                context.read<AuthBloc>().add(
+                                    LoginEvent(
+                                        LoginRequest(email: email, password: password)
+                                    )
                                 );
                               }),
                               SizedBox(

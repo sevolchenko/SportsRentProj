@@ -1,21 +1,20 @@
 //unify BlocProvider and routes and screens
+import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/category/category_bloc.dart';
 import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/product/product_bloc.dart';
-import 'package:client/bloc/profile/profile_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
-import 'package:client/bloc/sign_in/sign_in_bloc.dart';
+import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/size/size_bloc.dart';
+import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/common/routes/names.dart';
-import 'package:client/global.dart';
-import 'package:client/screens/application/application.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/product/product_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/new_size.dart';
+import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
-import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,21 +44,15 @@ class AppScreens {
           )),
       ScreenEntity(
           route: AppRoutes.SIGN_IN,
-          screen: const SignInScreen(),
+          screen: const LoginScreen(),
           bloc: BlocProvider(
-            create: (_) => SignInBloc(),
+            create: (_) => AuthBloc(),
           )),
       ScreenEntity(
           route: AppRoutes.REGISTER,
           screen: const RegisterScreen(),
           bloc: BlocProvider(
             create: (_) => RegisterBloc(),
-          )),
-      ScreenEntity(
-          route: AppRoutes.PROFILE,
-          screen: const ProfileScreen(),
-          bloc: BlocProvider(
-            create: (_) => ProfileBloc(),
           )),
       ScreenEntity(
           route: AppRoutes.CATEGORIES,
@@ -73,6 +66,12 @@ class AppScreens {
           bloc: BlocProvider(
             create: (_) => SizeBloc(),
           )),
+      ScreenEntity(
+          route: AppRoutes.PROFILE,
+          screen: const ProfileScreen(),
+          bloc: BlocProvider(
+            create: (_) => UserBloc(),
+          ))
       // ScreenEntity(
       //     route: AppRoutes.APPLICATION,
       //     screen: const Application(),
@@ -111,7 +110,7 @@ class AppScreens {
     // }
     print("invalid ${settings.name}");
     return MaterialPageRoute(
-        builder: (_) => const HomeScreen(), settings: settings);
+        builder: (_) => const LoginScreen(), settings: settings);
     // return MaterialPageRoute(
     //     builder: (_) => const SignInScreen(), settings: settings);
   }

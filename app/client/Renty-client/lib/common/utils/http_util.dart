@@ -1,3 +1,4 @@
+import 'package:client/api/dto/response/user/login.dart';
 import 'package:client/common/values/constant.dart';
 import 'package:client/global.dart';
 import 'package:dio/dio.dart';
@@ -9,9 +10,10 @@ class HttpUtil {
   }
 
   late Dio dio;
-  final String token =
-      "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl";
-
+  LoginResponse? loginResponse;
+  // final String token =
+  //     //"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl";
+  //     "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ2YWRpbTAyMTAxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjg1NjYyMzU1LCJleHAiOjE2OTM0MzgzNTV9.3jAt9aYnFEiabmKPTDSVbim6rfq8uhj_ca41HHQ2Ipn060XsodOt_UgKmedaIrSs";
   HttpUtil._internal() {
     BaseOptions options = BaseOptions(
       baseUrl: AppConstants.SERVER_API_URL,
@@ -27,10 +29,7 @@ class HttpUtil {
   Future get(String path) async {
     var response = dio.get(
       path,
-      options: Options(headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      }),
+      options: getOptions(),
     );
     return response;
   }
@@ -52,10 +51,7 @@ class HttpUtil {
       data: data,
       queryParameters: queryParameters,
       // options: requestOptions,
-      options: Options(headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      }),
+      options: getOptions(),
     );
     return response;
   }
@@ -64,10 +60,7 @@ class HttpUtil {
     var response = await dio.patch(
       path,
       data: data,
-      options: Options(headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      }),
+      options: getOptions(),
     );
     return response.statusCode;
   }
@@ -76,10 +69,7 @@ class HttpUtil {
     var response = await dio.delete(
       path,
       data: data,
-      options: Options(headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      }),
+      options: getOptions(),
     );
     return response.statusCode;
   }
@@ -91,5 +81,14 @@ class HttpUtil {
       headers['Authorization'] = accessToken;
     }
     return headers;
+  }
+
+  Options getOptions() {
+    var headers = <String, dynamic>{};
+    if (loginResponse != null) {
+      headers['Authorization'] = loginResponse!.token;
+    }
+    headers['Content-Type'] = 'application/json';
+    return Options(headers: headers);
   }
 }
