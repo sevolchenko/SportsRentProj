@@ -1,10 +1,11 @@
-package vsu.csf.rentyserver.controller;
+package vsu.csf.rentyserver.controller.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import vsu.csf.rentyserver.controller.IUserController;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
 import vsu.csf.rentyserver.model.dto.user.response.UserResponse;
 import vsu.csf.rentyserver.security.SecurityUser;
@@ -14,7 +15,7 @@ import vsu.csf.rentyserver.service.UserService;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @Slf4j
-public class UserController {
+public class UserController implements IUserController {
 
     private final UserService userService;
 
