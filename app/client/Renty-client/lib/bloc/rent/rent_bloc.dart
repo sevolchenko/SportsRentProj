@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RentBloc extends Bloc<RentEvent, RentState> {
   final RentRepository _rentRepository = RentRepository();
-  late List<RentResponse> myRents;
+  late List<RentResponse> myRents = [];
 
   RentBloc() : super(RentsLoadingState()) {
     on<MyRentsLoadEvent>(
