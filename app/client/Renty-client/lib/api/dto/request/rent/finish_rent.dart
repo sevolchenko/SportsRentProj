@@ -12,18 +12,3 @@ class RentFinishRequest {
         'finish_time': finishTime,
       };
 }
-
-class ListRentFinishRequest {
-  final List<RentFinishRequest> rents;
-  final int size;
-
-  ListRentFinishRequest({
-    required this.rents,
-    required this.size,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'rents': rents,
-        'size': size,
-      };
-}

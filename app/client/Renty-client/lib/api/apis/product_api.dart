@@ -121,17 +121,5 @@ class ProductApi {
     return null;
   }
 
-  Future<int?> productRent(Map<String, dynamic> body) async {
-    var path = 'rents/my/start';
-    var response = await HttpUtil().post(path, data: body);
-    try {
-      if (response.statusCode == 200) {
-        toastInfo(msg: "Продукт добавлен в корзину");
-        return response.statusCode;
-      }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при старте аренды продукта");
-    }
-    return null;
-  }
+ 
 }

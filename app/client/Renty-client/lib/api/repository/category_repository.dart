@@ -5,8 +5,8 @@ import 'package:client/common/widgets/auxiliary_wigets.dart';
 class CategoryRepository {
   final CategoryApi _categorytApi = CategoryApi();
 
-  Future<List<CategoryResponse>> getCategories() {
-    return _categorytApi.getCategories();
+  Future<List<CategoryResponse>> getCategories() async  {
+    return await _categorytApi.getCategories();
   }
 
   Future<void> deleteCategory(int id) async {

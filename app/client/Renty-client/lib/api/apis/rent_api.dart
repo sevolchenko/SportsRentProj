@@ -46,7 +46,7 @@ class RentApi {
     return [];
   }
 
-  Future<List<RentResponse>> getMyOngoingRentsByUserId() async {
+  Future<List<RentResponse>> getMyOngoingRents() async {
     var path = 'rents/my';
     try {
       var response = await HttpUtil().get(path);
