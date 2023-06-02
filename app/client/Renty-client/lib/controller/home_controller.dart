@@ -21,7 +21,11 @@ class HomeController {
     //   dismissOnTap: true,
     // );
     // var result = await _homeRepository.getProducts();
-    context.read<HomeBloc>().add(HomeLoadEvent());
+    
+    
+    // context.read<HomeBloc>().add(HomeLoadEvent());
+    
+    
     // EasyLoading.dismiss();
   }
 }

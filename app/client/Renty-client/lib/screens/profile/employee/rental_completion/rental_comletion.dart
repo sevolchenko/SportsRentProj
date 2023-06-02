@@ -18,7 +18,6 @@ class RentalCompletionScreen extends StatefulWidget {
 
 class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
   int selectedItem = -1;
-  // bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {

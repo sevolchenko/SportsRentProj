@@ -33,7 +33,6 @@ class _ProductScreenState extends State<ProductScreen> {
   late int _selectedSizeIndex;
 
   DateTime _startDateTime = DateTime.now();
-  DateTime _endDateTime = DateTime.now();
 
   String startTime = "";
   String endTime = "";
@@ -57,7 +56,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void _handleEndDateTime(DateTime dateTime) {
     setState(() {
-      _endDateTime = dateTime;
       endTime = dateTime.toUtc().toIso8601String();
     });
   }
@@ -273,8 +271,6 @@ class _ProductScreenState extends State<ProductScreen> {
           height: 20.h,
         ),
         buildButton("Добавить в корзину", "primary", () {
-          print(startTime);
-          print(endTime);
           context.read<ProductBloc>().add(
                 ProductRentEvent(
                   productId: product.id,

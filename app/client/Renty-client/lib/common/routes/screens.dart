@@ -31,12 +31,12 @@ class ScreenEntity {
 class AppScreens {
   static List<ScreenEntity> routes() {
     return [
-      ScreenEntity(
-          route: AppRoutes.HOME,
-          screen: const HomeScreen(),
-          bloc: BlocProvider(
-            create: (_) => HomeBloc(),
-          )),
+      // ScreenEntity(
+      //     route: AppRoutes.HOME,
+      //     screen: const HomeScreen(),
+      //     bloc: BlocProvider(
+      //       create: (_) => HomeBloc(),
+      //     )),
       ScreenEntity(
           route: AppRoutes.PRODUCT,
           screen: const ProductScreen(),

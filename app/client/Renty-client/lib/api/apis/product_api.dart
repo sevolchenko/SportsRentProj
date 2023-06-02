@@ -112,6 +112,7 @@ class ProductApi {
     var code = await HttpUtil().delete(path, null);
     try {
       if (code == 200) {
+        toastInfo(msg: "Продукт удален");
         return code;
       }
     } on DioError catch (e) {
@@ -125,6 +126,7 @@ class ProductApi {
     var response = await HttpUtil().post(path, data: body);
     try {
       if (response.statusCode == 200) {
+        toastInfo(msg: "Продукт добавлен в корзину");
         return response.statusCode;
       }
     } on DioError catch (e) {

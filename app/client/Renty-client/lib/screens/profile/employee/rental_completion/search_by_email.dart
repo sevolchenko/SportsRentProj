@@ -16,6 +16,8 @@ class RentalSearchScreen extends StatefulWidget {
 }
 
 class _RentalSearchScreenState extends State<RentalSearchScreen> {
+  late String _userEmail;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,16 +37,16 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                buildTextField(
-                    "Введите электронную почту клиента",
-                    'email',
+                buildTextField("Введите электронную почту клиента", 'email',
                     textInputType: TextInputType.emailAddress,
-                    height: 58,
-                    (value) {}),
+                    height: 58, (value) {
+                  _userEmail = value;
+                }),
                 SizedBox(
                   height: 20.h,
                 ),
                 buildButton("Поиск", "primary", () {
+                  
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RentalCompletionScreen(),
