@@ -65,7 +65,8 @@ Widget productsPreviewGrid(ProductPreviewResponse item) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
-      border: Border.all(color: kPrimaryColor, width: 4),
+      border: Border.all(
+          color: item.busyNow ? Colors.grey : kPrimaryColor, width: 4),
     ),
     child: Column(
       children: [
@@ -78,11 +79,17 @@ Widget productsPreviewGrid(ProductPreviewResponse item) {
             height: 130.h,
           ),
         ),
-        const Divider(
-          height: 0,
-          thickness: 3,
-          color: kPrimaryColor,
-        ),
+        item.busyNow
+            ? const Divider(
+                height: 0,
+                thickness: 3,
+                color: Colors.grey,
+              )
+            : const Divider(
+                height: 0,
+                thickness: 3,
+                color: kPrimaryColor,
+              ),
         Expanded(
           child: Container(
             padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),

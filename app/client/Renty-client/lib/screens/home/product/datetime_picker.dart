@@ -1,3 +1,4 @@
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,8 +7,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class MyDateTimePicker extends StatefulWidget {
   final void Function(DateTime) onSaved;
+  final DateTime? startDateTime;
 
-  const MyDateTimePicker({required this.onSaved});
+  const MyDateTimePicker({required this.onSaved, this.startDateTime});
   @override
   _MyDateTimePickerState createState() => _MyDateTimePickerState();
 }
@@ -46,6 +48,40 @@ class _MyDateTimePickerState extends State<MyDateTimePicker> {
                 selectedTime = time;
                 DateTime result =
                     DateTimeField.combine(selectedDate, selectedTime);
+                if (DateTime.now().isAfter(result)) {
+                  result = DateTime.now().add(Duration(minutes: 1));
+                  TimeOfDay timeOfDay = TimeOfDay.fromDateTime(result);
+                  DateTime date =
+                      DateTime(result.year, result.month, result.day);
+                  Duration duration =
+                      Duration(hours: result.hour, minutes: result.minute);
+                  DateTime time = DateTime(date.year, date.month, date.day,
+                      timeOfDay.hour, timeOfDay.minute);
+
+                  DateTime combined = DateTimeField.combine(date, timeOfDay);
+                  widget.onSaved(result);
+                  toastInfo(msg: "Некорректное время! Изменнено на ${result}");
+                  return combined;
+                }
+                if (widget.startDateTime != null) {
+                  if (widget.startDateTime!.isAfter(result)) {
+                    result =
+                        widget.startDateTime!.add(const Duration(hours: 1));
+                    TimeOfDay timeOfDay = TimeOfDay.fromDateTime(result);
+                    DateTime date =
+                        DateTime(result.year, result.month, result.day);
+                    Duration duration =
+                        Duration(hours: result.hour, minutes: result.minute);
+                    DateTime time = DateTime(date.year, date.month, date.day,
+                        timeOfDay.hour, timeOfDay.minute);
+
+                    DateTime combined = DateTimeField.combine(date, timeOfDay);
+                    widget.onSaved(result);
+                    toastInfo(
+                        msg: "Некорректное время! Изменнено на ${result}");
+                    return combined;
+                  }
+                }
                 widget.onSaved(result);
                 return DateTimeField.combine(selectedDate, selectedTime);
               } else {

@@ -43,4 +43,9 @@ class ProductRepository {
     await _productApi.productDelete(id);
   }
 
+  Future<void> productRent(Map<String, dynamic> body) async {
+    await _productApi.productRent(body);
+  }
+
+
 }

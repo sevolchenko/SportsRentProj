@@ -16,6 +16,21 @@ class ProductsLoadEvent extends ProductEvent {}
 
 class ProductsPreviewsLoadEvent extends ProductEvent {}
 
+class ProductRentEvent extends ProductEvent {
+  final String startTime;
+  final String endTime;
+  final int productId;
+  final String sizeName;
+  final int count;
+
+  ProductRentEvent(
+      {required this.startTime,
+      required this.endTime,
+      required this.productId,
+      required this.sizeName,
+      required this.count});
+}
+
 class DeleteProductEvent extends ProductEvent {
   final int productId;
 

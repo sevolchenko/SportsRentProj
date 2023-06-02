@@ -21,17 +21,17 @@ class RentEventCreateRequest {
       };
 }
 
-class ListRentEventCreateRequest {
-  final List<RentEventCreateRequest> rents;
-  final int size;
+// class ListRentEventCreateRequest {
+//   final List<RentEventCreateRequest> rents;
+//   final int size;
 
-  ListRentEventCreateRequest({
-    required this.rents,
-    required this.size,
-  });
+//   ListRentEventCreateRequest({
+//     required this.rents,
+//     required this.size,
+//   });
 
-  Map<String, dynamic> toJson() => {
-        'rents': rents,
-        'size': size,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         'rents': rents,
+//         'size': size,
+//       };
+// }

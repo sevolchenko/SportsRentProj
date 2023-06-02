@@ -18,12 +18,13 @@ Widget reusableText(String text,
 
 Widget buildTextField(
     String hintText, String textType, void Function(String value)? func,
-    {double height = 50,
+    {double width = 313,
+    double height = 50,
     double bottomMargin = 30,
     TextInputType textInputType = TextInputType.multiline}) {
   return Container(
     margin: EdgeInsets.only(bottom: bottomMargin.h),
-    width: 313.w,
+    width: width.w,
     height: height.h,
     decoration: BoxDecoration(
         color: Colors.white,
@@ -32,7 +33,7 @@ Widget buildTextField(
     child: Row(
       children: [
         SizedBox(
-          width: 300.w,
+          width: (width - 13).w,
           height: 50.h,
           child: TextField(
             onChanged: (value) => func!(value),

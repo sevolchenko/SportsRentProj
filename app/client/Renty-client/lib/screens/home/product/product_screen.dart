@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
@@ -28,19 +30,35 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   late ProductController _productController;
-  late DateTime _selectedDateTime = DateTime.now();
   late int _selectedSizeIndex;
+
+  DateTime _startDateTime = DateTime.now();
+  DateTime _endDateTime = DateTime.now();
+
+  String startTime = "";
+  String endTime = "";
+  int count = 0;
+
   @override
   void initState() {
     super.initState();
     _productController = ProductController(context: context);
     _productController.initProduct(widget.productId);
+
     _selectedSizeIndex = 0;
   }
 
-  void _handleDateTimeChanged(DateTime dateTime) {
+  void _handleStartDateTime(DateTime dateTime) {
     setState(() {
-      _selectedDateTime = dateTime;
+      _startDateTime = dateTime;
+      startTime = dateTime.toUtc().toIso8601String();
+    });
+  }
+
+  void _handleEndDateTime(DateTime dateTime) {
+    setState(() {
+      _endDateTime = dateTime;
+      endTime = dateTime.toUtc().toIso8601String();
     });
   }
 
@@ -61,7 +79,7 @@ class _ProductScreenState extends State<ProductScreen> {
       ProductResponse product, List<SizeResponse> sizes) {
     return SafeArea(
       child: Scaffold(
-        appBar:  MyAppBar(
+        appBar: MyAppBar(
           title: "Информация о товаре",
           backFun: () {
             Navigator.of(context).push(
@@ -108,15 +126,15 @@ class _ProductScreenState extends State<ProductScreen> {
           child: reusableText(product.description, textSize: 16),
         ),
         buildTextInfo("Цена", "${product.price} руб/час"),
-        SizedBox(height: 20.h),
+        SizedBox(height: 50.h),
         reusableText("Размер"),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 30.w),
           child: sizes.length == 0
-              ? Text("Размеры отсутсвуют")
+              ? const Text("Размеры отсутсвуют")
               : DropdownButtonFormField(
                   value: _selectedSizeIndex,
-                  hint: Text('Выберите размер'),
+                  hint: const Text('Выберите размер'),
                   items: sizes.map((size) {
                     return DropdownMenuItem(
                       value: sizes.indexOf(size),
@@ -138,14 +156,14 @@ class _ProductScreenState extends State<ProductScreen> {
                   },
                 ),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 50.h),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 10.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                height: 70.h,
+                height: 110.h,
                 child: Column(
                   children: [
                     reusableText("Всего доступно"),
@@ -153,7 +171,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 5.h,
                     ),
                     sizes.length == 0
-                        ? Text("Недоступно")
+                        ? const Text("Недоступно")
                         : Text(
                             product.sizes[_selectedSizeIndex].countAvailableNow
                                 .toString(),
@@ -167,41 +185,24 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
               Container(
-                height: 70.h,
+                height: 110.h,
                 child: Column(
                   children: [
                     reusableText("Количество"),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            FontAwesomeIcons.minus,
-                            size: 24,
-                          ),
-                          onPressed: () {},
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: sizes.length == 0
-                              ? Text("Всего 0")
-                              : Text(
-                                  product.sizes[0].total.toString(),
-                                  style: GoogleFonts.raleway(
-                                      color: Colors.black,
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 22.sp),
-                                ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            FontAwesomeIcons.plus,
-                            size: 24,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    )
+                    buildTextField("", "count",
+                        width: 70,
+                        textInputType: TextInputType.number, (value) {
+                      count = int.parse(value);
+                      setState(() {
+                        if (count >
+                            product
+                                .sizes[_selectedSizeIndex].countAvailableNow) {
+                          toastInfo(msg: "Недопустимое количество!");
+                          count = product
+                              .sizes[_selectedSizeIndex].countAvailableNow;
+                        }
+                      });
+                    })
                   ],
                 ),
               ),
@@ -216,51 +217,74 @@ class _ProductScreenState extends State<ProductScreen> {
         Container(
           margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
           alignment: Alignment.center,
-          child: MyDateTimePicker(onSaved: _handleDateTimeChanged),
-        ),
-        Column(
-          children: [
-            reusableText("Часов аренды"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    FontAwesomeIcons.minus,
-                    size: 24,
-                  ),
-                  onPressed: () {},
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: Text(
-                    "",
-                    style: GoogleFonts.raleway(
-                        color: Colors.black,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 22.sp),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    FontAwesomeIcons.plus,
-                    size: 24,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            )
-          ],
+          child: MyDateTimePicker(onSaved: _handleStartDateTime),
         ),
         SizedBox(height: 20.h),
-        buildButton("Уведомить по освобождении", "secondary", () {
-          print(_selectedDateTime);
-        }),
+        reusableText('Время окончания аренды', textSize: 20),
+        SizedBox(
+          height: 5.h,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+          alignment: Alignment.center,
+          child: MyDateTimePicker(
+            onSaved: _handleEndDateTime,
+            startDateTime: _startDateTime,
+          ),
+        ),
+        // Column(
+        //   children: [
+        //     reusableText("Часов аренды"),
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         IconButton(
+        //           icon: const Icon(
+        //             FontAwesomeIcons.minus,
+        //             size: 24,
+        //           ),
+        //           onPressed: () {},
+        //         ),
+        //         Container(
+        //           margin: EdgeInsets.symmetric(horizontal: 5.w),
+        //           child: Text(
+        //             "",
+        //             style: GoogleFonts.raleway(
+        //                 color: Colors.black,
+        //                 fontStyle: FontStyle.italic,
+        //                 fontWeight: FontWeight.normal,
+        //                 fontSize: 22.sp),
+        //           ),
+        //         ),
+        //         IconButton(
+        //           icon: const Icon(
+        //             FontAwesomeIcons.plus,
+        //             size: 24,
+        //           ),
+        //           onPressed: () {},
+        //         ),
+        //       ],
+        //     )
+        //   ],
+        // ),
+        SizedBox(height: 20.h),
+        buildButton("Уведомить по освобождении", "secondary", () {}),
         SizedBox(
           height: 20.h,
         ),
-        buildButton("Добавить в корзину", "primary", () {}),
+        buildButton("Добавить в корзину", "primary", () {
+          print(startTime);
+          print(endTime);
+          context.read<ProductBloc>().add(
+                ProductRentEvent(
+                  productId: product.id,
+                  count: count,
+                  sizeName: sizes[_selectedSizeIndex].sizeName,
+                  startTime: startTime,
+                  endTime: endTime,
+                ),
+              );
+        }),
         SizedBox(
           height: 20.h,
         ),
