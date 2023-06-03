@@ -1,12 +1,15 @@
+import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/bloc/application/application_bloc.dart';
 import 'package:client/bloc/application/application_event.dart';
-import 'package:client/bloc/profile/profile_bloc.dart';
-import 'package:client/bloc/profile/profile_state.dart';
+import 'package:client/bloc/user/user_bloc.dart';
+import 'package:client/bloc/user/user_event.dart';
+import 'package:client/bloc/user/user_state.dart';
 import 'package:client/common/routes/routes.dart';
 import 'package:client/common/values/constant.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/global.dart';
 import 'package:client/screens/profile/employee/employee_menu.dart';
-import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
+import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
@@ -21,93 +24,118 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
   void removeUserData() {
     // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
-    Global.storageService.remove(AppConstants.STORAGE_USER_TOKEN_KEY);
-    Global.storageService.remove(AppConstants.STORAGE_USER_PROFILE_KEY);
+
+    Global.storageService.unAuthenticate();
     Navigator.of(context)
-        .pushNamedAndRemoveUntil(AppRoutes.SIGN_IN, (route) => false);
+        .pushNamedAndRemoveUntil(AppRoutes.LOGIN, (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (Context, state) {
-      return SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: const MyAppBar(title: "Личный кабинет "),
-          body: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(top: 50.h),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildTextInfo("Имя", "Вадим"),
-                  buildTextInfo("Электронная почта", "examleemail@gmail.com"),
-                  SizedBox(
-                    height: 100.h,
-                  ),
-                  buildButton("Меню сотрудника", 'primary', () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const EmpoyeeMenu(),
-                      ),
-                    );
-                  }),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  buildButton(
-                    "Выйти",
-                    "secondary",
-                    () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Подтверждение выхода"),
-                              content:
-                                  const Text("Вы действительно хотите выйти?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text("Отмена"),
-                                ),
-                                TextButton(
-                                  // onPressed: () => removeUserData(),
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignInScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text("Выйти"),
-                                ),
-                              ],
-                            );
-                          });
-                      // Navigator.of(context).pop(const SignInScreen());
-                      //
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const SignInScreen(),
-                      //   ),
-                      // );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          bottomNavigationBar: MyBottomNavBar(
-            selectedIndex: 3,
-          ),
-        ),
-      );
+    return BlocBuilder<UserBloc, UserState>(builder: (Context, state) {
+      if (state is UserLoadedState) {
+        return _buildUserScaffold(_buildUserWidget(state.user));
+      } else if (state is UserUnauthorizedState) {
+        return _buildUserScaffold(buildUnauthenticatedWidget(context));
+      } else {
+        return buildLoadingWidget();
+      }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<UserBloc>().add(UserLoadEvent());
+  }
+
+  Widget _buildUserScaffold(Widget body) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: const MyAppBar(title: "Личный кабинет "),
+        body: body,
+        bottomNavigationBar: MyBottomNavBar(
+          selectedIndex: 3,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUserWidget(UserResponse user) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(top: 50.h),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildTextInfo("Имя", user.name),
+            buildTextInfo("Электронная почта", user.email),
+            SizedBox(
+              height: 100.h,
+            ),
+            user.role == "EMPLOYEE" ?
+            buildButton("Меню сотрудника", 'primary', () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const EmpoyeeMenu(),
+                ),
+              );
+            }) :  Container(),
+            SizedBox(
+              height: 20.h,
+            ),
+            buildButton(
+              "Выйти",
+              "secondary",
+                  () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Подтверждение выхода"),
+                        content:
+                        const Text("Вы действительно хотите выйти?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Отмена"),
+                          ),
+                          TextButton(
+                            // onPressed: () => removeUserData(),
+                            onPressed: () {
+                              Global.storageService.unAuthenticate();
+                              Navigator.pushNamed(context, AppRoutes.LOGIN).then((_) => setState(() {}));
+                              // Navigator.of(context).push(
+                              //   MaterialPageRoute(
+                              //     builder: (context) =>
+                              //     const LoginScreen(),
+                              //   ),
+                              // );
+                            },
+                            child: const Text("Выйти"),
+                          ),
+                        ],
+                      );
+                    });
+                // Navigator.of(context).pop(const SignInScreen());
+                //
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const SignInScreen(),
+                //   ),
+                // );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

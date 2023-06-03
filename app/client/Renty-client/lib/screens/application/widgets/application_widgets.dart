@@ -2,7 +2,7 @@
 // import 'package:client/screens/home/product/product_screen.dart';
 // import 'package:client/screens/profile/profile_screen.dart';
 // import 'package:client/screens/profile/register/register_screen.dart';
-// import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
+// import 'package:client/screens/profile/sign_in/login_screen.dart';
 // import 'package:client/screens/rent/rent_screen.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';

@@ -1,12 +1,21 @@
+import 'package:client/api/dto/response/user/user.dart';
+import 'package:client/api/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_event.dart';
 import 'user_state.dart';
 
-// class UserBloc extends Bloc<UserEvent, UserState> {
-//   UserBloc() : super(UserInitState()) {
-//     final UserRepository _userRepository = UserRepository();
-//     on<LoadUserEvent>((event, emit) async {
-//       emit(UserLoadingState());
-//     });
-//   }
-// }
+class UserBloc extends Bloc<UserEvent, UserState> {
+  final UserRepository _userRepository = UserRepository();
+  late UserResponse user;
+
+  UserBloc() : super(UserLoadingState()) {
+    on<UserLoadEvent>((event, emit) async {
+      var response = await _userRepository.getMe();
+      if (response != null) {
+        emit(UserLoadedState(user: response));
+      } else {
+        emit(UserUnauthorizedState());
+      }
+    });
+  }
+}

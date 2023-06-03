@@ -52,7 +52,7 @@ class ProductApi {
 
   Future<int?> sizeCountUpdate(int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
-    var statusCode = await HttpUtil().patch(path, size);
+    var statusCode = await HttpUtil().patch(path, size, null, null);
     try {
       if (statusCode == 200) {
         return statusCode;
@@ -66,7 +66,7 @@ class ProductApi {
   Future<int?> sizeDelete(int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
     try {
-      var statusCode = await HttpUtil().delete(path, size);
+      var statusCode = await HttpUtil().delete(path, size, null, null);
       if (statusCode == 200) {
         return statusCode;
       } else {
@@ -104,7 +104,7 @@ class ProductApi {
 
   Future<int?> productDelete(int id) async {
     var path = 'catalog/products/${id}';
-    var code = await HttpUtil().delete(path, null);
+    var code = await HttpUtil().delete(path, null, null, null);
     try {
       if (code == 200) {
         toastInfo(msg: "Продукт удален");

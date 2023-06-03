@@ -1,4 +1,4 @@
-import 'package:client/common/values/constant.dart';
+import 'package:client/api/dto/response/user/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -9,35 +9,38 @@ class StorageService {
     return this;
   }
 
-  Future<bool> setBool(String key, bool value) async {
-    return await _prefs.setBool(key, value);
+  bool isUserAuthenticated() {
+    return _prefs.getBool("isAuthenticated") ?? false;
   }
 
-  Future<bool> setString(String key, String value) async {
-    return await _prefs.setString(key, value);
+  unAuthenticate() {
+    _prefs.setBool("isAuthenticated", false);
+    _prefs.remove("userId");
+    _prefs.remove("role");
+    _prefs.remove("token");
+
   }
 
-  bool getDeviceFirstOpen() {
-    return _prefs.getBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME) ?? false;
+  LoginResponse? getUser() {
+
+    if (isUserAuthenticated()) {
+      int userId = _prefs.getInt("userId")!;
+      String role = _prefs.getString("role")!;
+      String token = _prefs.getString("token")!;
+      return LoginResponse(userId: userId, role: role, token: token);
+    } else {
+      return null;
+    }
+
   }
 
-  bool getIsLoggedIn() {
-    return _prefs.getString(AppConstants.STORAGE_USER_TOKEN_KEY) == null
-        ? false
-        : true;
+  setUser(LoginResponse loginResponse) {
+
+    _prefs.setBool("isAuthenticated", true);
+    _prefs.setInt("userId", loginResponse.userId);
+    _prefs.setString("role", loginResponse.role);
+    _prefs.setString("token", loginResponse.token);
+
   }
 
-  Future<bool> remove(String key) {
-    return _prefs.remove(key);
-  }
-
-  String getUserToken() {
-    return _prefs.getString(AppConstants.STORAGE_USER_TOKEN_KEY) ?? "";
-  }
-
-  getUserProfile() {
-    var profileOffline =
-        _prefs.getString(AppConstants.STORAGE_USER_PROFILE_KEY) ?? "";
-    if (profileOffline.isNotEmpty) {}
-  }
 }

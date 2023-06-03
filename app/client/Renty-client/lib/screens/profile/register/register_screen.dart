@@ -6,7 +6,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
+import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const SignInScreen(),
+                                    builder: (context) => const LoginScreen(),
                                   ),
                                 );
                               },

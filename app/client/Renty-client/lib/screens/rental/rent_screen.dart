@@ -51,7 +51,7 @@ class _RentScreenState extends State<RentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
-      body: rents.length == 0
+      body: Global.storageService.isUserAuthenticated() ? rents.length == 0
           ? Container(
               alignment: Alignment.center,
               child: Text("Список ваших аренд пуст",
@@ -100,7 +100,7 @@ class _RentScreenState extends State<RentScreen> {
                   )
                 ],
               ),
-            ),
+            ) : buildUnauthenticatedWidget(context),
       bottomNavigationBar: MyBottomNavBar(selectedIndex: 1),
     );
   }
