@@ -178,6 +178,10 @@ public class RentService {
         var rent = eventRepository.findById(rentId)
                 .orElseThrow(() -> new NoSuchElementException("rent", RentEvent.class, rentId));
 
+        if (rent.getStatus() != RentStatus.ONGOING) {
+            throw new WrongRentStatusException(rentId, rent.getStatus());
+        }
+
         Integer availableCount = rentProcessor.countOfAvailableAt(
                 rent.getSize(), rent.getStartTime(), request.endTime());
 

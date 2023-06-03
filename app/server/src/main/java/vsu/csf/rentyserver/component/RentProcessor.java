@@ -31,8 +31,7 @@ public class RentProcessor {
     @Transactional(readOnly = true)
     public Integer countOfAvailableAt(Size size, OffsetDateTime startTime, OffsetDateTime endTime) {
 
-        var relatedEvents = eventRepository.findRentEventsBySizeEqualsAndStartTimeBeforeAndEndTimeAfter(
-                size, endTime, startTime);
+        var relatedEvents = eventRepository.findRelatedEvents(size, endTime, startTime);
 
         var allRelatedEnds = OffsetDateTime.MIN;
 
