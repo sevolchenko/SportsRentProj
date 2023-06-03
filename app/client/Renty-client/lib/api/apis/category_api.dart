@@ -20,6 +20,7 @@ class CategoryApi {
     var statusCode = await HttpUtil().delete(path, null);
     try {
       if (statusCode == 200) {
+        toastInfo(msg: "Категория успешно удалена");
         return statusCode;
       } 
     } on DioError catch (e) {
@@ -33,6 +34,7 @@ class CategoryApi {
     var response = await HttpUtil().post(path, data: body);
     try {
       if (response.statusCode == 200) {
+        toastInfo(msg: "Новая категория успешно добавлена");
         return response.statusCode;
       } 
     } on DioError catch (e) {

@@ -26,7 +26,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late ProductController _productController;
-  // late ProductResponse _selectedProduct;
 
   @override
   void initState() {

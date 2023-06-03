@@ -1,4 +1,5 @@
 import 'package:client/api/dto/request/product.dart';
+import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/category.dart';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/product_preview.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository _productRepository = ProductRepository();
   final CategoryRepository _categoryRepository = CategoryRepository();
+
   late ProductResponse product;
   late List<ProductResponse> products;
   late List<ProductPreviewResponse> productsPreviews;
@@ -36,6 +38,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductLoadedState(productItem: product, sizes: product.sizes));
       },
     );
+
+    // on<ProductRentEvent>((event, emit) async {
+    //   StartRentEventRequest rentEventCreateRequest = StartRentEventRequest(
+    //       productId: event.productId,
+    //       sizeName: event.sizeName,
+    //       count: event.count,
+    //       startTime: event.startTime,
+    //       endTime: event.endTime);
+    //   // await _productRepository.productRent(rentEventCreateRequest.toJson());
+    //   emit(ProductLoadedState(productItem: product, sizes: product.sizes));
+    // });
 
     on<PreCreateProductEvent>(
       (event, emit) async {

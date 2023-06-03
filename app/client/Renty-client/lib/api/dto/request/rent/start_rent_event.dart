@@ -1,11 +1,11 @@
-class RentEventCreateRequest {
+class StartRentEventRequest {
   final int productId;
   final String sizeName;
   final int count;
   final String startTime;
   final String endTime;
 
-  RentEventCreateRequest(
+  StartRentEventRequest(
       {required this.productId,
       required this.sizeName,
       required this.count,
@@ -18,20 +18,5 @@ class RentEventCreateRequest {
         'count': count,
         'start_time': startTime,
         'end_time': endTime,
-      };
-}
-
-class ListRentEventCreateRequest {
-  final List<RentEventCreateRequest> rents;
-  final int size;
-
-  ListRentEventCreateRequest({
-    required this.rents,
-    required this.size,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'rents': rents,
-        'size': size,
       };
 }

@@ -1,11 +1,11 @@
+import 'package:client/common/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 toastInfo(
     {required String msg,
-    Color backgroundColor = Colors.green,
+    Color backgroundColor = kPrimaryColor,
     Color textColor = Colors.white}) {
   return Fluttertoast.showToast(
     msg: msg,
@@ -18,25 +18,20 @@ toastInfo(
   );
 }
 
-
 Widget buildLoadingWidget() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text("Loading data ..."),
-        CircularProgressIndicator()
-      ],
-    ));
-  }
+  return Center(
+      child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: const [Text("Loading data ..."), CircularProgressIndicator()],
+  ));
+}
 
-
-  Widget buildErrorWidget(String error) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Произошла ошибка: $error"),
-      ],
-    ));
-  }
+Widget buildErrorWidget({String error = ""}) {
+  return Center(
+      child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text("Произошла ошибка: $error"),
+    ],
+  ));
+}

@@ -7,20 +7,20 @@ import 'package:client/common/widgets/auxiliary_wigets.dart';
 class ProductRepository {
   final ProductApi _productApi = ProductApi();
 
-  Future<ProductResponse> getProductById(int id) {
-    return _productApi.productById(id);
+  Future<ProductResponse> getProductById(int id) async {
+    return await _productApi.productById(id);
   }
 
-  Future<List<ProductResponse>> getProducts() {
-    return _productApi.products();
+  Future<List<ProductResponse>> getProducts() async {
+    return await _productApi.products();
   }
 
-  Future<List<ProductPreviewResponse>> getProductsPreviews() {
-    return _productApi.productsPreviews();
+  Future<List<ProductPreviewResponse>> getProductsPreviews() async {
+    return await _productApi.productsPreviews();
   }
 
-  Future<List<SizeResponse>> getProductSizes(int productId) {
-    return _productApi.productSizes(productId);
+  Future<List<SizeResponse>> getProductSizes(int productId) async {
+    return await _productApi.productSizes(productId);
   }
 
   Future<void> sizeCountUpdate(int id, Map<String, dynamic> size) async {
@@ -42,5 +42,6 @@ class ProductRepository {
   Future<void> productDelete(int id) async {
     await _productApi.productDelete(id);
   }
+
 
 }

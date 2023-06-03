@@ -25,7 +25,7 @@ class ProductController {
     context.read<SizeBloc>().add(SizesLoadEvent(productId));
   }
 
-  void initNewProduct() {
+  void initNewProduct() async  {
     context.read<ProductBloc>().add(PreCreateProductEvent());
   }
 }

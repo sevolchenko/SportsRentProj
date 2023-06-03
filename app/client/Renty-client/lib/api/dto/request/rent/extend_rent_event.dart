@@ -1,9 +1,9 @@
 class ExtendRentEventRequest {
-  final int newEndTime;
+  final String newEndTime;
 
   ExtendRentEventRequest({required this.newEndTime});
 
   Map<String, dynamic> toJson() => {
-        'new_end_time': newEndTime,
+        'end_time': newEndTime,
       };
 }
