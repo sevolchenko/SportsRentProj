@@ -4,23 +4,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? backFun;
+  final bool leading;
 
-  const MyAppBar({Key? key, required this.title, this.backFun})
+  const MyAppBar(
+      {Key? key, required this.title, this.backFun, this.leading = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: backFun == null
-          ? IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          : IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: backFun,
-            ),
-      automaticallyImplyLeading: false,
+      leading: leading
+          ? backFun == null
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: backFun,
+                )
+          : null,
+      automaticallyImplyLeading: leading,
       title: Column(
         children: [
           Container(

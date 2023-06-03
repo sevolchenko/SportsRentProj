@@ -1,14 +1,11 @@
-class RentFinishRequest {
-  final int rentId;
-  final String finishTime;
+class UserRentsFinishRequest {
+  final List<int> rentsId;
 
-  RentFinishRequest({
-    required this.rentId,
-    required this.finishTime,
+  UserRentsFinishRequest({
+    required this.rentsId,
   });
 
   Map<String, dynamic> toJson() => {
-        'rent_id': rentId,
-        'finish_time': finishTime,
+        'rent_id': rentsId,
       };
 }

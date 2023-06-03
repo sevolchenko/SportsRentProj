@@ -25,13 +25,14 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       },
     );
 
-    on<FinishRentEvent>(
-      (event, emit) async {
-        await _rentRepository.finishUserRents(event.userId);
-        myRents = await _rentRepository.getMyOngRents();
-        emit(RentsLoadedState(rents: myRents));
-      },
-    );
+    // TODO body
+    // on<FinishRentEvent>(
+    //   (event, emit) async {
+    //     await _rentRepository.finishUserRents(event.userId);
+    //     myRents = await _rentRepository.getMyOngRents();
+    //     emit(RentsLoadedState(rents: myRents));
+    //   },
+    // );
 
     on<StartRentEvent>((event, emit) async {
       StartRentEventRequest startRentRequest = StartRentEventRequest(
@@ -53,6 +54,15 @@ class RentBloc extends Bloc<RentEvent, RentState> {
         await _rentRepository.prolongRent(event.rentId, eventRequest.toJson());
         myRents = await _rentRepository.getMyOngRents();
         emit(RentsLoadedState(rents: myRents));
+      },
+    );
+
+    on<SearchUserRentsEvent>(
+      (event, emit) async {
+        var user = await _rentRepository.getUserData({"email": event.userEmail});
+        var userRents = await _rentRepository.getUserOngRents(user!.userId);
+        // myRents = await _rentRepository.getMyOngRents();
+        emit(UserRentsLoadedState(userRents: userRents));
       },
     );
   }

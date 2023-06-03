@@ -24,9 +24,10 @@ class HttpUtil {
     dio = Dio(options);
   }
 
-  Future get(String path) async {
+  Future get(String path, {Map<String, dynamic>? queryParameters}) async {
     var response = dio.get(
       path,
+      queryParameters: queryParameters,
       options: Options(headers: {
         "Content-Type": "application/json",
         "Authorization": token,

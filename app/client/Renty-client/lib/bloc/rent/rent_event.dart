@@ -37,3 +37,8 @@ class ProlongRentEvent extends RentEvent {
 
   ProlongRentEvent(this.rentId, this.newEndTime);
 }
+
+class SearchUserRentsEvent extends RentEvent {
+  final String userEmail;
+  SearchUserRentsEvent(this.userEmail);
+}

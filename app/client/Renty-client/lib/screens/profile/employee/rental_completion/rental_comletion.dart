@@ -1,4 +1,9 @@
+import 'package:client/api/dto/response/rent.dart';
+import 'package:client/bloc/rent/rent_bloc.dart';
+import 'package:client/bloc/rent/rent_event.dart';
+import 'package:client/bloc/rent/rent_state.dart';
 import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
@@ -6,11 +11,13 @@ import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/screens/profile/employee/rental_completion/rental_payment.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RentalCompletionScreen extends StatefulWidget {
-  const RentalCompletionScreen({super.key});
+  final String userEmail;
+  const RentalCompletionScreen({super.key, required this.userEmail});
 
   @override
   State<RentalCompletionScreen> createState() => _RentalCompletionScreenState();
@@ -20,11 +27,37 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
   int selectedItem = -1;
 
   @override
+  void initState() {
+    context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return BlocBuilder<RentBloc, RentState>(
+      builder: (context, state) {
+        if (state is UserRentsLoadedState) {
+          return _buildUserRentsWidget(state.userRents);
+        } else if (state is RentsLoadingState) {
+          return buildLoadingWidget();
+        } else {
+          return buildErrorWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildUserRentsWidget(List<RentResponse> rents) {
     return SafeArea(
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Завершение аренды',
+        leading: false,
       ),
       body: Container(
         child: CustomScrollView(
@@ -33,7 +66,8 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
               child: Container(
                   padding: EdgeInsets.only(left: 25.w, right: 25.w),
                   child: buildTextInfo(
-                      "Электронная почта клиента", "example@gmail.com")),
+                      "Электронная почта клиента", widget.userEmail,
+                      top: 10)),
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(
@@ -48,8 +82,9 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                   childAspectRatio: 2.5,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  childCount: 4,
+                  childCount: rents.length,
                   (BuildContext context, int index) {
+                    RentResponse rentItem = rents[index];
                     return GestureDetector(
                       onTap: () {
                         setState(() {
@@ -76,7 +111,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                   child: Row(
                                     children: [
                                       buildSmallProductImage(
-                                          "assets/images/image_2.png"),
+                                          rentItem.product.mainImage!.image),
                                       const VerticalDivider(
                                         thickness: 2,
                                         color: kPrimaryColor,
@@ -89,7 +124,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                             Container(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                'Велосипед',
+                                                rentItem.product.name,
                                                 style: GoogleFonts.raleway(
                                                     color: Colors.black,
                                                     fontStyle: FontStyle.italic,
@@ -118,10 +153,12 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: [
+                                                  rentColumnText('Размер',
+                                                      rentItem.size.sizeName),
                                                   rentColumnText(
-                                                      'Размер', 'детский'),
-                                                  rentColumnText(
-                                                      'Количество', '1'),
+                                                      'Количество',
+                                                      rentItem.count
+                                                          .toString()),
                                                 ],
                                               ),
                                             )
@@ -144,12 +181,14 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        buildRentTime("23.04.23 15:00", ""),
+                                        buildRentTime(rentItem.startTime,
+                                            rentItem.status),
                                         const VerticalDivider(
                                           thickness: 2,
                                           color: kPrimaryColor,
                                         ),
-                                        buildRentTime("23.04.23 16:00", ""),
+                                        buildRentTime(
+                                            rentItem.endTime, rentItem.status),
                                       ],
                                     ),
                                   ),

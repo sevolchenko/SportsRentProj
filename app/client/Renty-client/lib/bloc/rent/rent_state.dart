@@ -12,6 +12,12 @@ class RentsLoadedState extends RentState {
   RentsLoadedState({required this.rents});
 }
 
+class UserRentsLoadedState extends RentState {
+  final List<RentResponse> userRents;
+
+  UserRentsLoadedState({required this.userRents});
+}
+
 class RentsErrorState extends RentState {
   RentsErrorState({required this.errorMessage});
   final String errorMessage;

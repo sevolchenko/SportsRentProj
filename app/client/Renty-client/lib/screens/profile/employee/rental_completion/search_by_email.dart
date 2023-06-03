@@ -1,3 +1,7 @@
+import 'package:client/bloc/rent/rent_bloc.dart';
+import 'package:client/bloc/rent/rent_event.dart';
+import 'package:client/bloc/rent/rent_state.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
@@ -6,6 +10,7 @@ import 'package:client/screens/profile/employee/rental_completion/rental_comleti
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RentalSearchScreen extends StatefulWidget {
@@ -19,7 +24,26 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
   late String _userEmail;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return BlocBuilder<RentBloc, RentState>(
+      builder: (context, state) {
+        if (state is RentsLoadedState) {
+          return _buildUserRentsSearchWidget();
+        } else if (state is RentsLoadingState) {
+          return buildLoadingWidget();
+        } else {
+          return buildErrorWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildUserRentsSearchWidget() {
     return SafeArea(
       child: Scaffold(
         appBar: const MyAppBar(
@@ -46,10 +70,9 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                   height: 20.h,
                 ),
                 buildButton("Поиск", "primary", () {
-                  
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const RentalCompletionScreen(),
+                      builder: (context) => RentalCompletionScreen(userEmail: _userEmail,),
                     ),
                   );
                 })

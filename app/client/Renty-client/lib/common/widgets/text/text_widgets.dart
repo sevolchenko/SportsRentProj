@@ -69,13 +69,13 @@ Widget buildTextField(
   );
 }
 
-Widget buildTextInfo(String title, String content) {
+Widget buildTextInfo(String title, String content, {double top = 30}) {
   return Container(
     child: Column(
       children: [
         Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 30.h, left: 20.w, right: 20.w),
+          padding: EdgeInsets.only(top: top.h, left: 20.w, right: 20.w),
           child: reusableText(title),
         ),
         Container(

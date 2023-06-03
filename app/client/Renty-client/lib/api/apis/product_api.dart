@@ -8,7 +8,6 @@ import 'package:dio/dio.dart';
 
 class ProductApi {
   Future<ProductResponse> productById(int productId) async {
-    // try {
     var path = 'catalog/products/${productId}';
     var response = await HttpUtil().get(
       path,
@@ -16,10 +15,6 @@ class ProductApi {
     var jsonData = response.data;
     var res = ProductResponse.fromJson(jsonData);
     return res;
-    // }
-    // } on DioError catch (e) {
-    // print(e.message);
-    // }
   }
 
   Future<List<ProductResponse>> products() async {

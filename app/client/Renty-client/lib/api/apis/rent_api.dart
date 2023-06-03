@@ -1,4 +1,5 @@
 import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';
@@ -75,7 +76,7 @@ class RentApi {
   }
 
   Future<int?> finishRentsByUserId(
-      int userId, Map<String, dynamic> body) async {
+      int userId, List<Map<String, dynamic>> body) async {
     var path = 'rents/${userId}/finish/batch';
     var statusCode = await HttpUtil().patch(path, body);
     try {
@@ -117,7 +118,6 @@ class RentApi {
     return null;
   }
 
-
   // TODO передавать List<Map<String, dynamic>>
   Future<int?> startBatchRents(Map<String, dynamic> body) async {
     var path = 'rents/my/start/batch';
@@ -128,6 +128,19 @@ class RentApi {
       }
     } on DioError catch (e) {
       toastInfo(msg: "Ошибка при старте нескольких аренд");
+    }
+    return null;
+  }
+
+  Future<UserResponse?> userData(Map<String, dynamic> query) async {
+    try {
+      var path = 'users/search';
+      var response = await HttpUtil().get(path, queryParameters: query);
+      var jsonData = response.data;
+      var res = UserResponse.fromJson(jsonData);
+      return res;
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка получении данных пользователя");
     }
     return null;
   }

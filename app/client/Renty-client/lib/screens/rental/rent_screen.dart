@@ -62,7 +62,7 @@ class _RentScreenState extends State<RentScreen> {
           )
         : Scaffold(
             backgroundColor: Colors.white,
-            appBar: const MyAppBar(title: 'Ваши аренды'),
+            appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
             body: Container(
               child: CustomScrollView(
                 slivers: [
@@ -87,8 +87,9 @@ class _RentScreenState extends State<RentScreen> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                       RentalInfoScreen(rentItem: rent,),
+                                  builder: (context) => RentalInfoScreen(
+                                    rentItem: rent,
+                                  ),
                                 ),
                               );
                             },
