@@ -42,186 +42,210 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
     return BlocBuilder<RentBloc, RentState>(
       builder: (context, state) {
         if (state is UserRentsLoadedState) {
-          return _buildUserRentsWidget(state.userRents);
-        } else if (state is RentsLoadingState) {
-          return buildLoadingWidget();
+          return _buildUserRentsWidget(state.userId, state.userRents);
         } else {
-          return buildErrorWidget();
+          return buildLoadingWidget();
         }
       },
     );
   }
 
-  Widget _buildUserRentsWidget(List<RentResponse> rents) {
+  Widget _buildUserRentsWidget(int userId, List<RentResponse> rents) {
     return SafeArea(
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Завершение аренды',
         leading: false,
       ),
-      body: Container(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                  padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                  child: buildTextInfo(
-                      "Электронная почта клиента", widget.userEmail,
-                      top: 10)),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                vertical: 20.h,
-                horizontal: 15.w,
-              ),
-              sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 2.5,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  childCount: rents.length,
-                  (BuildContext context, int index) {
-                    RentResponse rentItem = rents[index];
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedItem = index;
-                          // isSelected = !isSelected;
-                        });
-                        //TODO delete ot item tap
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.w),
-                          border: Border.all(
-                              color: selectedItem == index
-                                  ? Colors.grey
-                                  : kPrimaryColor,
-                              width: 4),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                IntrinsicHeight(
-                                  child: Row(
+      body: rents.length == 0
+          ? Container(
+              alignment: Alignment.center,
+              child: Text("Список аренд пуст",
+                  style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp,
+                  )),
+            )
+          : Container(
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Container(
+                        padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                        child: buildTextInfo(
+                            "Электронная почта клиента", widget.userEmail,
+                            top: 10)),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20.h,
+                      horizontal: 15.w,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 2.5,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: rents.length,
+                        (BuildContext context, int index) {
+                          RentResponse rentItem = rents[index];
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedItem = index;
+                                // isSelected = !isSelected;
+                              });
+                              //TODO delete ot item tap
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.w),
+                                border: Border.all(
+                                    color: selectedItem == index
+                                        ? Colors.grey
+                                        : kPrimaryColor,
+                                    width: 4),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
                                     children: [
-                                      buildSmallProductImage(
-                                          rentItem.product.mainImage!.image),
-                                      const VerticalDivider(
-                                        thickness: 2,
-                                        color: kPrimaryColor,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                      IntrinsicHeight(
+                                        child: Row(
                                           children: [
-                                            Container(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                rentItem.product.name,
-                                                style: GoogleFonts.raleway(
-                                                    color: Colors.black,
-                                                    fontStyle: FontStyle.italic,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 18.sp),
-                                              ),
+                                            buildSmallProductImage(rentItem
+                                                .product.mainImage!.image),
+                                            const VerticalDivider(
+                                              thickness: 2,
+                                              color: kPrimaryColor,
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  top: 5.h,
-                                                  left: 20.w,
-                                                  right: 20.w),
-                                              padding:
-                                                  EdgeInsets.only(top: 5.h),
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  top: BorderSide(
-                                                      width: 2.0,
-                                                      color: Colors.black
-                                                          .withOpacity(0.6)),
-                                                ),
-                                              ),
-                                              child: Row(
+                                            Expanded(
+                                              child: Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  rentColumnText('Размер',
-                                                      rentItem.size.sizeName),
-                                                  rentColumnText(
-                                                      'Количество',
-                                                      rentItem.count
-                                                          .toString()),
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      rentItem.product.name,
+                                                      style:
+                                                          GoogleFonts.raleway(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: 18.sp),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 5.h,
+                                                        left: 20.w,
+                                                        right: 20.w),
+                                                    padding: EdgeInsets.only(
+                                                        top: 5.h),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        top: BorderSide(
+                                                            width: 2.0,
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.6)),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        rentColumnText(
+                                                            'Размер',
+                                                            rentItem
+                                                                .size.sizeName),
+                                                        rentColumnText(
+                                                            'Количество',
+                                                            rentItem.count
+                                                                .toString()),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               ),
-                                            )
+                                            ),
                                           ],
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          border: Border(
+                                            top: BorderSide(
+                                                width: 2.0,
+                                                color: kPrimaryColor),
+                                          ),
+                                        ),
+                                        child: IntrinsicHeight(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              buildRentTime(rentItem.startTime,
+                                                  rentItem.status),
+                                              const VerticalDivider(
+                                                thickness: 2,
+                                                color: kPrimaryColor,
+                                              ),
+                                              buildRentTime(rentItem.endTime,
+                                                  rentItem.status),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                          width: 2.0, color: kPrimaryColor),
-                                    ),
-                                  ),
-                                  child: IntrinsicHeight(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        buildRentTime(rentItem.startTime,
-                                            rentItem.status),
-                                        const VerticalDivider(
-                                          thickness: 2,
-                                          color: kPrimaryColor,
-                                        ),
-                                        buildRentTime(
-                                            rentItem.endTime, rentItem.status),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                        padding: EdgeInsets.only(
+                            left: 25.w, right: 25.w, bottom: 20.h),
+                        child: buildButton(
+                          "Сформировать счет",
+                          "primary",
+                          () {
+                            context.read<RentBloc>().add(FinishRentsEvent(
+                                userId,
+                                rents.map((rent) => rent.rentId).toList()));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const RentalPaymentScreen(),
+                              ),
+                            );
+                          },
+                        )),
+                  ),
+                ],
               ),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                  padding:
-                      EdgeInsets.only(left: 25.w, right: 25.w, bottom: 20.h),
-                  child: buildButton(
-                    "Сформировать счет",
-                    "primary",
-                    () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RentalPaymentScreen(),
-                        ),
-                      );
-                    },
-                  )),
-            ),
-          ],
-        ),
-      ),
       bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
     ));
   }

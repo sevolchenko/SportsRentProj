@@ -40,30 +40,29 @@ class _RentScreenState extends State<RentScreen> {
       builder: (context, state) {
         if (state is RentsLoadedState) {
           return _buildRentsWidget(state.rents);
-        } else if (state is RentsLoadingState) {
-          return buildLoadingWidget();
         } else {
-          return buildErrorWidget();
+          return buildLoadingWidget();
         }
       },
     );
   }
 
   Widget _buildRentsWidget(List<RentResponse> rents) {
-    return rents.length == 0
-        ? Container(
-            child: Text("Список ваших аренд пуст",
-                style: GoogleFonts.raleway(
-                  color: Colors.black,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20.sp,
-                )),
-          )
-        : Scaffold(
-            backgroundColor: Colors.white,
-            appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
-            body: Container(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
+      body: rents.length == 0
+          ? Container(
+              alignment: Alignment.center,
+              child: Text("Список ваших аренд пуст",
+                  style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp,
+                  )),
+            )
+          : Container(
               child: CustomScrollView(
                 slivers: [
                   SliverPadding(
@@ -102,7 +101,7 @@ class _RentScreenState extends State<RentScreen> {
                 ],
               ),
             ),
-            bottomNavigationBar: MyBottomNavBar(selectedIndex: 1),
-          );
+      bottomNavigationBar: MyBottomNavBar(selectedIndex: 1),
+    );
   }
 }

@@ -56,10 +56,10 @@ class ProductApi {
     try {
       if (statusCode == 200) {
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при изменении количества");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при изменении количества");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -69,10 +69,10 @@ class ProductApi {
       var statusCode = await HttpUtil().delete(path, size);
       if (statusCode == 200) {
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка! Возможно, товар в аренде");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка! Возможно, товар в аренде");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -82,10 +82,10 @@ class ProductApi {
     try {
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при создании размера");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при создании размера");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -95,10 +95,10 @@ class ProductApi {
     try {
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при создании продукта");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при создании продукта");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -109,12 +109,10 @@ class ProductApi {
       if (code == 200) {
         toastInfo(msg: "Продукт удален");
         return code;
+      } else {
+        toastInfo(msg: "Ошибка при удалении продукта");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при удалении продукта");
-    }
+    } on DioError catch (e) {}
     return null;
   }
-
- 
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:client/api/dto/response/rent.dart';
 
 abstract class RentState {}
@@ -13,9 +11,10 @@ class RentsLoadedState extends RentState {
 }
 
 class UserRentsLoadedState extends RentState {
+  final int userId;
   final List<RentResponse> userRents;
 
-  UserRentsLoadedState({required this.userRents});
+  UserRentsLoadedState({required this.userId, required this.userRents});
 }
 
 class RentsErrorState extends RentState {

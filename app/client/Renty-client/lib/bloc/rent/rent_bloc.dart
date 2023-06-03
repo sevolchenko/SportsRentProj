@@ -1,4 +1,5 @@
 import 'package:client/api/dto/request/rent/extend_rent_event.dart';
+import 'package:client/api/dto/request/rent/finish_rent.dart';
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/rent.dart';
 import 'package:client/api/repository/rent_repository.dart';
@@ -25,14 +26,21 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       },
     );
 
-    // TODO body
-    // on<FinishRentEvent>(
-    //   (event, emit) async {
-    //     await _rentRepository.finishUserRents(event.userId);
-    //     myRents = await _rentRepository.getMyOngRents();
-    //     emit(RentsLoadedState(rents: myRents));
-    //   },
-    // );
+    on<FinishRentsEvent>(
+      (event, emit) async {
+        UserRentsFinishRequest finishRequest =
+            UserRentsFinishRequest(rentsId: event.rentsIds);
+        await _rentRepository.finishUserRents(event.userId, finishRequest.toJson());
+        myRents = await _rentRepository.getUserOngRents(event.userId);
+        emit(UserRentsLoadedState(userId: event.userId, userRents: myRents));
+
+
+        // emit(RentsLoadedState(rents: myRents));
+
+        // myRents = await _rentRepository.getUserOngRents(event.userId);
+        // emit(RentsLoadedState(rents: myRents));
+      },
+    );
 
     on<StartRentEvent>((event, emit) async {
       StartRentEventRequest startRentRequest = StartRentEventRequest(
@@ -59,10 +67,11 @@ class RentBloc extends Bloc<RentEvent, RentState> {
 
     on<SearchUserRentsEvent>(
       (event, emit) async {
-        var user = await _rentRepository.getUserData({"email": event.userEmail});
+        var user =
+            await _rentRepository.getUserData({"email": event.userEmail});
         var userRents = await _rentRepository.getUserOngRents(user!.userId);
         // myRents = await _rentRepository.getMyOngRents();
-        emit(UserRentsLoadedState(userRents: userRents));
+        emit(UserRentsLoadedState(userId: user.userId, userRents: userRents));
       },
     );
   }

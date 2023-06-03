@@ -2,7 +2,6 @@ import 'package:client/api/apis/rent_api.dart';
 import 'package:client/api/dto/response/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 
-
 class RentRepository {
   final RentApi _rentApi = RentApi();
 
@@ -18,9 +17,7 @@ class RentRepository {
     await _rentApi.finishRentByUserIdRentId(userId, rentId, {});
   }
 
-  // TODO List<Map<String, dynamic> body> rents id
-  Future<void> finishUserRents(
-      int userId, List<Map<String, dynamic>> body) async {
+  Future<void> finishUserRents(int userId, Map<String, dynamic> body) async {
     await _rentApi.finishRentsByUserId(userId, body);
   }
 

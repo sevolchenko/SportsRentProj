@@ -6,6 +6,6 @@ class UserRentsFinishRequest {
   });
 
   Map<String, dynamic> toJson() => {
-        'rent_id': rentsId,
+        'rent_ids': rentsId,
       };
 }

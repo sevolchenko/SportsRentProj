@@ -10,10 +10,11 @@ class UserRentsLoadEvent extends RentEvent {
   UserRentsLoadEvent(this.userId);
 }
 
-class FinishRentEvent extends RentEvent {
+class FinishRentsEvent extends RentEvent {
   final int userId;
+  final List<int> rentsIds;
 
-  FinishRentEvent(this.userId);
+  FinishRentsEvent(this.userId, this.rentsIds);
 }
 
 class StartRentEvent extends RentEvent {
@@ -39,6 +40,7 @@ class ProlongRentEvent extends RentEvent {
 }
 
 class SearchUserRentsEvent extends RentEvent {
+  // final int userId;
   final String userEmail;
   SearchUserRentsEvent(this.userEmail);
 }

@@ -32,13 +32,7 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<RentBloc, RentState>(
       builder: (context, state) {
-        if (state is RentsLoadedState) {
-          return _buildUserRentsSearchWidget();
-        } else if (state is RentsLoadingState) {
-          return buildLoadingWidget();
-        } else {
-          return buildErrorWidget();
-        }
+        return _buildUserRentsSearchWidget();
       },
     );
   }
@@ -72,7 +66,9 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                 buildButton("Поиск", "primary", () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => RentalCompletionScreen(userEmail: _userEmail,),
+                      builder: (context) => RentalCompletionScreen(
+                        userEmail: _userEmail,
+                      ),
                     ),
                   );
                 })

@@ -48,7 +48,7 @@ class RentApi {
   }
 
   Future<List<RentResponse>> getMyOngoingRents() async {
-    var path = 'rents/my';
+    var path = 'rents/my/ongoing';
     try {
       var response = await HttpUtil().get(path);
       var jsonData = response.data;
@@ -67,25 +67,27 @@ class RentApi {
     var statusCode = await HttpUtil().patch(path, body);
     try {
       if (statusCode == 200) {
+        toastInfo(msg: "Аренда успешно завершена");
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при завершении аренды");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при завершении аренды");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
   Future<int?> finishRentsByUserId(
-      int userId, List<Map<String, dynamic>> body) async {
+      int userId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/finish/batch';
     var statusCode = await HttpUtil().patch(path, body);
     try {
       if (statusCode == 200) {
+        toastInfo(msg: "Аренды успешно завершены");
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при завершении аренды");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при завершении аренды");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -97,10 +99,10 @@ class RentApi {
       if (statusCode == 200) {
         toastInfo(msg: "Аренда продлена");
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при продлении аренды");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при продлении аренды");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -111,10 +113,10 @@ class RentApi {
       if (statusCode == 200) {
         toastInfo(msg: "Аренда успешно началась");
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при старте аренды");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при старте аренды");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
@@ -125,10 +127,10 @@ class RentApi {
     try {
       if (statusCode == 200) {
         return statusCode;
+      } else {
+        toastInfo(msg: "Ошибка при старте нескольких аренд");
       }
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при старте нескольких аренд");
-    }
+    } on DioError catch (e) {}
     return null;
   }
 
