@@ -20,8 +20,8 @@ class RentRepository {
     await _rentApi.finishRentsByUserId(userId, {});
   }
 
-  Future<void> prolongRent(int rentId) async {
-    await _rentApi.prolongRentByRentId(rentId, {});
+  Future<void> prolongRent(int rentId, Map<String, dynamic> body) async {
+    await _rentApi.prolongRentByRentId(rentId, body);
   }
 
   Future<void> startRent(Map<String, dynamic> body) async {

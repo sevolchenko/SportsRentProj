@@ -39,16 +39,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       },
     );
 
-    on<ProductRentEvent>((event, emit) async {
-      StartRentEventRequest rentEventCreateRequest = StartRentEventRequest(
-          productId: event.productId,
-          sizeName: event.sizeName,
-          count: event.count,
-          startTime: event.startTime,
-          endTime: event.endTime);
-      // await _productRepository.productRent(rentEventCreateRequest.toJson());
-      emit(ProductLoadedState(productItem: product, sizes: product.sizes));
-    });
+    // on<ProductRentEvent>((event, emit) async {
+    //   StartRentEventRequest rentEventCreateRequest = StartRentEventRequest(
+    //       productId: event.productId,
+    //       sizeName: event.sizeName,
+    //       count: event.count,
+    //       startTime: event.startTime,
+    //       endTime: event.endTime);
+    //   // await _productRepository.productRent(rentEventCreateRequest.toJson());
+    //   emit(ProductLoadedState(productItem: product, sizes: product.sizes));
+    // });
 
     on<PreCreateProductEvent>(
       (event, emit) async {

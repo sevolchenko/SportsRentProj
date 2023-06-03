@@ -152,13 +152,13 @@ class CartScreen extends StatelessWidget {
                                                         .spaceEvenly,
                                                 children: [
                                                   buildRentTime(
-                                                      "23.04.23 15:00"),
+                                                      "23.04.23 15:00", ""),
                                                   const VerticalDivider(
                                                     thickness: 2,
                                                     color: kPrimaryColor,
                                                   ),
                                                   buildRentTime(
-                                                      "23.04.23 16:00"),
+                                                      "23.04.23 16:00", ""),
                                                 ],
                                               ),
                                             ),
@@ -166,14 +166,14 @@ class CartScreen extends StatelessWidget {
                                           Container(
                                             margin: EdgeInsets.only(top: 5.h),
                                             child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const RentalInfoScreen(),
-                                                  ),
-                                                );
-                                              },
+                                              // onTap: () {
+                                              //   Navigator.of(context).push(
+                                              //     MaterialPageRoute(
+                                              //       builder: (context) =>
+                                              //           const RentalInfoScreen(),
+                                              //     ),
+                                              //   );
+                                              // },
                                               child: GestureDetector(
                                                 onTap: () {},
                                                 child: const Icon(

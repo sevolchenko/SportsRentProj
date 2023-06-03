@@ -22,6 +22,18 @@ class StartRentEvent extends RentEvent {
   final int count;
   final String startTime;
   final String endTime;
+
   StartRentEvent(
-      this.productId, this.sizeName, this.count, this.startTime, this.endTime);
+      {required this.productId,
+      required this.sizeName,
+      required this.count,
+      required this.startTime,
+      required this.endTime});
+}
+
+class ProlongRentEvent extends RentEvent {
+  final int rentId;
+  final String newEndTime;
+
+  ProlongRentEvent(this.rentId, this.newEndTime);
 }

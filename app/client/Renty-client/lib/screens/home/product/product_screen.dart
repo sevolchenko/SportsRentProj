@@ -5,6 +5,8 @@ import 'package:client/api/dto/response/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
+import 'package:client/bloc/rent/rent_bloc.dart';
+import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
@@ -271,8 +273,9 @@ class _ProductScreenState extends State<ProductScreen> {
           height: 20.h,
         ),
         buildButton("Добавить в корзину", "primary", () {
-          context.read<ProductBloc>().add(
-                ProductRentEvent(
+          print("startTime: ${startTime}");
+          context.read<RentBloc>().add(
+                StartRentEvent(
                   productId: product.id,
                   count: count,
                   sizeName: sizes[_selectedSizeIndex].sizeName,
@@ -280,6 +283,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   endTime: endTime,
                 ),
               );
+          setState(() {});
         }),
         SizedBox(
           height: 20.h,

@@ -94,6 +94,7 @@ class RentApi {
     var statusCode = await HttpUtil().patch(path, body);
     try {
       if (statusCode == 200) {
+        toastInfo(msg: "Аренда продлена");
         return statusCode;
       }
     } on DioError catch (e) {
@@ -107,6 +108,7 @@ class RentApi {
     var statusCode = await HttpUtil().post(path, data: body);
     try {
       if (statusCode == 200) {
+        toastInfo(msg: "Аренда успешно началась");
         return statusCode;
       }
     } on DioError catch (e) {
@@ -115,6 +117,8 @@ class RentApi {
     return null;
   }
 
+
+  // TODO передавать List<Map<String, dynamic>>
   Future<int?> startBatchRents(Map<String, dynamic> body) async {
     var path = 'rents/my/start/batch';
     var statusCode = await HttpUtil().post(path, data: body);

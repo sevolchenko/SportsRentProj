@@ -144,12 +144,12 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        buildRentTime("23.04.23 15:00"),
+                                        buildRentTime("23.04.23 15:00", ""),
                                         const VerticalDivider(
                                           thickness: 2,
                                           color: kPrimaryColor,
                                         ),
-                                        buildRentTime("23.04.23 16:00"),
+                                        buildRentTime("23.04.23 16:00", ""),
                                       ],
                                     ),
                                   ),

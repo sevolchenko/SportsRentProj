@@ -7,20 +7,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-Widget buildRentTime(String time) {
+Widget buildRentTime(String time, String status) {
   return Container(
+    margin: EdgeInsets.all(1),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20.w),
+    ),
     alignment: Alignment.center,
     child: Text(
-      DateFormat('dd.MM.yyyy HH:mm').format(DateTime.parse(time)).toString(),
+      DateFormat('dd.MM.yyyy HH:mm')
+          .format(DateTime.parse(time).toLocal())
+          .toString(),
       maxLines: 2,
       overflow: TextOverflow.fade,
       textAlign: TextAlign.center,
-      style: GoogleFonts.raleway(
-        color: Colors.black,
-        fontStyle: FontStyle.italic,
-        fontWeight: FontWeight.normal,
-        fontSize: 17.sp,
-      ),
+      style: status == "EXPIRED"
+          ? GoogleFonts.raleway(
+              color: Colors.red,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 17.sp,
+            )
+          : GoogleFonts.raleway(
+              color: Colors.black,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.normal,
+              fontSize: 17.sp,
+            ),
     ),
   );
 }
@@ -60,6 +73,7 @@ Widget rentColumnText(String topText, String bottomText) {
 }
 
 Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
+  print("getted start time: ${rent.startTime}");
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
@@ -131,12 +145,12 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildRentTime(rent.startTime),
+                    buildRentTime(rent.startTime, rent.status),
                     const VerticalDivider(
                       thickness: 2,
                       color: kPrimaryColor,
                     ),
-                    buildRentTime(rent.endTime),
+                    buildRentTime(rent.endTime, rent.status),
                   ],
                 ),
               ),

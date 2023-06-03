@@ -1,3 +1,4 @@
+import 'package:client/api/dto/request/rent/extend_rent_event.dart';
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/rent.dart';
 import 'package:client/api/repository/rent_repository.dart';
@@ -40,9 +41,19 @@ class RentBloc extends Bloc<RentEvent, RentState> {
         startTime: event.startTime,
         endTime: event.endTime,
       );
-      await _rentRepository.startRents(startRentRequest.toJson());
+      await _rentRepository.startRent(startRentRequest.toJson());
       myRents = await _rentRepository.getMyOngRents();
       emit(RentsLoadedState(rents: myRents));
     });
+
+    on<ProlongRentEvent>(
+      (event, emit) async {
+        ExtendRentEventRequest eventRequest =
+            ExtendRentEventRequest(newEndTime: event.newEndTime);
+        await _rentRepository.prolongRent(event.rentId, eventRequest.toJson());
+        myRents = await _rentRepository.getMyOngRents();
+        emit(RentsLoadedState(rents: myRents));
+      },
+    );
   }
 }

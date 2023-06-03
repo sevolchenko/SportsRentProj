@@ -57,7 +57,7 @@ class HttpUtil {
         "Authorization": token,
       }),
     );
-    return response;
+    return response.statusCode;
   }
 
   Future patch(String path, dynamic data) async {

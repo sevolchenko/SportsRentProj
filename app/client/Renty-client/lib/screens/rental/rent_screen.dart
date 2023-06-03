@@ -88,7 +88,7 @@ class _RentScreenState extends State<RentScreen> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const RentalInfoScreen(),
+                                       RentalInfoScreen(rentItem: rent,),
                                 ),
                               );
                             },
