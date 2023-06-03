@@ -23,7 +23,7 @@ insert into rent_event (user_id, start_time, end_time, finished_at, created_at, 
 values (2, timestamptz '2023-06-03 19:00', timestamptz '2023-06-06 19:00', null, timestamptz '2023-06-03 18:00', 2, 'Взрослый', 1, 700, null, 'CREATED');
 
 insert into rent_event (user_id, start_time, end_time, finished_at, created_at, product_id, size_name, count, price, receipt_id, status)
-values (3, timestamptz '2023-06-03 19:00', timestamptz '2023-04-06 19:00', null, timestamptz '2023-06-03 18:00', 7, '43', 5, 1000, null, 'CREATED');
+values (3, timestamptz '2023-06-03 19:00', timestamptz '2023-06-04 19:00', null, timestamptz '2023-06-03 18:00', 7, '43', 5, 1000, null, 'CREATED');
 
 insert into rent_event (user_id, start_time, end_time, finished_at, created_at, product_id, size_name, count, price, receipt_id, status)
 values (3, timestamptz '2023-06-03 12:00', timestamptz '2023-06-03 15:00', null, timestamptz '2023-06-03 11:00', 3, 'Один размер', 3, 500, null, 'EXPIRED');
