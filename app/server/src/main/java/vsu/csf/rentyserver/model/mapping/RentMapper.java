@@ -28,14 +28,20 @@ public abstract class RentMapper {
     @Autowired
     RentProcessor rentProcessor;
 
+    @Mapping(target = "exceptedDuration",
+            expression = "java(rentProcessor.countExceptedDuration(rentEvent))")
+    @Mapping(target = "prettyDuration",
+            expression = "java(DurationUtils.formatDuration(exceptedDuration))")
     public abstract RentResponse map(RentEvent rentEvent);
 
     public abstract List<RentResponse> map(List<RentEvent> rentEvents);
 
-    @Mapping(target = "duration",
-            expression = "java(rentProcessor.countDuration(rentEvent))")
+    @Mapping(target = "exceptedDuration",
+            expression = "java(rentProcessor.countExceptedDuration(rentEvent))")
+    @Mapping(target = "factDuration",
+            expression = "java(rentProcessor.countFactDuration(rentEvent))")
     @Mapping(target = "prettyDuration",
-            expression = "java(DurationUtils.formatDuration(duration))")
+            expression = "java(DurationUtils.formatDuration(factDuration))")
     @Mapping(target = "fine",
             expression = "java(rentProcessor.countFine(rentEvent))")
     public abstract ReceiptItemResponse mapToReceiptItem(RentEvent rentEvent);

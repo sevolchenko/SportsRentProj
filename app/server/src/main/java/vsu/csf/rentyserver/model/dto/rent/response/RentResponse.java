@@ -6,6 +6,7 @@ import vsu.csf.rentyserver.model.dto.catalog.response.SizeResponse;
 import vsu.csf.rentyserver.model.dto.user.response.UserResponse;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 public record RentResponse(
@@ -23,6 +24,10 @@ public record RentResponse(
 
         @JsonProperty("finished_at")
         OffsetDateTime finishedAt,
+
+        Duration exceptedDuration,
+
+        String prettyDuration,
 
         ProductPreviewResponse product,
 

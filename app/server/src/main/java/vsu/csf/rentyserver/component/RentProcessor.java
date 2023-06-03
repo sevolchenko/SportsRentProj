@@ -95,13 +95,24 @@ public class RentProcessor {
         log.info("Rent {} expired", rentId);
     }
 
-    public Duration countDuration(RentEvent rentEvent) {
+    public Duration countExceptedDuration(RentEvent rentEvent) {
+        return Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()).withNanos(0);
+    }
+
+    public Duration countFactDuration(RentEvent rentEvent) {
+        if (rentEvent.getFinishedAt() == null) {
+            return null;
+        }
         return Duration.between(rentEvent.getStartTime(), rentEvent.getFinishedAt()).withNanos(0);
     }
 
     public Integer countFine(RentEvent rentEvent) {
 
-        var duration = countDuration(rentEvent);
+        var duration = countFactDuration(rentEvent);
+
+        if (duration == null) {
+            return 0;
+        }
 
         return (int) (duration
                 .minus(Duration.between(rentEvent.getStartTime(), rentEvent.getEndTime()))

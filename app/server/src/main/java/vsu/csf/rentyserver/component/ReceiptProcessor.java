@@ -15,10 +15,16 @@ public class ReceiptProcessor {
 
     public Integer countSum(List<ReceiptItemResponse> rents) {
 
-        return rents.stream().mapToInt((rent) ->
-                (int) rent.duration().dividedBy(rentProperties.price().per()) *
-                        rent.price() * rent.count() + rent.fine())
+        return rents.stream()
+                .mapToInt(this::countSum)
                 .sum();
+
+    }
+
+    public Integer countSum(ReceiptItemResponse rent) {
+
+        return (int) rent.factDuration().dividedBy(rentProperties.price().per()) *
+                rent.price() * rent.count() + rent.fine();
 
     }
 

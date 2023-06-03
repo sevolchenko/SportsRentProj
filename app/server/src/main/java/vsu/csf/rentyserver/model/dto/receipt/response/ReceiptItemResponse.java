@@ -15,7 +15,11 @@ public record ReceiptItemResponse(
 
         SizeResponse size,
 
-        Duration duration,
+        @JsonProperty("excepted_duration")
+        Duration exceptedDuration,
+
+        @JsonProperty("fact_duration")
+        Duration factDuration,
 
         @JsonProperty("pretty_duration")
         String prettyDuration,
