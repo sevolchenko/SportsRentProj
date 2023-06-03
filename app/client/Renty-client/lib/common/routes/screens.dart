@@ -43,7 +43,7 @@ class AppScreens {
             create: (_) => ProductBloc(),
           )),
       ScreenEntity(
-          route: AppRoutes.SIGN_IN,
+          route: AppRoutes.LOGIN,
           screen: const LoginScreen(),
           bloc: BlocProvider(
             create: (_) => AuthBloc(),
@@ -110,7 +110,7 @@ class AppScreens {
     // }
     print("invalid ${settings.name}");
     return MaterialPageRoute(
-        builder: (_) => const LoginScreen(), settings: settings);
+        builder: (_) => const HomeScreen(), settings: settings);
     // return MaterialPageRoute(
     //     builder: (_) => const SignInScreen(), settings: settings);
   }

@@ -1,7 +1,9 @@
 import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/cart/widgets/cart_widgets.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/quantity_editing.dart';
@@ -18,7 +20,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Корзина'),
-      body: Container(
+      body: Global.storageService.isUserAuthenticated() ? Container(
         child: CustomScrollView(
           slivers: [
             SliverPadding(
@@ -214,7 +216,7 @@ class CartScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ) : buildUnauthenticatedWidget(context),
       bottomNavigationBar: MyBottomNavBar(selectedIndex: 2),
     );
   }

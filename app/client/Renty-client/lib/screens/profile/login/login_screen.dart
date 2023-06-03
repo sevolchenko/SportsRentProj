@@ -70,12 +70,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // SignInController(context: context)
                                 //     .handleSignIn("email");
 
-                                // Navigator.of(context).pushNamed("/profile");
                                 context.read<AuthBloc>().add(
                                     LoginEvent(
                                         LoginRequest(email: email, password: password)
                                     )
                                 );
+                                Navigator.of(context).pushNamed("/profile");
                               }),
                               SizedBox(
                                 height: 20.h,

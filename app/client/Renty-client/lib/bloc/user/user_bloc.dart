@@ -10,8 +10,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc() : super(UserLoadingState()) {
     on<UserLoadEvent>((event, emit) async {
-      user = await _userRepository.getMe();
-      emit(UserLoadedState(user: user));
+      var response = await _userRepository.getMe();
+      if (response != null) {
+        emit(UserLoadedState(user: response));
+      } else {
+        emit(UserUnauthorizedState());
+      }
     });
   }
 }

@@ -10,7 +10,6 @@ class UserLoadedState extends UserState {
   UserLoadedState({required this.user});
 }
 
-class UserErrorState extends UserState {
-  UserErrorState({required this.errorMessage});
-  final String errorMessage;
+class UserUnauthorizedState extends UserState {
+  UserUnauthorizedState();
 }

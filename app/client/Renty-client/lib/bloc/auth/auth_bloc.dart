@@ -4,6 +4,7 @@ import 'package:client/api/repository/auth_repository.dart';
 import 'package:client/bloc/auth/auth_event.dart';
 import 'package:client/bloc/auth/auth_state.dart';
 import 'package:client/common/utils/http_util.dart';
+import 'package:client/global.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -14,8 +15,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(LoggedOutState()) {
     on<LoginEvent>(
           (event, emit) async {
-            var response = await _authRepository.login(event.loginRequest);
-            HttpUtil().loginResponse = response;
+            var loginResponse = await _authRepository.login(event.loginRequest);
+            Global.storageService.setUser(loginResponse);
             emit(LoggedInState(response: response));
       },
     );
@@ -23,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutEvent>(
           (event, emit) async {
             _authRepository.logout();
-            HttpUtil().loginResponse = null;
+            Global.storageService.unAuthenticate();
             emit(LoggedOutState());
       },
     );

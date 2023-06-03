@@ -5,14 +5,15 @@ import 'package:dio/dio.dart';
 
 class HttpUtil {
   static HttpUtil _instance = HttpUtil._internal();
+
   factory HttpUtil() {
     return _instance;
   }
 
   late Dio dio;
-  LoginResponse? loginResponse;
+
   // final String token =
-  //     //"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl";
+  //     "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl";
   //     "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ2YWRpbTAyMTAxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjg1NjYyMzU1LCJleHAiOjE2OTM0MzgzNTV9.3jAt9aYnFEiabmKPTDSVbim6rfq8uhj_ca41HHQ2Ipn060XsodOt_UgKmedaIrSs";
   HttpUtil._internal() {
     BaseOptions options = BaseOptions(
@@ -29,64 +30,61 @@ class HttpUtil {
   Future get(String path) async {
     var response = dio.get(
       path,
-      options: getOptions(),
+      options: getOptions(null),
     );
     return response;
   }
 
-  Future post(
-    String path, {
+  Future post(String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    Options requestOptions = options ?? Options();
-    requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
     var response = await dio.post(
       path,
       data: data,
       queryParameters: queryParameters,
-      // options: requestOptions,
-      options: getOptions(),
+      options: getOptions(options),
     );
     return response;
   }
 
-  Future patch(String path, dynamic data) async {
+  Future patch(String path,
+      dynamic data,
+      Map<String, dynamic>? queryParameters,
+      Options? options) async {
     var response = await dio.patch(
-      path,
-      data: data,
-      options: getOptions(),
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: getOptions(options),
     );
-    return response.statusCode;
+    return
+    response
+    .
+    statusCode;
   }
 
-  Future delete(String path, dynamic data) async {
+  Future delete(String path,
+      dynamic data,
+      Map<String, dynamic>? queryParameters,
+      Options? options) async {
     var response = await dio.delete(
-      path,
-      data: data,
-      options: getOptions(),
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: getOptions(options)
     );
     return response.statusCode;
   }
 
-  Map<String, dynamic> getAuthorizationHeader() {
+  Options getOptions(Options? options) {
     var headers = <String, dynamic>{};
-    var accessToken = Global.storageService.getUserToken();
-    if (accessToken.isNotEmpty) {
-      headers['Authorization'] = accessToken;
+    if (options != null && options.headers != null) {
+      headers.addAll(options.headers!);
     }
-    return headers;
-  }
-
-  Options getOptions() {
-    var headers = <String, dynamic>{};
-    if (loginResponse != null) {
-      headers['Authorization'] = loginResponse!.token;
+    if (Global.storageService.isUserAuthenticated()) {
+      headers['Authorization'] = Global.storageService.getUser()!.token;
     }
     headers['Content-Type'] = 'application/json';
     return Options(headers: headers);

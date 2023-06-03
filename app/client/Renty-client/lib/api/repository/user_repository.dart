@@ -6,7 +6,7 @@ import 'package:client/api/dto/response/user/user.dart';
 class UserRepository {
   final UserApi _userApi = UserApi();
 
-  Future<UserResponse> getMe() {
+  Future<UserResponse?> getMe() {
     return _userApi.getMe();
   }
 }
