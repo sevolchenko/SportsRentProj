@@ -35,11 +35,11 @@ class HttpUtil {
     return response;
   }
 
-  Future post(String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future post(String path,
+      {dynamic data,
+    Map<String, dynamic>? queryParameters = null,
+    Options? options = null}
+  ) async {
     var response = await dio.post(
       path,
       data: data,
@@ -49,10 +49,24 @@ class HttpUtil {
     return response.statusCode;
   }
 
+  Future postWithResponse(String path,
+      {dynamic data,
+        Map<String, dynamic>? queryParameters = null,
+        Options? options = null}
+      ) async {
+    var response = await dio.post(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: getOptions(options),
+    );
+    return response;
+  }
+
   Future patch(String path,
       dynamic data,
-      Map<String, dynamic>? queryParameters,
-      Options? options) async {
+      {Map<String, dynamic>? queryParameters = null,
+      Options? options = null}) async {
     var response = await dio.patch(
         path,
         data: data,
@@ -67,8 +81,8 @@ class HttpUtil {
 
   Future delete(String path,
       dynamic data,
-      Map<String, dynamic>? queryParameters,
-      Options? options) async {
+      {Map<String, dynamic>? queryParameters = null,
+        Options? options = null}) async {
     var response = await dio.delete(
         path,
         data: data,

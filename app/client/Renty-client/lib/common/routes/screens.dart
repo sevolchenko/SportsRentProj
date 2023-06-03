@@ -6,7 +6,6 @@ import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
-import 'package:client/bloc/sign_in/sign_in_bloc.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/common/routes/names.dart';
@@ -17,7 +16,6 @@ import 'package:client/screens/profile/employee/product_catalog/inventory/produc
 import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
-import 'package:client/screens/profile/sign_in/sign_in_screen.dart';
 import 'package:client/screens/rental/rent_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +73,12 @@ class AppScreens {
           screen: const ProfileScreen(),
           bloc: BlocProvider(
             create: (_) => UserBloc(),
+          )),
+      ScreenEntity(
+          route: AppRoutes.RENT_EVENT,
+          screen: const RentScreen(),
+          bloc: BlocProvider(
+            create: (_) => RentBloc(),
           ))
       // ScreenEntity(
       //     route: AppRoutes.APPLICATION,

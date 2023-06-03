@@ -6,6 +6,7 @@ import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
 import 'package:client/screens/rental/rental_actions/rental_info.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
@@ -51,8 +52,8 @@ class _RentScreenState extends State<RentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
-      body: Global.storageService.isUserAuthenticated() ? rents.length == 0
-          ? Container(
+      body: Global.storageService.isUserAuthenticated() ?
+          rents.length == 0 ? Container(
               alignment: Alignment.center,
               child: Text("Список ваших аренд пуст",
                   style: GoogleFonts.raleway(

@@ -17,7 +17,7 @@ class CategoryApi {
 
   Future<int?> deleteCategoryById(int categoryId) async {
     var path = 'catalog/categories/${categoryId}';
-    var statusCode = await HttpUtil().delete(path, null, null, null);
+    var statusCode = await HttpUtil().delete(path, null);
     try {
       if (statusCode == 200) {
         toastInfo(msg: "Категория успешно удалена");

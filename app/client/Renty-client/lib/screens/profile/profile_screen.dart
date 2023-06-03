@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void removeUserData() {
     // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
 
-    Global.storageService.unAuthenticate();
+    Global.storageService.logout();
     Navigator.of(context)
         .pushNamedAndRemoveUntil(AppRoutes.LOGIN, (route) => false);
   }
@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           TextButton(
                             // onPressed: () => removeUserData(),
                             onPressed: () {
-                              Global.storageService.unAuthenticate();
+                              Global.storageService.logout();
                               Navigator.pushNamed(context, AppRoutes.LOGIN).then((_) => setState(() {}));
                               // Navigator.of(context).push(
                               //   MaterialPageRoute(

@@ -13,12 +13,11 @@ class StorageService {
     return _prefs.getBool("isAuthenticated") ?? false;
   }
 
-  unAuthenticate() {
+  logout() {
     _prefs.setBool("isAuthenticated", false);
     _prefs.remove("userId");
     _prefs.remove("role");
     _prefs.remove("token");
-
   }
 
   LoginResponse? getUser() {

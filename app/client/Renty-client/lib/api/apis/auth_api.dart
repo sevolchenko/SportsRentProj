@@ -5,7 +5,7 @@ import 'package:client/common/utils/http_util.dart';
 class AuthApi {
   Future<LoginResponse> login(LoginRequest request) async {
     // try {
-    var response = await HttpUtil().post(
+    var response = await HttpUtil().postWithResponse(
         'auth/login',
         data: request
     );

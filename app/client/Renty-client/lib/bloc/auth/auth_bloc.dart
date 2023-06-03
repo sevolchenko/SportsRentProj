@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutEvent>(
           (event, emit) async {
             _authRepository.logout();
-            Global.storageService.unAuthenticate();
+            Global.storageService.logout();
             emit(LoggedOutState());
       },
     );
