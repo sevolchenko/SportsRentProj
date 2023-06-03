@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.controller.IRentController;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
+import vsu.csf.rentyserver.model.dto.rent.request.FinishRentsBatchRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 import vsu.csf.rentyserver.security.SecurityUser;
@@ -127,10 +128,10 @@ public class RentController implements IRentController {
 
     @PatchMapping("/{user_id}/finish/batch")
     public List<RentResponse> finish(@PathVariable("user_id") Long userId,
-                           @RequestBody List<Long> rentIds,
+                           @RequestBody FinishRentsBatchRequest request,
                            Authentication authentication) {
 
-        rentIds.forEach((rentId) -> {
+        request.rentIds().forEach((rentId) -> {
             if (!rentService.owns(userId, rentId)) {
                 throw new AccessDeniedException("It's not %d user's rent"
                         .formatted(userId));
@@ -139,7 +140,7 @@ public class RentController implements IRentController {
 
         var employee = (SecurityUser) authentication.getPrincipal();
 
-        return rentService.finish(userId, employee.getUserId(), rentIds);
+        return rentService.finish(userId, employee.getUserId(), request.rentIds());
     }
 
 }

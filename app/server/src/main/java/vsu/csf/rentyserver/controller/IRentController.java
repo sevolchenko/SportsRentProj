@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
+import vsu.csf.rentyserver.model.dto.rent.request.FinishRentsBatchRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 
@@ -177,7 +178,7 @@ public interface IRentController {
     @ApiResponse(responseCode = "200", description = "Аренды завершены")
     @SecurityRequirement(name = "JWT")
     List<RentResponse> finish(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
-                              @Parameter(name = "rent_id", description = "Идентификаторы аренд") List<Long> rentIds,
+                              @RequestBody(description = "Идентификаторы аренд") FinishRentsBatchRequest request,
                               Authentication authentication);
 
 }
