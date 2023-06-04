@@ -10,7 +10,9 @@ import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.NotAvailableSizeException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
 import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
+import vsu.csf.rentyserver.model.dto.rent.request.CreateRentsBatchRequest;
 import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
+import vsu.csf.rentyserver.model.dto.rent.request.RentStatusFilter;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 import vsu.csf.rentyserver.model.entity.*;
 import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
@@ -21,7 +23,6 @@ import vsu.csf.rentyserver.repository.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -41,18 +42,10 @@ public class RentService {
     private final RentMapper rentMapper;
 
     @Transactional(readOnly = true)
-    public List<RentResponse> getAll(Long userId) {
-        log.info("List all rents for user {} called", userId);
+    public List<RentResponse> getAll(Long userId, RentStatusFilter statusFilter) {
+        log.info("List {} rents for user {} called", statusFilter.name(), userId);
 
-        return rentMapper.map(eventRepository.findRentEventsByUser_userIdEquals(userId));
-    }
-
-    @Transactional(readOnly = true)
-    public List<RentResponse> getOngoing(Long userId) {
-        log.info("List all ongoing for user {} called", userId);
-
-        var statuses = Set.of(RentStatus.ONGOING, RentStatus.EXPIRED);
-        return rentMapper.map(eventRepository.findRentEventsByUser_userIdEqualsAndStatusIsIn(userId, statuses));
+        return rentMapper.map(eventRepository.findRentEventsByUser_userIdEqualsAndStatusIsIn(userId, statusFilter.getEvents()));
     }
 
     @Transactional(readOnly = true)
@@ -80,13 +73,13 @@ public class RentService {
         return create(user, request);
     }
 
-    public List<RentResponse> create(Long userId, List<CreateRentRequest> requests) {
+    public List<RentResponse> create(Long userId, CreateRentsBatchRequest requests) {
         var user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
 
         List<RentResponse> events = new ArrayList<>();
 
-        requests.forEach((request -> events.add(create(user, request))));
+        requests.rents().forEach((request -> events.add(create(user, request))));
 
         return events;
     }

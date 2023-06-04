@@ -14,8 +14,6 @@ import java.util.Set;
 @Repository
 public interface RentEventsRepository extends JpaRepository<RentEvent, Long> {
 
-    List<RentEvent> findRentEventsByUser_userIdEquals(Long userId);
-
     List<RentEvent> findRentEventsByUser_userIdEqualsAndStatusIsIn(Long userId, Set<RentStatus> statuses);
 
     @Query("select e from RentEvent e where (e.size = :size and e.startTime < :startTime and (e.endTime > :endTime or e.status = 'EXPIRED'))")

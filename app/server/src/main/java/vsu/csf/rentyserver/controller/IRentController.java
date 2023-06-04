@@ -10,9 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
-import vsu.csf.rentyserver.model.dto.rent.request.CreateRentRequest;
-import vsu.csf.rentyserver.model.dto.rent.request.FinishRentsBatchRequest;
-import vsu.csf.rentyserver.model.dto.rent.request.ProlongRentRequest;
+import vsu.csf.rentyserver.model.dto.rent.request.*;
 import vsu.csf.rentyserver.model.dto.rent.response.RentResponse;
 
 import java.util.List;
@@ -23,12 +21,13 @@ public interface IRentController {
     @Operation(summary = "Получить список своих аренд")
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
-    List<RentResponse> getMy(Authentication authentication);
-
-    @Operation(summary = "Получить список своих действующих аренд")
-    @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    List<RentResponse> getMyOngoing(Authentication authentication);
+    List<RentResponse> getMy(
+            @Parameter(
+                    name = "status_filter",
+                    description = "Фильтр статуса аренд",
+                    schema = @Schema(implementation = RentStatusFilter.class)
+            ) RentStatusFilter filter,
+            Authentication authentication);
 
     @Operation(summary = "Получить свою аренду по идентификатору аренды",
             responses = {
@@ -82,7 +81,7 @@ public interface IRentController {
             })
     @ApiResponse(responseCode = "200", description = "Аренды начаты")
     @SecurityRequirement(name = "JWT")
-    List<RentResponse> start(@RequestBody(description = "Данные аренд") List<CreateRentRequest> request,
+    List<RentResponse> start(@RequestBody(description = "Данные аренд") CreateRentsBatchRequest request,
                              Authentication authentication);
 
     @Operation(summary = "Продлить аренду",
@@ -114,18 +113,12 @@ public interface IRentController {
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
     List<RentResponse> get(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
+                           @Parameter(
+                                   name = "status_filter",
+                                   description = "Фильтр статуса аренд",
+                                   schema = @Schema(implementation = RentStatusFilter.class)
+                           ) RentStatusFilter filter,
                            Authentication authentication);
-
-    @Operation(summary = "Получить действующие аренды по идентификатору пользователя",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "403", description = "Недостаточно прав для совершения операции"
-                    )
-            })
-    @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    List<RentResponse> getOngoing(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
-                                  Authentication authentication);
 
     @Operation(summary = "Получить аренду по идентификатору пользователя и идентификатору аренды",
             responses = {
