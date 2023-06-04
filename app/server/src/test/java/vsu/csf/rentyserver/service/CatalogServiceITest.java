@@ -3,6 +3,7 @@ package vsu.csf.rentyserver.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.StreamUtils;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -254,7 +255,7 @@ public class CatalogServiceITest extends IntegrationEnvironment {
         productsRepository.saveAndFlush(product2);
 
         // when
-        var response = catalogService.listAllProductsPreviews();
+        var response = catalogService.listAllProductsPreviews(ProductsSorting.DEFAULT, Sort.Direction.ASC, null, null, null, null);
 
         // then
         assertThat(response, is(notNullValue()));
@@ -299,7 +300,7 @@ public class CatalogServiceITest extends IntegrationEnvironment {
         // given
 
         // when
-        var response = catalogService.listAllProductsPreviews();
+        var response = catalogService.listAllProductsPreviews(ProductsSorting.DEFAULT, Sort.Direction.ASC, null, null, null, null);
 
         // then
         assertThat(response, is(notNullValue()));
