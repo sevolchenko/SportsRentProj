@@ -28,6 +28,7 @@ public abstract class RentMapper {
     @Autowired
     RentProcessor rentProcessor;
 
+    @Mapping(target = "receiptId", source = "receipt.receiptId")
     @Mapping(target = "exceptedDuration",
             expression = "java(rentProcessor.countExceptedDuration(rentEvent))")
     @Mapping(target = "prettyDuration",

@@ -8,6 +8,7 @@ import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 public record RentResponse(
 
@@ -38,6 +39,9 @@ public record RentResponse(
         Integer count,
 
         Integer price,
+
+        @JsonProperty("receipt_id")
+        UUID receiptId,
 
         RentStatus status
 
