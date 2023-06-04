@@ -14,7 +14,11 @@ public enum RentStatusFilter {
 
     ONGOING(Set.of(RentStatus.ONGOING, RentStatus.EXPIRED)),
 
-    NOT_FINISHED(Set.of(RentStatus.CREATED, RentStatus.ONGOING, RentStatus.EXPIRED));
+    NOT_FINISHED(Set.of(RentStatus.CREATED, RentStatus.ONGOING, RentStatus.EXPIRED)),
+
+    NOT_PAID(Set.of(RentStatus.AWAITING_PAYMENT)),
+
+    FINISHED(Set.of(RentStatus.FINISHED));
 
     private final Set<RentStatus> events;
 

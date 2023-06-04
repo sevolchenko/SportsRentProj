@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.controller.IReceiptController;
+import vsu.csf.rentyserver.model.dto.receipt.request.ReceiptStatusFilter;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.security.SecurityUser;
 import vsu.csf.rentyserver.service.ReceiptService;
@@ -22,15 +23,11 @@ public class ReceiptController implements IReceiptController {
     private final ReceiptService receiptService;
 
     @GetMapping("/my")
-    public List<ReceiptResponse> getMy(Authentication authentication) {
+    public List<ReceiptResponse> getMy(@RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
+                                       ReceiptStatusFilter statusFilter,
+                                       Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
-        return receiptService.getAll(user.getUserId());
-    }
-
-    @GetMapping("/my/unpaid")
-    public List<ReceiptResponse> getMyUnpaid(Authentication authentication) {
-        var user = (SecurityUser) authentication.getPrincipal();
-        return receiptService.getUnpaid(user.getUserId());
+        return receiptService.getAll(user.getUserId(), statusFilter);
     }
 
     @GetMapping("/my/{receipt_id}")
@@ -47,22 +44,14 @@ public class ReceiptController implements IReceiptController {
 
     @GetMapping("/{user_id}")
     public List<ReceiptResponse> getByUserId(@PathVariable("user_id") Long userId,
+                                             @RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
+                                             ReceiptStatusFilter statusFilter,
                                              Authentication authentication) {
         log.info("Employee {} requests all receipts for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
                 userId);
 
-        return receiptService.getAll(userId);
-    }
-
-    @GetMapping("/{user_id}/unpaid")
-    public List<ReceiptResponse> getByUserIdUnpaid(@PathVariable("user_id") Long userId,
-                                                   Authentication authentication) {
-        log.info("Employee {} requests unpaid receipts for user {}",
-                ((SecurityUser) authentication.getPrincipal()).getUserId(),
-                userId);
-
-        return receiptService.getUnpaid(userId);
+        return receiptService.getAll(userId, statusFilter);
     }
 
     @GetMapping("/{user_id}/{receipt_id}")
@@ -83,7 +72,7 @@ public class ReceiptController implements IReceiptController {
 
     @PatchMapping("/my/{receipt_id}/pay")
     public ReceiptResponse performPay(@PathVariable("receipt_id") UUID receiptId,
-                                            Authentication authentication) {
+                                      Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
 
         if (!receiptService.owns(user.getUserId(), receiptId)) {

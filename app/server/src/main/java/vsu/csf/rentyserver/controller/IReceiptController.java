@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestParam;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
+import vsu.csf.rentyserver.model.dto.receipt.request.ReceiptStatusFilter;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 
 import java.util.List;
@@ -20,12 +22,9 @@ public interface IReceiptController {
     @Operation(summary = "Получить список своих чеков")
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
-    List<ReceiptResponse> getMy(Authentication authentication);
-
-    @Operation(summary = "Получить список своих неоплаченных чеков")
-    @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    List<ReceiptResponse> getMyUnpaid(Authentication authentication);
+    List<ReceiptResponse> getMy(@RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
+                                ReceiptStatusFilter statusFilter,
+                                Authentication authentication);
 
     @Operation(summary = "Получить свой чек по идентификатору чека",
             responses = {
@@ -53,18 +52,12 @@ public interface IReceiptController {
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
     List<ReceiptResponse> getByUserId(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
+                                      @Parameter(
+                                              name = "status_filter",
+                                              description = "Фильтр статуса чека",
+                                              schema = @Schema(implementation = ReceiptStatusFilter.class)
+                                      ) ReceiptStatusFilter statusFilter,
                                       Authentication authentication);
-
-    @Operation(summary = "Получить неоплаченные чеки по идентификатору пользователя",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "403", description = "Недостаточно прав для совершения операции"
-                    )
-            })
-    @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    List<ReceiptResponse> getByUserIdUnpaid(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
-                                            Authentication authentication);
 
 
     @Operation(summary = "Получить неоплаченные чеки по идентификатору пользователя",

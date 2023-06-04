@@ -23,11 +23,11 @@ public class RentController implements IRentController {
     private final RentService rentService;
 
     @GetMapping("/my")
-    public List<RentResponse> getMy(@RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
-                                    RentStatusFilter filter,
+    public List<RentResponse> getMy(@RequestParam(name = "statusFilter", required = false, defaultValue = "ALL")
+                                    RentStatusFilter statusFilter,
                                     Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
-        return rentService.getAll(user.getUserId(), filter);
+        return rentService.getAll(user.getUserId(), statusFilter);
     }
 
     @GetMapping("/my/{rent_id}")
@@ -71,14 +71,14 @@ public class RentController implements IRentController {
 
     @GetMapping("/{user_id}")
     public List<RentResponse> get(@PathVariable("user_id") Long userId,
-                                  @RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
-                                  RentStatusFilter filter,
+                                  @RequestParam(name = "statusFilter", required = false, defaultValue = "ALL")
+                                  RentStatusFilter statusFilter,
                                   Authentication authentication) {
         log.info("Employee {} requests all rents for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
                 userId);
 
-        return rentService.getAll(userId, filter);
+        return rentService.getAll(userId, statusFilter);
     }
 
     @GetMapping("/{user_id}/{rent_id}")

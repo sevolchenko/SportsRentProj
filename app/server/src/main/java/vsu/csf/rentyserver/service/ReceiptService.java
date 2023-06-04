@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.exception.WrongRentStatusException;
+import vsu.csf.rentyserver.model.dto.receipt.request.ReceiptStatusFilter;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
 import vsu.csf.rentyserver.model.entity.Receipt;
 import vsu.csf.rentyserver.model.entity.enumeration.ReceiptStatus;
@@ -27,19 +28,10 @@ public class ReceiptService {
     private final ReceiptMapper receiptMapper;
 
     @Transactional(readOnly = true)
-    public List<ReceiptResponse> getAll(Long userId) {
+    public List<ReceiptResponse> getAll(Long userId, ReceiptStatusFilter statusFilter) {
         log.info("List all receipts for user {} called", userId);
 
-        var receipts = receiptsRepository.findAllByUserUserId(userId);
-
-        return receiptMapper.map(receipts);
-    }
-
-    @Transactional(readOnly = true)
-    public List<ReceiptResponse> getUnpaid(Long userId) {
-        log.info("List unpaid receipts for user {} called", userId);
-
-        var receipts = receiptsRepository.findAllByUserUserIdAndStatusNot(userId, ReceiptStatus.PAID);
+        var receipts = receiptsRepository.findAllByUserUserIdAndStatusIsIn(userId, statusFilter.getStatuses());
 
         return receiptMapper.map(receipts);
     }
