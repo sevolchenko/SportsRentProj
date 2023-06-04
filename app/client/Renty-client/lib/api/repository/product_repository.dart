@@ -15,6 +15,10 @@ class ProductRepository {
     return await _productApi.products();
   }
 
+  Future<ProductPreviewResponse> getProductPreviewById(int productId) async {
+    return await _productApi.productPreview(productId);
+  }
+
   Future<List<ProductPreviewResponse>> getProductsPreviews() async {
     return await _productApi.productsPreviews();
   }

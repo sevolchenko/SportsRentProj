@@ -15,4 +15,6 @@ class AppRoutes {
   static const PRODUCT_NEW_SIZE = "/inventory/new_size";
 
   static const RENT_EVENT = "/rents";
+
+  static const CART = "/cart";
 }

@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
-import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
@@ -19,7 +17,6 @@ import 'package:client/screens/home/product/datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -171,7 +168,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 5.h,
                     ),
                     sizes.length == 0
-                        ? const Text("Недоступно")
+                        ? Text(0.toString())
                         : Text(
                             product.sizes[_selectedSizeIndex].countAvailableNow
                                 .toString(),
@@ -273,9 +270,8 @@ class _ProductScreenState extends State<ProductScreen> {
           height: 20.h,
         ),
         buildButton("Добавить в корзину", "primary", () {
-          print("startTime: ${startTime}");
           context.read<RentBloc>().add(
-                StartRentEvent(
+                AddCartItemRentEvent(
                   productId: product.id,
                   count: count,
                   sizeName: sizes[_selectedSizeIndex].sizeName,
@@ -283,7 +279,11 @@ class _ProductScreenState extends State<ProductScreen> {
                   endTime: endTime,
                 ),
               );
-          setState(() {});
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
         }),
         SizedBox(
           height: 20.h,

@@ -40,6 +40,8 @@ Widget buildErrorWidget({String error = ""}) {
   ));
 }
 
+
+
 Widget buildUnauthenticatedWidget(BuildContext context) {
   return Scaffold(
     body: Center(

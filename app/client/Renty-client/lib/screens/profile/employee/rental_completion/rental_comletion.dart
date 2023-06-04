@@ -9,6 +9,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/screens/profile/employee/rental_completion/rental_payment.dart';
+import 'package:client/screens/profile/employee/rental_completion/search_by_email.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
 
   @override
   void initState() {
-    context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
+    // context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
     super.initState();
   }
 
@@ -43,7 +44,16 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
       builder: (context, state) {
         if (state is UserRentsLoadedState) {
           return _buildUserRentsWidget(state.userId, state.userRents);
-        } else {
+        } 
+        // else if (state is UnsuccessfulUserSearchState) {
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(
+        //       builder: (context) => const RentalSearchScreen(),
+        //     ),
+        //   );
+        //   return buildLoadingWidget();
+        // } 
+        else {
           return buildLoadingWidget();
         }
       },

@@ -27,12 +27,8 @@ Widget cartColumnQuantity(String topText, String quantity) {
           padding: EdgeInsets.only(top: 5.h, left: 15.w),
           child: Row(
             children: [
-              const Icon(
-                FontAwesomeIcons.circleMinus,
-                size: 20,
-              ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                // margin: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Text(
                   quantity,
                   style: GoogleFonts.raleway(
@@ -40,12 +36,6 @@ Widget cartColumnQuantity(String topText, String quantity) {
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.normal,
                       fontSize: 18.sp),
-                ),
-              ),
-              Container(
-                child: const Icon(
-                  FontAwesomeIcons.circlePlus,
-                  size: 20,
                 ),
               ),
             ],

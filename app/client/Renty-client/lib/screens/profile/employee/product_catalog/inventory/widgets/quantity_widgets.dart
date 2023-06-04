@@ -17,61 +17,95 @@ import 'package:google_fonts/google_fonts.dart';
 
 Widget buildProductQuantityWidget(
     BuildContext context, ProductResponse product) {
-  return Container(
-    child: CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-            margin: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 20.h),
-            child: buildInventoryItem(
-                image: product.images[0].image,
-                mainText: product.name,
-                price: "${product.price} Р/час"),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(
-            vertical: 5.h,
-            horizontal: 10.w,
-          ),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              mainAxisSpacing: 15,
-              crossAxisSpacing: 15,
-              childAspectRatio: 5,
+  return product.sizes.length == 0
+      ? Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Text(
+                  "Размеры отсутсуют, создайте новый размер, чтобы редактировать",
+                  style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp,
+                  )),
             ),
-            delegate: SliverChildBuilderDelegate(
-              childCount: product.sizes.length,
-              (BuildContext context, int index) {
-                return GestureDetector(
-                    child: buildSizesChangeWidget(
-                        product, index, product.sizes[index], context));
-              },
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            margin: EdgeInsets.only(top: 30.h, bottom: 20.h),
-            child: buildButton(
-              "Добавить размер",
-              "secondary",
-              () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProductSizeScreen(
-                      product: product,
+            Container(
+              margin: EdgeInsets.only(top: 30.h, bottom: 20.h),
+              child: buildButton(
+                "Добавить размер",
+                "secondary",
+                () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ProductSizeScreen(
+                        product: product,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
+          ],
+        )
+      : Container(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Container(
+                  margin:
+                      EdgeInsets.only(left: 30.w, right: 30.w, bottom: 20.h),
+                  child: buildInventoryItem(
+                      image: product.images[0].image,
+                      mainText: product.name,
+                      price: "${product.price} Р/час"),
+                ),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 5.h,
+                  horizontal: 10.w,
+                ),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15,
+                    childAspectRatio: 5,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: product.sizes.length,
+                    (BuildContext context, int index) {
+                      return GestureDetector(
+                          child: buildSizesChangeWidget(
+                              product, index, product.sizes[index], context));
+                    },
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.only(top: 30.h, bottom: 20.h),
+                  child: buildButton(
+                    "Добавить размер",
+                    "secondary",
+                    () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ProductSizeScreen(
+                            product: product,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
-    ),
-  );
+        );
 }
 
 Widget buildSizesChangeWidget(ProductResponse product, int sizeIndex,
@@ -162,10 +196,10 @@ Widget buildSizesChangeWidget(ProductResponse product, int sizeIndex,
                   });
             },
             child: Container(
-              margin: EdgeInsets.only(left: 15.w),
+              margin: EdgeInsets.only(left: 10.w),
               child: const Icon(
                 FontAwesomeIcons.trash,
-                size: 30,
+                size: 25,
               ),
             ),
           )

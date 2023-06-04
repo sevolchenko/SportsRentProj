@@ -1,15 +1,12 @@
 import 'package:client/api/dto/response/product.dart';
-import 'package:client/bloc/product/product_bloc.dart';
-import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/size/size_event.dart';
 import 'package:client/bloc/size/size_state.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/product_size/quantity_editing.dart';
+import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,8 +43,15 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
   Widget _buildNewSizeWidget() {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar:  MyAppBar(
           title: "Новый размер",
+          backFun:  () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const InventoryScreen(),
+              ),
+            );
+          },
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

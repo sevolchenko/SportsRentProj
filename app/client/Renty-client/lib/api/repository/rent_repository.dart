@@ -5,12 +5,12 @@ import 'package:client/api/dto/response/user/user.dart';
 class RentRepository {
   final RentApi _rentApi = RentApi();
 
-  Future<List<RentResponse>> getMyOngRents() async {
-    return await _rentApi.getMyOngoingRents();
+  Future<List<RentResponse>> getMyOngRents(Map<String, dynamic> query) async {
+    return await _rentApi.getMyRents(query);
   }
 
-  Future<List<RentResponse>> getUserOngRents(int userId) async {
-    return await _rentApi.getOngoingRentsByUserId(userId);
+  Future<List<RentResponse>> getUserOngRents(int userId, Map<String, dynamic> query) async {
+    return await _rentApi.getRentsByUserId(userId, query);
   }
 
   Future<void> finishUserRentById(int userId, int rentId) async {

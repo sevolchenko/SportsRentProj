@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
@@ -32,12 +34,12 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<RentBloc, RentState>(
       builder: (context, state) {
-        return _buildUserRentsSearchWidget();
+        return _buildUserRentsSearchWidget(state);
       },
     );
   }
 
-  Widget _buildUserRentsSearchWidget() {
+  Widget _buildUserRentsSearchWidget(RentState state) {
     return SafeArea(
       child: Scaffold(
         appBar: const MyAppBar(
@@ -64,13 +66,20 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                   height: 20.h,
                 ),
                 buildButton("Поиск", "primary", () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => RentalCompletionScreen(
-                        userEmail: _userEmail,
+                  context
+                      .read<RentBloc>()
+                      .add(SearchUserRentsEvent(_userEmail));
+                  if (state is UserRentsLoadedState) {
+                    toastInfo(msg: "Подождите немного, идет поиск");
+                    // sleep(Duration(seconds: 1));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => RentalCompletionScreen(
+                          userEmail: _userEmail,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 })
               ],
             ),

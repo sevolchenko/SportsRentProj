@@ -5,38 +5,10 @@ import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';
 
 class RentApi {
-  Future<List<RentResponse>> getRentsByUserId(int userId) async {
-    var path = 'rents/${userId}';
-    try {
-      var response = await HttpUtil().get(path);
-      var jsonData = response.data;
-      var res = List<RentResponse>.from(
-          jsonData.map((x) => RentResponse.fromJson(x)));
-      return res;
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при получении аренд");
-    }
-    return [];
-  }
-
-  Future<List<RentResponse>> getOngoingRentsByUserId(int userId) async {
-    var path = 'rents/${userId}/ongoing';
-    try {
-      var response = await HttpUtil().get(path);
-      var jsonData = response.data;
-      var res = List<RentResponse>.from(
-          jsonData.map((x) => RentResponse.fromJson(x)));
-      return res;
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при получении аренд");
-    }
-    return [];
-  }
-
-  Future<List<RentResponse>> getMyRentsByUserId() async {
+  Future<List<RentResponse>> getMyRents(Map<String, dynamic> query) async {
     var path = 'rents/my';
     try {
-      var response = await HttpUtil().get(path);
+      var response = await HttpUtil().get(path, queryParameters: query);
       var jsonData = response.data;
       var res = List<RentResponse>.from(
           jsonData.map((x) => RentResponse.fromJson(x)));
@@ -47,10 +19,11 @@ class RentApi {
     return [];
   }
 
-  Future<List<RentResponse>> getMyOngoingRents() async {
-    var path = 'rents/my/ongoing';
+  Future<List<RentResponse>> getRentsByUserId(
+      int userId, Map<String, dynamic> query) async {
+    var path = 'rents/${userId}';
     try {
-      var response = await HttpUtil().get(path);
+      var response = await HttpUtil().get(path, queryParameters: query);
       var jsonData = response.data;
       var res = List<RentResponse>.from(
           jsonData.map((x) => RentResponse.fromJson(x)));
