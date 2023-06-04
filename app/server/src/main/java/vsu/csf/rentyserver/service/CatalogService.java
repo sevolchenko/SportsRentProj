@@ -2,14 +2,13 @@ package vsu.csf.rentyserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vsu.csf.rentyserver.component.CatalogProcessor;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.DeleteSizeRequest;
+import vsu.csf.rentyserver.model.dto.catalog.request.*;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -29,6 +28,9 @@ import vsu.csf.rentyserver.repository.SizesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import static vsu.csf.rentyserver.util.ProductSpecifications.buildSpec;
 
 @Service
 @Transactional
@@ -39,6 +41,8 @@ public class CatalogService {
     private final ProductsRepository productsRepository;
     private final CategoriesRepository categoriesRepository;
     private final SizesRepository sizesRepository;
+
+    private final CatalogProcessor catalogProcessor;
 
     private final ProductMapper productMapper;
     private final SizeMapper sizeMapper;
@@ -51,6 +55,15 @@ public class CatalogService {
         var products = productsRepository.findAll();
 
         return productMapper.map(products);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductResponse> listAllProducts(ProductsSorting sorting, Sort.Direction direction,
+                                                 String search, Long categoryId,
+                                                 Integer minPrice, Integer maxPrice) {
+
+        var res = listAllProductsBase(sorting, direction, search, categoryId, minPrice, maxPrice);
+        return productMapper.map(res);
     }
 
     @Transactional(readOnly = true)
@@ -102,12 +115,30 @@ public class CatalogService {
 
 
     @Transactional(readOnly = true)
-    public List<ProductPreviewResponse> listAllProductsPreviews() {
+    public List<ProductPreviewResponse> listAllProductsPreviews(ProductsSorting sorting, Sort.Direction direction,
+                                                                String search, Long categoryId,
+                                                                Integer minPrice, Integer maxPrice) {
         log.info("List all products projections called");
 
-        var products = productsRepository.findAll();
 
-        return productMapper.mapToPreview(products);
+        var res = listAllProductsBase(sorting, direction, search, categoryId, minPrice, maxPrice);
+
+        return productMapper.mapToPreview(res);
+    }
+
+    private List<Product> listAllProductsBase(ProductsSorting sorting, Sort.Direction direction, String search, Long categoryId, Integer minPrice, Integer maxPrice) {
+        Set<Category> childrenCategories = null;
+
+        if (categoryId != null) {
+            var category = categoriesRepository.findById(categoryId)
+                    .orElseThrow(() -> new NoSuchElementException("category", Category.class, categoryId));
+
+            childrenCategories = catalogProcessor.getChildrenCategories(category);
+        }
+
+        return productsRepository.findAll(
+                buildSpec(search, childrenCategories, minPrice, maxPrice),
+                Sort.by(direction, sorting.getColumnName()));
     }
 
     @Transactional(readOnly = true)

@@ -8,10 +8,8 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateCategoryRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateProductRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.CreateSizeRequest;
-import vsu.csf.rentyserver.model.dto.catalog.request.DeleteSizeRequest;
+import org.springframework.data.domain.Sort;
+import vsu.csf.rentyserver.model.dto.catalog.request.*;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductResponse;
@@ -25,7 +23,33 @@ public interface ICatalogController {
 
     @Operation(summary = "Получить список всех товаров")
     @ApiResponse(responseCode = "200")
-    List<ProductResponse> listAllProducts();
+    List<ProductResponse> listAllProducts(
+            @Parameter(
+                    name = "sort_by",
+                    description = "Вариант сортировки",
+                    schema = @Schema(implementation = ProductsSorting.class)
+            ) ProductsSorting sorting,
+            @Parameter(
+                    name = "sort_direction",
+                    description = "Направление сортировки (по возрастанию / убыванию)",
+                    schema = @Schema(implementation = Sort.Direction.class)
+            ) Sort.Direction direction,
+            @Parameter(
+                    name = "search",
+                    description = "Поисковой запрос по имени товара"
+            ) String search,
+            @Parameter(
+                    name = "category_filter",
+                    description = "Фильтр по родительской категории"
+            ) Long categoryId,
+            @Parameter(
+                    name = "price_min_filter",
+                    description = "Фильтр по минимальной цене"
+            ) Integer minPrice,
+            @Parameter(
+                    name = "price_max_filter",
+                    description = "Фильтр по максимальной цене"
+            ) Integer maxPrice);
 
     @Operation(summary = "Создать товар",
             responses = {
@@ -77,7 +101,33 @@ public interface ICatalogController {
 
     @Operation(summary = "Получить превью всех товаров")
     @ApiResponse(responseCode = "200")
-    List<ProductPreviewResponse> listAllPreviews();
+    List<ProductPreviewResponse> listAllPreviews(
+            @Parameter(
+                    name = "sort_by",
+                    description = "Вариант сортировки",
+                    schema = @Schema(implementation = ProductsSorting.class)
+            ) ProductsSorting sorting,
+            @Parameter(
+                    name = "sort_direction",
+                    description = "Направление сортировки (по возрастанию / убыванию)",
+                    schema = @Schema(implementation = Sort.Direction.class)
+            ) Sort.Direction direction,
+            @Parameter(
+                    name = "search",
+                    description = "Поисковой запрос по имени товара"
+            ) String search,
+            @Parameter(
+                    name = "category_filter",
+                    description = "Фильтр по родительской категории"
+            ) Long categoryId,
+            @Parameter(
+                    name = "price_min_filter",
+                    description = "Фильтр по минимальной цене"
+            ) Integer minPrice,
+            @Parameter(
+                    name = "price_max_filter",
+                    description = "Фильтр по максимальной цене"
+            ) Integer maxPrice);
 
     @Operation(summary = "Получить превью товара по идентификатору товара",
             responses = {
