@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestParam;
 import vsu.csf.rentyserver.model.dto.error.ApiErrorResponse;
 import vsu.csf.rentyserver.model.dto.receipt.request.ReceiptStatusFilter;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptResponse;
@@ -22,9 +21,14 @@ public interface IReceiptController {
     @Operation(summary = "Получить список своих чеков")
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
-    List<ReceiptResponse> getMy(@RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
-                                ReceiptStatusFilter statusFilter,
-                                Authentication authentication);
+    List<ReceiptResponse> getMy(
+            @Parameter(
+                    name = "status_filter",
+                    description = "Фильтр статуса чека",
+                    schema = @Schema(implementation = ReceiptStatusFilter.class)
+            )
+            ReceiptStatusFilter statusFilter,
+            Authentication authentication);
 
     @Operation(summary = "Получить свой чек по идентификатору чека",
             responses = {
@@ -60,7 +64,7 @@ public interface IReceiptController {
                                       Authentication authentication);
 
 
-    @Operation(summary = "Получить неоплаченные чеки по идентификатору пользователя",
+    @Operation(summary = "Получить чек по идентификатору пользователя и идентификатору чека",
             responses = {
                     @ApiResponse(
                             responseCode = "403", description = "Недостаточно прав для совершения операции"
@@ -80,7 +84,7 @@ public interface IReceiptController {
             })
     @ApiResponse(responseCode = "200")
     @SecurityRequirement(name = "JWT")
-    ReceiptResponse performPay(@Parameter(name = "receipt_it", description = "Идентификатор чека") UUID receiptId,
+    ReceiptResponse performPay(@Parameter(name = "receipt_id", description = "Идентификатор чека") UUID receiptId,
                                Authentication authentication);
 
 }
