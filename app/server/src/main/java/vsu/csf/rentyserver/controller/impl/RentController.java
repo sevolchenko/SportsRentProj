@@ -23,7 +23,7 @@ public class RentController implements IRentController {
     private final RentService rentService;
 
     @GetMapping("/my")
-    public List<RentResponse> getMy(@RequestParam(name = "statusFilter", required = false, defaultValue = "ALL")
+    public List<RentResponse> getMy(@RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
                                     RentStatusFilter statusFilter,
                                     Authentication authentication) {
         var user = (SecurityUser) authentication.getPrincipal();
@@ -71,7 +71,7 @@ public class RentController implements IRentController {
 
     @GetMapping("/{user_id}")
     public List<RentResponse> get(@PathVariable("user_id") Long userId,
-                                  @RequestParam(name = "statusFilter", required = false, defaultValue = "ALL")
+                                  @RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
                                   RentStatusFilter statusFilter,
                                   Authentication authentication) {
         log.info("Employee {} requests {} rents for user {}",

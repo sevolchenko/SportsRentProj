@@ -25,8 +25,10 @@ public record RentResponse(
         @JsonProperty("finished_at")
         OffsetDateTime finishedAt,
 
+        @JsonProperty("excepted_duration")
         Duration exceptedDuration,
 
+        @JsonProperty("pretty_duration")
         String prettyDuration,
 
         ProductPreviewResponse product,
