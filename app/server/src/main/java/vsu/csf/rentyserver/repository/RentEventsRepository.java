@@ -16,7 +16,14 @@ public interface RentEventsRepository extends JpaRepository<RentEvent, Long> {
 
     List<RentEvent> findRentEventsByUser_userIdEqualsAndStatusIsIn(Long userId, Set<RentStatus> statuses);
 
-    @Query("select e from RentEvent e where (e.size = :size and e.startTime < :startTime and (e.endTime > :endTime or e.status = 'EXPIRED'))")
+    @Query(
+            """
+                   select e from RentEvent e
+                   where
+                   e.status != 'AWAITING_PAYMENT' and e.status != 'FINISHED' and
+                   e.size = :size and e.startTime < :startTime and
+                   (e.endTime > :endTime or e.status = 'EXPIRED')"""
+    )
     List<RentEvent> findRelatedEvents(Size size, OffsetDateTime startTime, OffsetDateTime endTime);
 
     List<RentEvent> findRentEventsByStatusIsIn(Set<RentStatus> statuses);

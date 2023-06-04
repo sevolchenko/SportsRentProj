@@ -146,6 +146,8 @@ public class RentService {
 
         receiptsRepository.save(receipt);
 
+        log.info("Added {} item(s) to receipt {}", rentIds.size(), receipt.getReceiptId());
+
         return rentMapper.map(rents);
     }
 
