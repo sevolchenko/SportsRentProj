@@ -14,6 +14,7 @@
 - Категории товаров
 
 ## Ссылки на проделанную работу
+- [Swagger UI](https://renty-api-sevolchenko.cloud.okteto.net/swagger-ui)
 - [Техническое задание](docs/Техническое%20задание.pdf)
 - [Курсовой проект](docs/Курсовой%20проект.pdf)
 - [Диаграммы](docs/diagrams)
