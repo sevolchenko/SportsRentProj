@@ -5,6 +5,7 @@ import 'package:client/api/dto/response/rent.dart';
 import 'package:client/api/repository/rent_repository.dart';
 import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
+import 'package:client/global.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RentBloc extends Bloc<RentEvent, RentState> {
@@ -14,8 +15,12 @@ class RentBloc extends Bloc<RentEvent, RentState> {
   RentBloc() : super(RentsLoadingState()) {
     on<MyRentsLoadEvent>(
       (event, emit) async {
-        myRents = await _rentRepository.getMyOngRents();
-        emit(RentsLoadedState(rents: myRents));
+        if (Global.storageService.isUserAuthenticated()) {
+          myRents = await _rentRepository.getMyOngRents();
+          emit(RentsLoadedState(rents: myRents));
+        } else {
+          emit(RentsUnAuthenticatedUserState());
+        }
       },
     );
 
@@ -30,10 +35,10 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       (event, emit) async {
         UserRentsFinishRequest finishRequest =
             UserRentsFinishRequest(rentsId: event.rentsIds);
-        await _rentRepository.finishUserRents(event.userId, finishRequest.toJson());
+        await _rentRepository.finishUserRents(
+            event.userId, finishRequest.toJson());
         myRents = await _rentRepository.getUserOngRents(event.userId);
         emit(UserRentsLoadedState(userId: event.userId, userRents: myRents));
-
 
         // emit(RentsLoadedState(rents: myRents));
 

@@ -108,29 +108,36 @@ class RentApi {
 
   Future<int?> startRent(Map<String, dynamic> body) async {
     var path = 'rents/my/start';
-    var statusCode = await HttpUtil().post(path, data: body);
     try {
+      var statusCode = await HttpUtil().post(path, data: body);
       if (statusCode == 200) {
         toastInfo(msg: "Аренда успешно началась");
         return statusCode;
-      } else {
-        toastInfo(msg: "Ошибка при старте аренды");
       }
-    } on DioError catch (e) {}
+      // else else {
+      //   toastInfo(msg: "Ошибка при старте аренды");
+      // }{
+      //   toastInfo(msg: "Ошибка при старте аренды");
+      // }
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при старте аренды");
+    }
     return null;
   }
 
-  // TODO передавать List<Map<String, dynamic>>
   Future<int?> startBatchRents(Map<String, dynamic> body) async {
     var path = 'rents/my/start/batch';
     var statusCode = await HttpUtil().post(path, data: body);
     try {
       if (statusCode == 200) {
         return statusCode;
-      } else {
-        toastInfo(msg: "Ошибка при старте нескольких аренд");
       }
-    } on DioError catch (e) {}
+      //  else {
+      //   toastInfo(msg: "Ошибка при старте нескольких аренд");
+      // }
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при старте нескольких аренд");
+    }
     return null;
   }
 

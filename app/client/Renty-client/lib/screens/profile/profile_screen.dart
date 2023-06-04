@@ -1,6 +1,4 @@
 import 'package:client/api/dto/response/user/user.dart';
-import 'package:client/bloc/application/application_bloc.dart';
-import 'package:client/bloc/application/application_event.dart';
 import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/bloc/user/user_event.dart';
 import 'package:client/bloc/user/user_state.dart';
@@ -41,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (state is UserLoadedState) {
         return _buildUserScaffold(_buildUserWidget(state.user));
       } else if (state is UserUnauthorizedState) {
-        return _buildUserScaffold(buildUnauthenticatedWidget(context));
+        return buildUnauthenticatedWidget(context);
       } else {
         return buildLoadingWidget();
       }

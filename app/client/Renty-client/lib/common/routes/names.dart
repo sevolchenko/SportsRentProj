@@ -1,5 +1,4 @@
 class AppRoutes {
-  // static const APPLICATION = "/application";
   //sign in screen
   static const LOGIN = "/login";
   //register screen

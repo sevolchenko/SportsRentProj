@@ -41,6 +41,8 @@ class _RentScreenState extends State<RentScreen> {
       builder: (context, state) {
         if (state is RentsLoadedState) {
           return _buildRentsWidget(state.rents);
+        } else if (state is RentsUnAuthenticatedUserState) {
+          return buildUnauthenticatedWidget(context);
         } else {
           return buildLoadingWidget();
         }
@@ -52,8 +54,8 @@ class _RentScreenState extends State<RentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Ваши аренды', leading: false),
-      body: Global.storageService.isUserAuthenticated() ?
-          rents.length == 0 ? Container(
+      body: rents.length == 0
+          ? Container(
               alignment: Alignment.center,
               child: Text("Список ваших аренд пуст",
                   style: GoogleFonts.raleway(
@@ -101,7 +103,7 @@ class _RentScreenState extends State<RentScreen> {
                   )
                 ],
               ),
-            ) : buildUnauthenticatedWidget(context),
+            ),
       bottomNavigationBar: MyBottomNavBar(selectedIndex: 1),
     );
   }

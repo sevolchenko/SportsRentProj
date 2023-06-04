@@ -4,6 +4,8 @@ abstract class RentState {}
 
 class RentsLoadingState extends RentState {}
 
+class RentsUnAuthenticatedUserState extends  RentState {}
+
 class RentsLoadedState extends RentState {
   final List<RentResponse> rents;
 

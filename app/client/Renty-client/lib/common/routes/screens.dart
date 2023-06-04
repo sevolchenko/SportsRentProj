@@ -1,7 +1,6 @@
 //unify BlocProvider and routes and screens
 import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/category/category_bloc.dart';
-import 'package:client/bloc/home/home_bloc.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
 import 'package:client/bloc/auth/auth_bloc.dart';
@@ -32,12 +31,6 @@ class ScreenEntity {
 class AppScreens {
   static List<ScreenEntity> routes() {
     return [
-      // ScreenEntity(
-      //     route: AppRoutes.HOME,
-      //     screen: const HomeScreen(),
-      //     bloc: BlocProvider(
-      //       create: (_) => HomeBloc(),
-      //     )),
       ScreenEntity(
           route: AppRoutes.PRODUCT,
           screen: const ProductScreen(),
@@ -80,12 +73,6 @@ class AppScreens {
           bloc: BlocProvider(
             create: (_) => RentBloc(),
           ))
-      // ScreenEntity(
-      //     route: AppRoutes.APPLICATION,
-      //     screen: const Application(),
-      //     bloc: BlocProvider(
-      //       create: (_) => ApplicationBloc(),
-      //     )),
     ];
   }
 
