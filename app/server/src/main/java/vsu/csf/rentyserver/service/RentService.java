@@ -189,6 +189,8 @@ public class RentService {
 
         var changed = eventRepository.save(rent);
 
+        rentUpdaterScheduler.onProlong(rentId, request.endTime());
+
         return rentMapper.map(changed);
 
     }
