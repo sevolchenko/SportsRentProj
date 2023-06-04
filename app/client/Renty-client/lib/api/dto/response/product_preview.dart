@@ -18,6 +18,25 @@ class ProductPreviewResponse {
     this.mainImage,
   });
 
+  Map<String, dynamic> toJson() => {
+        'product_id': productId,
+        'name': name,
+        'price': price,
+        'busy_now': busyNow,
+        'category': {'category_id': category.categoryId, 'name': category.name},
+        'main_image': {
+          'product_id': mainImage!.productId,
+          'position': mainImage!.position,
+          'image': mainImage!.image,
+        },
+      };
+  Map<String, dynamic> toCartJson() => {
+        'product_id': productId,
+        'name': name,
+        'price': price,
+        'main_image': mainImage!.image,
+      };
+
   factory ProductPreviewResponse.fromJson(Map<String, dynamic> json) {
     return ProductPreviewResponse(
       productId: json['product_id'],

@@ -32,10 +32,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductsLoadedState(products: products));
       },
     );
+
     on<ProductLoadEvent>(
       (event, emit) async {
         product = await _productRepository.getProductById(event.productId);
         emit(ProductLoadedState(productItem: product, sizes: product.sizes));
+      },
+    );
+
+    on<ProductUnAuthenticatedUserEvent>(
+      (event, emit) async {
+        // product = await _productRepository.getProductById(event.productId);
+        emit(ProductUnAuthenticatedUserState());
       },
     );
 

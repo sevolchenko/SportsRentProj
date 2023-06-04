@@ -25,8 +25,6 @@ class RentalCompletionScreen extends StatefulWidget {
 }
 
 class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
-  int selectedItem = -1;
-
   @override
   void initState() {
     // context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
@@ -44,7 +42,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
       builder: (context, state) {
         if (state is UserRentsLoadedState) {
           return _buildUserRentsWidget(state.userId, state.userRents);
-        } 
+        }
         // else if (state is UnsuccessfulUserSearchState) {
         //   Navigator.of(context).push(
         //     MaterialPageRoute(
@@ -52,7 +50,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
         //     ),
         //   );
         //   return buildLoadingWidget();
-        // } 
+        // }
         else {
           return buildLoadingWidget();
         }
@@ -106,21 +104,12 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                         (BuildContext context, int index) {
                           RentResponse rentItem = rents[index];
                           return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedItem = index;
-                                // isSelected = !isSelected;
-                              });
-                              //TODO delete ot item tap
-                            },
+                            onTap: () {},
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.w),
-                                border: Border.all(
-                                    color: selectedItem == index
-                                        ? Colors.grey
-                                        : kPrimaryColor,
-                                    width: 4),
+                                border:
+                                    Border.all(color: kPrimaryColor, width: 4),
                               ),
                               child: Column(
                                 mainAxisAlignment:

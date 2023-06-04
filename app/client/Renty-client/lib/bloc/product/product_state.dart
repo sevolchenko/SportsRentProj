@@ -21,6 +21,9 @@ class ProductErrorState extends ProductState {
 
 class ProductsLoadingState extends ProductState {}
 
+class ProductUnAuthenticatedUserState extends ProductState {}
+
+
 class ProductsPreviewsLoadedState extends ProductState {
   final List<ProductPreviewResponse> productsPreviews;
 

@@ -66,10 +66,15 @@ class _RentalExtensionScreenState extends State<RentalExtensionScreen> {
             SizedBox(height: 70.h),
             reusableText('Новое время окончания аренды', textSize: 20),
             SizedBox(height: 10.h),
-            MyDateTimePicker(onSaved: _handleDateTime),
+            Container(
+              margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+              child: MyDateTimePicker(onSaved: _handleDateTime),
+            ),
             SizedBox(height: 30.h),
             buildButton("Продлить", "primary", () {
-              context.read<RentBloc>().add(ProlongRentEvent(widget.rentId, _newEndDateTime));
+              context
+                  .read<RentBloc>()
+                  .add(ProlongRentEvent(widget.rentId, _newEndDateTime));
 
               Navigator.of(context).push(
                 MaterialPageRoute(

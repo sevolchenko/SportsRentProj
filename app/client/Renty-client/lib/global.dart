@@ -10,6 +10,6 @@ class Global {
 
     storageService = await StorageService().init();
     cart = Cart();
-    storageService.loadCart(cart);
+    cart = storageService.loadCart(cart);
   }
 }

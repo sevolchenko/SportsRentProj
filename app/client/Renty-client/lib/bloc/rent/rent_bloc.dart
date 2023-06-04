@@ -67,6 +67,7 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       final product =
           await _productRepository.getProductPreviewById(event.productId);
       Global.cart.addRentItem(startRentRequest, product);
+      Global.storageService.saveCart(Global.cart);
       // emit(RentsLoadedState(rents: myRents));
     });
 

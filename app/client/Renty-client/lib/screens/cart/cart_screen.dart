@@ -61,7 +61,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Корзина'),
-      body: cart.rents.length == 0
+      body: cart.setRents.length == 0
           ? Container(
               alignment: Alignment.center,
               child: Text("Корзина пуста",
@@ -89,10 +89,10 @@ class _CartScreenState extends State<CartScreen> {
                         childAspectRatio: 1.7,
                       ),
                       delegate: SliverChildBuilderDelegate(
-                        childCount: cart.rents.length,
+                        childCount: cart.setRents.length,
                         (BuildContext context, int index) {
-                          final cartItem = cart.rents[index];
-                          final productItem = cart.products[index];
+                          final cartItem = cart.setRents[index];
+                          final productItem = cart.setProducts[index];
                           return GestureDetector(
                               onTap: () {},
                               child: Container(
@@ -302,7 +302,8 @@ class _CartScreenState extends State<CartScreen> {
                         "Забронировать",
                         "secondary",
                         () {
-                          context.read<CartBloc>().add(RentCartItemsEvent(startRentRequest: cart.rents));
+                          context.read<CartBloc>().add(RentCartItemsEvent(
+                              startRentRequest: cart.setRents));
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(
                           //     builder: (context) => const RentScreen(),

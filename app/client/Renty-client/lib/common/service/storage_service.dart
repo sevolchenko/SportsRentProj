@@ -12,6 +12,7 @@ class StorageService {
 
   Future<StorageService> init() async {
     _prefs = await SharedPreferences.getInstance();
+    // _prefs.clear();
     return this;
   }
 
@@ -45,28 +46,36 @@ class StorageService {
   }
 
   saveCart(Cart cart) {
-    _prefs.setString('cart', Cart().rents.map((e) => e.toJson()).toString());
+    final rentList = cart.setRents.map((rent) => rent.toJson()).toList();
+    final productList =
+        cart.setProducts.map((product) => product.toJson()).toList();
+    _prefs.setString('cart_rents', jsonEncode(rentList));
+    _prefs.setString('cart_products', jsonEncode(productList));
   }
 
-  // List<StartRentEventRequest>? getCart() {
-  //    int productId = _prefs.getInt("product_id")!;
-  //    String sizeName = _prefs.getString("size_name")!;
-  //    int count = _prefs.getInt("count")!;
-  //    String startTime =_prefs.getString("start_time")!;
-  //    String endTime =_prefs.getString("end_time")!;
-
-  // }
-
   loadCart(Cart cart) {
-    final cartJson = _prefs.getString('cart');
-    if (cartJson != null) {
-      final rentsJson = jsonDecode(cartJson);
-      final rents = List<StartRentEventRequest>.from(
-          rentsJson.map((x) => StartRentEventRequest.fromJson(x)));
-      Cart().rents = rents;
-      final products = List<ProductPreviewResponse>.from(
-          rentsJson.map((x) => ProductPreviewResponse.fromJson(x)));
-      Cart().products = products;
+    final cartRentsJson = _prefs.getString('cart_rents');
+    final cartProductsJson = _prefs.getString('cart_products');
+
+    if (cartRentsJson != null) {
+      final rentsList = jsonDecode(cartRentsJson) as List<dynamic>;
+      final rents = rentsList
+          .map((rent) => StartRentEventRequest.fromJson(rent))
+          .toList();
+      cart.setRents = rents;
+    }
+    if (cartProductsJson != null) {
+      final productsJson = jsonDecode(cartProductsJson) as List<dynamic>;
+      final products = productsJson
+          .map((product) => ProductPreviewResponse.fromJson(product))
+          .toList();
+      cart.setProducts = products;
+    }
+    return cart;
+
+    deleteCartData() {
+      _prefs.remove("cart_rents");
+      _prefs.remove("cart_products");
     }
   }
 }

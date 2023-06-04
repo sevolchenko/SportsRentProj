@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:client/api/dto/response/product.dart';
 import 'package:client/api/dto/response/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
@@ -12,6 +13,7 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/product/datetime_picker.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +66,9 @@ class _ProductScreenState extends State<ProductScreen> {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductLoadedState) {
-          return _buildProductWidget(state.productItem, state.sizes);
+          return _buildProductWidget(state, state.productItem, state.sizes);
+        } else if (state is ProductUnAuthenticatedUserState) {
+          return buildUnauthenticatedWidget(context);
         } else {
           return buildLoadingWidget();
         }
@@ -73,7 +77,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildProductWidget(
-      ProductResponse product, List<SizeResponse> sizes) {
+      ProductState state, ProductResponse product, List<SizeResponse> sizes) {
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(
@@ -89,14 +93,15 @@ class _ProductScreenState extends State<ProductScreen> {
         body: SingleChildScrollView(
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: buildProduct(product, sizes)),
+              child: buildProduct(state, product, sizes)),
         ),
         bottomNavigationBar: MyBottomNavBar(selectedIndex: 0),
       ),
     );
   }
 
-  Widget buildProduct(ProductResponse product, List<SizeResponse> sizes) {
+  Widget buildProduct(
+      ProductState state, ProductResponse product, List<SizeResponse> sizes) {
     return Column(
       children: [
         Container(
@@ -270,20 +275,24 @@ class _ProductScreenState extends State<ProductScreen> {
           height: 20.h,
         ),
         buildButton("Добавить в корзину", "primary", () {
-          context.read<RentBloc>().add(
-                AddCartItemRentEvent(
-                  productId: product.id,
-                  count: count,
-                  sizeName: sizes[_selectedSizeIndex].sizeName,
-                  startTime: startTime,
-                  endTime: endTime,
-                ),
-              );
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-          );
+          if (Global.storageService.isUserAuthenticated()) {
+            context.read<RentBloc>().add(
+                  AddCartItemRentEvent(
+                    productId: product.id,
+                    count: count,
+                    sizeName: sizes[_selectedSizeIndex].sizeName,
+                    startTime: startTime,
+                    endTime: endTime,
+                  ),
+                );
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+            );
+          } else {
+            context.read<ProductBloc>().add(ProductUnAuthenticatedUserEvent());
+          }
         }),
         SizedBox(
           height: 20.h,

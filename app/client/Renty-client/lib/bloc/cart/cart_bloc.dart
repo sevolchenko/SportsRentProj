@@ -31,12 +31,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         Global.cart.removeRentItem(event.startRentEventRequest, event.product);
         emit(CartLoadedState(cart: Global.cart));
       },
-    );  
+    );
 
     on<RentCartItemsEvent>(
       (event, emit) async {
         List<StartRentEventRequest> listRequests = [];
-        for (var rent in Global.cart.rents) {
+        for (var rent in Global.cart.setRents) {
           listRequests.add(StartRentEventRequest.fromJson(rent.toJson()));
         }
         _rentRepository.startRents({"rents": listRequests});

@@ -29,6 +29,7 @@ class RentResponse {
       required this.count,
       required this.price,
       required this.status});
+      
 
   factory RentResponse.fromJson(Map<String, dynamic> json) {
     return RentResponse(

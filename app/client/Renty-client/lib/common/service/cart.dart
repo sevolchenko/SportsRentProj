@@ -11,9 +11,13 @@ class Cart {
   List<StartRentEventRequest> _rents = [];
   List<ProductPreviewResponse> _proudcts = [];
 
-  set rents(List<StartRentEventRequest> _rents) {}
+  set setRents(List<StartRentEventRequest> newRents) {
+    _rents = newRents;
+  }
 
-  set products(List<ProductPreviewResponse> _products) {}
+  set setProducts(List<ProductPreviewResponse> newProducts) {
+    _proudcts = newProducts;
+  }
 
   void addRentItem(StartRentEventRequest rent, ProductPreviewResponse product) {
     _rents.add(rent);
@@ -32,6 +36,6 @@ class Cart {
     _proudcts.removeRange(0, _proudcts.length);
   }
 
-  List<StartRentEventRequest> get rents => _rents;
-  List<ProductPreviewResponse> get products => _proudcts;
+  List<StartRentEventRequest> get setRents => _rents;
+  List<ProductPreviewResponse> get setProducts => _proudcts;
 }
