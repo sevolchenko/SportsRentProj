@@ -47,8 +47,9 @@ public class ReceiptController implements IReceiptController {
                                              @RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
                                              ReceiptStatusFilter statusFilter,
                                              Authentication authentication) {
-        log.info("Employee {} requests all receipts for user {}",
+        log.info("Employee {} requests {} receipts for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                statusFilter,
                 userId);
 
         return receiptService.getAll(userId, statusFilter);

@@ -29,7 +29,7 @@ public class ReceiptService {
 
     @Transactional(readOnly = true)
     public List<ReceiptResponse> getAll(Long userId, ReceiptStatusFilter statusFilter) {
-        log.info("List all receipts for user {} called", userId);
+        log.info("List {} receipts for user {} called", statusFilter, userId);
 
         var receipts = receiptsRepository.findAllByUserUserIdAndStatusIsIn(userId, statusFilter.getStatuses());
 

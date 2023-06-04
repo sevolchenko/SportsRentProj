@@ -43,7 +43,7 @@ public class RentService {
 
     @Transactional(readOnly = true)
     public List<RentResponse> getAll(Long userId, RentStatusFilter statusFilter) {
-        log.info("List {} rents for user {} called", statusFilter.name(), userId);
+        log.info("List {} rents for user {} called", statusFilter, userId);
 
         return rentMapper.map(eventRepository.findRentEventsByUser_userIdEqualsAndStatusIsIn(userId, statusFilter.getEvents()));
     }

@@ -74,8 +74,9 @@ public class RentController implements IRentController {
                                   @RequestParam(name = "statusFilter", required = false, defaultValue = "ALL")
                                   RentStatusFilter statusFilter,
                                   Authentication authentication) {
-        log.info("Employee {} requests all rents for user {}",
+        log.info("Employee {} requests {} rents for user {}",
                 ((SecurityUser) authentication.getPrincipal()).getUserId(),
+                statusFilter,
                 userId);
 
         return rentService.getAll(userId, statusFilter);
