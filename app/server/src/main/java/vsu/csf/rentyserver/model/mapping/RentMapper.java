@@ -3,6 +3,7 @@ package vsu.csf.rentyserver.model.mapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import vsu.csf.rentyserver.component.ReceiptProcessor;
 import vsu.csf.rentyserver.component.RentProcessor;
 import vsu.csf.rentyserver.configuration.MapperConfiguration;
 import vsu.csf.rentyserver.model.dto.receipt.response.ReceiptItemResponse;
@@ -28,6 +29,9 @@ public abstract class RentMapper {
     @Autowired
     RentProcessor rentProcessor;
 
+    @Autowired
+    ReceiptProcessor receiptProcessor;
+
     @Mapping(target = "receiptId", source = "receipt.receiptId")
     @Mapping(target = "exceptedDuration",
             expression = "java(rentProcessor.countExceptedDuration(rentEvent))")
@@ -45,6 +49,8 @@ public abstract class RentMapper {
             expression = "java(DurationUtils.formatDuration(factDuration))")
     @Mapping(target = "fine",
             expression = "java(rentProcessor.countFine(rentEvent))")
+    @Mapping(target = "sum",
+            expression = "java(receiptProcessor.countSum(factDuration, price, count, fine))")
     public abstract ReceiptItemResponse mapToReceiptItem(RentEvent rentEvent);
 
     public abstract List<ReceiptItemResponse> mapToReceiptItem(List<RentEvent> rentEvents);

@@ -109,7 +109,7 @@ public class RentProcessor {
 
         var duration = countFactDuration(rentEvent);
 
-        if (duration == null) {
+        if (duration == null || rentEvent.getFinishedAt().isBefore(rentEvent.getEndTime())) {
             return 0;
         }
 

@@ -27,7 +27,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
         if (token == null) {
-            if (!((HttpServletRequest) servletRequest).getServletPath().contains("swagger")) {
+            if (!((HttpServletRequest) servletRequest).getServletPath().contains("swagger") &&
+                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/pay") &&
+                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/favicon") &&
+                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/error")
+            ) {
                 log.warn("Token is null");
             }
         } else if (!jwtTokenProvider.validateToken(token)) {

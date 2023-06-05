@@ -28,7 +28,9 @@ public record ReceiptItemResponse(
 
         Integer price,
 
-        Integer fine
+        Integer fine,
+
+        Integer sum
 
 ) {
 }

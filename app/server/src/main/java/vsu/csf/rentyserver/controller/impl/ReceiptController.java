@@ -2,7 +2,6 @@ package vsu.csf.rentyserver.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import vsu.csf.rentyserver.controller.IReceiptController;
@@ -30,18 +29,6 @@ public class ReceiptController implements IReceiptController {
         return receiptService.getAll(user.getUserId(), statusFilter);
     }
 
-    @GetMapping("/my/{receipt_id}")
-    public ReceiptResponse getMyByReceiptId(@PathVariable("receipt_id") UUID receiptId,
-                                            Authentication authentication) {
-        var user = (SecurityUser) authentication.getPrincipal();
-
-        if (!receiptService.owns(user.getUserId(), receiptId)) {
-            throw new AccessDeniedException("It's not your receipt");
-        }
-
-        return receiptService.findOne(receiptId);
-    }
-
     @GetMapping("/{user_id}")
     public List<ReceiptResponse> getByUserId(@PathVariable("user_id") Long userId,
                                              @RequestParam(name = "status_filter", required = false, defaultValue = "ALL")
@@ -55,31 +42,13 @@ public class ReceiptController implements IReceiptController {
         return receiptService.getAll(userId, statusFilter);
     }
 
-    @GetMapping("/{user_id}/{receipt_id}")
-    public ReceiptResponse getReceiptByUserIdAndReceiptId(@PathVariable("user_id") Long userId,
-                                                          @PathVariable("receipt_id") UUID receiptId,
-                                                          Authentication authentication) {
-        log.info("Employee {} requests receipt by id {}",
-                ((SecurityUser) authentication.getPrincipal()).getUserId(),
-                receiptId);
-
-        if (!receiptService.owns(userId, receiptId)) {
-            throw new AccessDeniedException("It's not %d user's receipt"
-                    .formatted(userId));
-        }
-
+    @GetMapping("/{receipt_id}/show")
+    public ReceiptResponse getByReceiptId(@PathVariable("receipt_id") UUID receiptId) {
         return receiptService.findOne(receiptId);
     }
 
-    @PatchMapping("/my/{receipt_id}/pay")
-    public ReceiptResponse performPay(@PathVariable("receipt_id") UUID receiptId,
-                                      Authentication authentication) {
-        var user = (SecurityUser) authentication.getPrincipal();
-
-        if (!receiptService.owns(user.getUserId(), receiptId)) {
-            throw new AccessDeniedException("It's not your receipt");
-        }
-
+    @PatchMapping("/{receipt_id}/pay")
+    public ReceiptResponse performPay(@PathVariable("receipt_id") UUID receiptId) {
         return receiptService.performPay(receiptId);
     }
 

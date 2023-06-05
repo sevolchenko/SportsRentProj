@@ -20,7 +20,7 @@ public abstract class ReceiptMapper {
     @Autowired
     ReceiptProcessor receiptProcessor;
 
-    @Mapping(target = "payLink", expression = "java(\"/pay?=receipt_id%s\".formatted(receipt.getReceiptId()))")
+    @Mapping(target = "payLink", expression = "java(\"pay?receipt_id=%s\".formatted(receipt.getReceiptId()))")
     @Mapping(target = "sum", expression = "java(receiptProcessor.countSum(rents))")
     public abstract ReceiptResponse map(Receipt receipt);
 
