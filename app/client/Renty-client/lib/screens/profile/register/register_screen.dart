@@ -20,10 +20,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   late RegisterController _registerController;
 
-  late String name;
-  late String email;
-  late String password;
-  late String rePassword;
+  String name = "";
+  String email = "";
+  String password = "";
+  String rePassword = "";
 
   @override
   void initState() {
@@ -76,9 +76,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               "Зарегистрироваться",
                               "primary",
                               () {
-                                if (password != rePassword) {
+                                if (name == "" ||
+                                    email == "" ||
+                                    password == "" ||
+                                    rePassword == "") {
+                                  setState(() {});
+                                  toastInfo(msg: "Заполните все поля!");
+                                  return;
+                                } else if (password.length < 8) {
+                                  toastInfo(msg: "Пароль от 8 символов, цифры и буквы");
+                                  setState(() {});
+                                  return;
+                                }
+                                else if (password != rePassword) {
                                   toastInfo(msg: "Пароли не совпадают!");
                                   setState(() {});
+                                  return;
                                 } else {
                                   _registerController.handleRegister(
                                       name, email, password);

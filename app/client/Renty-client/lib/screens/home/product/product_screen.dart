@@ -236,8 +236,8 @@ class _ProductScreenState extends State<ProductScreen> {
             startDateTime: _startDateTime,
           ),
         ),
-        SizedBox(height: 20.h),
-        buildButton("Уведомить по освобождении", "secondary", () {}),
+        // SizedBox(height: 20.h),
+        // buildButton("Уведомить по освобождении", "secondary", () {}),
         SizedBox(
           height: 20.h,
         ),

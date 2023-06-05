@@ -16,6 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         int? code =
             await _registerRepository.registerUser(registerRequest.toJson());
         if (code == 200) {
+          toastInfo(msg: "Регистрация успешна");
           emit(RegisterUserState());
         } else {
           toastInfo(msg: "Ошибка");

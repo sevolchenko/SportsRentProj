@@ -25,7 +25,6 @@ class RegisterController {
         ),
       );
     } else {
-      toastInfo(msg: "Регистрация успешна");
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const LoginScreen(),

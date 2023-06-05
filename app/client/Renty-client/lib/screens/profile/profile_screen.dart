@@ -23,14 +23,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void removeUserData() {
-    // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
-
-    Global.storageService.logout();
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(AppRoutes.LOGIN, (route) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (Context, state) {

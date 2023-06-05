@@ -85,9 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Container(
           child: CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(
-                child: sortAndFilter(),
-              ),
+              // SliverToBoxAdapter(
+              //   child: sortAndFilter(),
+              // ),
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   vertical: 20.h,
