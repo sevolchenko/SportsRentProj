@@ -1,0 +1,28 @@
+application:
+  security:
+    secret-key: '7638792F423F4528482B4B6250655368566D597133743677397A24432646294A'
+    jwt-expires-after: P90D
+  rent:
+    price:
+      per: PT1H
+    fine:
+      percent: 0.1
+      per: PT1M
+
+spring:
+  jpa:
+    database: postgresql
+
+  datasource:
+    url: jdbc:postgresql://db:5432/renty
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  liquibase:
+    change-log: migrations/master.xml
+
+springdoc:
+  swagger-ui:
+    path: '/swagger-ui'
+    operationsSorter: method
+    tagsSorter: alpha

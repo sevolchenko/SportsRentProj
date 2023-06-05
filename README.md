@@ -15,16 +15,22 @@
 
 ## Ссылки на проделанную работу
 - [Swagger UI](https://renty-api-sevolchenko.cloud.okteto.net/swagger-ui)
+- [Серверная часть](app/server)
+- [Клиентская часть](app/client)
+- [Сопроводительное письмо](docs/Сопроводительное%20письмо.pdf)
+- [Инструкция по запуску приложения](docs/Инструкция%20по%20запуску.pdf)
 - [Техническое задание](docs/Техническое%20задание.pdf)
 - [Курсовой проект](docs/Курсовой%20проект.pdf)
 - [Диаграммы](docs/diagrams)
 ### Презентация работы
-- [Презентация](docs/presentation/Презентация%20по%20ТЗ.pdf)
-- [Видеопрезентация на YouTube](https://youtu.be/SlOl7-O6T2s)
-- [Видеопрезентация на GitHub](docs/presentation/Видеопрезентация%20по%20ТЗ.mp4)
+- [Презентация ТЗ](docs/presentation/Презентация%20по%20ТЗ.pdf)
+- [Видеопрезентация ТЗ на YouTube](https://youtu.be/SlOl7-O6T2s)
+- [Видеопрезентация ТЗ на GitHub](docs/presentation/Видеопрезентация%20по%20ТЗ.mp4)
 
 
 ## Материалы по проекту:
+- [Docker Image серверной части](https://github.com/sevolchenko/renty/pkgs/container/renty%2Fserver)
+- [APK файл мобильного приложения](app/client/app-release.apk)
 - [Задачи в Trello](https://trello.com/b/8XYZKktR/renty)
 - [Доска в Miro](https://miro.com/app/board/uXjVMfMfX_M=/)
 - [Дизайн в Figma](https://www.figma.com/file/0UBSbFquRYT1QXGyrH6JiV/Renty?node-id=0%3A1&t=63ZOD7RdBsDtvM6V-1)

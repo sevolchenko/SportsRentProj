@@ -1,0 +1,6 @@
+package vsu.csf.client
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
