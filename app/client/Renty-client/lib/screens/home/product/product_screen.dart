@@ -110,7 +110,7 @@ class _ProductScreenState extends State<ProductScreen> {
           width: 200.w,
           height: 200.h,
           decoration: BoxDecoration(
-            border: Border.all(color: kPrimaryColor, width: 4),
+            border: Border.all(color: Global.appColor, width: 4),
           ),
           child: Image.memory(
             base64Decode(product.images[0].image),
@@ -123,7 +123,7 @@ class _ProductScreenState extends State<ProductScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10.w)),
-            border: Border.all(color: kPrimaryColor, width: 2),
+            border: Border.all(color: Global.appColor, width: 2),
           ),
           margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
           padding: EdgeInsets.all(10.w),

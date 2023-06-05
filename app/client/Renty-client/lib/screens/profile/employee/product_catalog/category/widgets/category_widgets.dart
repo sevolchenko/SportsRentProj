@@ -3,6 +3,7 @@ import 'package:client/bloc/category/category_bloc.dart';
 import 'package:client/bloc/category/category_event.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/icons.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ Widget buildCategoryWidget(CategoryResponse category, BuildContext context) {
         width: 280.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.w),
-          border: Border.all(color: kPrimaryColor, width: 4),
+          border: Border.all(color: Global.appColor, width: 4),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

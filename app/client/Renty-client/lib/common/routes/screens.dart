@@ -18,6 +18,7 @@ import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/screens/rental/rent_screen.dart';
+import 'package:client/screens/welcome/welcome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,7 +111,7 @@ class AppScreens {
     //         builder: (_) => result.first.screen, settings: settings);
     //   }
     // }
-    print("invalid ${settings.name}");
+    // print("invalid ${settings.name}");
     return MaterialPageRoute(
         builder: (_) => const HomeScreen(), settings: settings);
     // return MaterialPageRoute(

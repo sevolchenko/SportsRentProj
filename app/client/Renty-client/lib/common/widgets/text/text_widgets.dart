@@ -1,3 +1,4 @@
+import 'package:client/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:client/common/values/colors.dart';
@@ -29,7 +30,7 @@ Widget buildTextField(
     decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20.w)),
-        border: Border.all(color: kPrimaryColor, width: 4)),
+        border: Border.all(color: Global.appColor, width: 4)),
     child: Row(
       children: [
         SizedBox(
@@ -109,7 +110,7 @@ Widget buildTextInfoField(String content) {
     decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20.w)),
-        border: Border.all(color: kPrimaryColor, width: 4)),
+        border: Border.all(color: Global.appColor, width: 4)),
     child: Row(
       children: [
         SizedBox(

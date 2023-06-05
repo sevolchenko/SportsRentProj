@@ -8,6 +8,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/profile/employee/rental_completion/rental_payment.dart';
 import 'package:client/screens/profile/employee/rental_completion/search_by_email.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
@@ -108,8 +109,8 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.w),
-                                border:
-                                    Border.all(color: kPrimaryColor, width: 4),
+                                border: Border.all(
+                                    color: Global.appColor, width: 4),
                               ),
                               child: Column(
                                 mainAxisAlignment:
@@ -122,9 +123,9 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                           children: [
                                             buildSmallProductImage(rentItem
                                                 .product.mainImage!.image),
-                                            const VerticalDivider(
+                                            VerticalDivider(
                                               thickness: 2,
-                                              color: kPrimaryColor,
+                                              color: Global.appColor,
                                             ),
                                             Expanded(
                                               child: Column(
@@ -188,11 +189,11 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
                                                 width: 2.0,
-                                                color: kPrimaryColor),
+                                                color: Global.appColor),
                                           ),
                                         ),
                                         child: IntrinsicHeight(
@@ -202,9 +203,9 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
                                             children: [
                                               buildRentTime(rentItem.startTime,
                                                   rentItem.status),
-                                              const VerticalDivider(
+                                              VerticalDivider(
                                                 thickness: 2,
-                                                color: kPrimaryColor,
+                                                color: Global.appColor,
                                               ),
                                               buildRentTime(rentItem.endTime,
                                                   rentItem.status),

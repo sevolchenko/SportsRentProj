@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,9 +20,7 @@ PreferredSize buildAppBar() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildTextField("Поиск", 'search', height: 45, (value) {
-
-                  }),
+                  buildTextField("Поиск", 'search', height: 45, (value) {}),
                 ],
               ),
             ],
@@ -67,7 +66,7 @@ Widget productsPreviewGrid(ProductPreviewResponse item) {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
       border: Border.all(
-          color: item.busyNow ? Colors.grey : kPrimaryColor, width: 4),
+          color: item.busyNow ? Colors.grey : Global.appColor, width: 4),
     ),
     child: Column(
       children: [
@@ -80,17 +79,10 @@ Widget productsPreviewGrid(ProductPreviewResponse item) {
             height: 130.h,
           ),
         ),
-        item.busyNow
-            ? const Divider(
-                height: 0,
-                thickness: 3,
-                color: Colors.grey,
-              )
-            : const Divider(
-                height: 0,
-                thickness: 3,
-                color: kPrimaryColor,
-              ),
+        Divider(
+            height: 0,
+            thickness: 3,
+            color: item.busyNow ? Colors.grey : Global.appColor),
         Expanded(
           child: Container(
             padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),

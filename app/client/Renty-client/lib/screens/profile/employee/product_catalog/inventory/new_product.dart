@@ -13,6 +13,7 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,7 +121,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                   height: 200.h,
                   margin: EdgeInsets.only(top: 20.h),
                   decoration: BoxDecoration(
-                    border: Border.all(color: kPrimaryColor, width: 4),
+                    border: Border.all(color: Global.appColor, width: 4),
                   ),
                   child: _loadedPhoto == ""
                       ? Image.asset("assets/images/no_picture.jpg")
@@ -167,7 +168,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10.w)),
-                          border: Border.all(color: kPrimaryColor, width: 2),
+                          border: Border.all(color: Global.appColor, width: 2),
                         ),
                         margin: EdgeInsets.symmetric(
                             horizontal: 10.w, vertical: 20.h),

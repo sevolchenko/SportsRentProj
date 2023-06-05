@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1078425573818",
+    "project_id": "renty-65ead",
+    "storage_bucket": "renty-65ead.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078425573818:android:9e0918560392ab6cb12583",
+        "android_client_info": {
+          "package_name": "vsu.csf.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078425573818-gd3ldp3ktp6kpjfkfss95g8vb133r6v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2cuaIoer9KhtQYgRq9s9L2dQj5I64-HA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078425573818-gd3ldp3ktp6kpjfkfss95g8vb133r6v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
