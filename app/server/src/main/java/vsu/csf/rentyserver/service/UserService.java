@@ -1,6 +1,7 @@
 package vsu.csf.rentyserver.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import vsu.csf.rentyserver.repository.AppUsersRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
 
     private final AppUsersRepository usersRepository;
@@ -23,6 +25,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     public void register(RegisterRequest request) {
+        log.info("Register user {} called", request);
 
         if (usersRepository.findByEmail(request.email()).orElse(null) != null) {
             throw new AlreadyRegisteredUserException(request.email());
@@ -39,6 +42,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponse findById(Long userId) {
+        log.info("Find user by id {} called", userId);
 
         var user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("user", AppUser.class, userId));
@@ -48,6 +52,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponse findByEmail(String email) {
+        log.info("Find user by email {} called", email);
 
         var user = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("email", AppUser.class, email));

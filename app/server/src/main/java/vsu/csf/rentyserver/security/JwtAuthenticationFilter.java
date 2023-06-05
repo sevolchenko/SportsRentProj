@@ -26,18 +26,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
-        if (token == null) {
-            if (!((HttpServletRequest) servletRequest).getServletPath().contains("swagger") &&
-                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/pay") &&
-                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/favicon") &&
-                    !((HttpServletRequest) servletRequest).getServletPath().startsWith("/error")
-            ) {
-                log.warn("Token is null");
-            }
-        } else if (!jwtTokenProvider.validateToken(token)) {
-            log.warn("Token from user {} is invalid", jwtTokenProvider.getUsername(token));
-
-        } else {
+        if (token != null) {
             log.info("Token validation for user {} is successful", jwtTokenProvider.getUsername(token));
 
             try {
