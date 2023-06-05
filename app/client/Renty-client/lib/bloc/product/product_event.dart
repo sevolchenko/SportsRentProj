@@ -1,7 +1,7 @@
-import 'package:client/api/dto/request/image_create.dart';
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/image.dart';
-import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/request/product/image_create.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/image.dart';
+import 'package:client/api/dto/response/product/product.dart';
 
 abstract class ProductEvent {
   const ProductEvent();
@@ -14,9 +14,14 @@ class ProductLoadEvent extends ProductEvent {
 
 class ProductsLoadEvent extends ProductEvent {}
 
-class ProductUnAuthenticatedUserEvent extends ProductEvent{}
+class ProductUnAuthenticatedUserEvent extends ProductEvent {}
 
 class ProductsPreviewsLoadEvent extends ProductEvent {}
+
+class ProductsPreviewsSearchEvent extends ProductEvent {
+  final String search;
+  ProductsPreviewsSearchEvent({required this.search});
+}
 
 class ProductRentEvent extends ProductEvent {
   final String startTime;

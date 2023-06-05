@@ -1,8 +1,8 @@
-import 'package:client/api/dto/request/product.dart';
+import 'package:client/api/dto/request/product/product.dart';
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/api/repository/category_repository.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/bloc/product/product_event.dart';
@@ -44,6 +44,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       (event, emit) async {
         // product = await _productRepository.getProductById(event.productId);
         emit(ProductUnAuthenticatedUserState());
+      },
+    );
+
+    on<ProductsPreviewsSearchEvent>(
+      (event, emit) async {
+        productsPreviews = await _productRepository.getProductsPreviews(queryParameters: {"search": event.search});
+        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
       },
     );
 

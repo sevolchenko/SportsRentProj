@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/login.dart';
 import 'package:client/common/service/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';

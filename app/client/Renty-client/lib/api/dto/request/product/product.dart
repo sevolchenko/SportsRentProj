@@ -1,6 +1,6 @@
-import 'package:client/api/dto/request/image_create.dart';
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/image.dart';
+import 'package:client/api/dto/request/product/image_create.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/image.dart';
 
 class ProductCreateRequest {
   final String name;

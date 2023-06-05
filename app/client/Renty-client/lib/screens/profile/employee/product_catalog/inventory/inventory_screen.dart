@@ -1,5 +1,6 @@
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/bloc/product/product_bloc.dart';
+import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
@@ -24,6 +25,8 @@ class InventoryScreen extends StatefulWidget {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   late ProductController _homeController;
+
+  String search = "";
 
   @override
   void initState() {
@@ -69,7 +72,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
               SliverToBoxAdapter(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 25.w),
-                  child: buildTextField("Поиск", 'search', (value) {}),
+                  child: buildTextField("Поиск", 'search', (value) {
+                    search = value;
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductsPreviewsSearchEvent(search: search));
+                  }),
                 ),
               ),
               SliverPadding(
@@ -87,7 +95,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   delegate: SliverChildBuilderDelegate(
                     childCount: productsPreviews.length,
                     (BuildContext context, int index) {
-                      ProductPreviewResponse productPreview = productsPreviews[index];
+                      ProductPreviewResponse productPreview =
+                          productsPreviews[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(

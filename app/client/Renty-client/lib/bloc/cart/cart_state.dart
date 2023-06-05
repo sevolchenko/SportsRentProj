@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/common/service/cart.dart';
 
 abstract class CartState {}

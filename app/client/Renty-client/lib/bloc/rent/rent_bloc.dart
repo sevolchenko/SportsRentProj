@@ -1,7 +1,7 @@
 import 'package:client/api/dto/request/rent/extend_rent_event.dart';
 import 'package:client/api/dto/request/rent/finish_rent.dart';
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/api/repository/rent_repository.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RentBloc extends Bloc<RentEvent, RentState> {
   final RentRepository _rentRepository = RentRepository();
   final ProductRepository _productRepository = ProductRepository();
+  late final List<RentResponse>? _finishRentResponse;
 
   late List<RentResponse> myRents = [];
 
@@ -41,16 +42,10 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       (event, emit) async {
         UserRentsFinishRequest finishRequest =
             UserRentsFinishRequest(rentsId: event.rentsIds);
-        await _rentRepository.finishUserRents(
+        _finishRentResponse = await _rentRepository.finishUserRents(
             event.userId, finishRequest.toJson());
-        // myRents = await _rentRepository
-        //     .getUserOngRents(event.userId, {"status_filter": "ONGOING"});
+        await _rentRepository.getMyReceipt(_finishRentResponse![0].user.userId);
         emit(UserRentsLoadedState(userId: event.userId, userRents: myRents));
-
-        // emit(RentsLoadedState(rents: myRents));
-
-        // myRents = await _rentRepository.getUserOngRents(event.userId);
-        // emit(RentsLoadedState(rents: myRents));
       },
     );
 

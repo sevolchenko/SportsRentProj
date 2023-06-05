@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product/product.dart';
 
 abstract class SizeEvent {
   const SizeEvent();

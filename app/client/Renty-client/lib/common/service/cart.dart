@@ -1,5 +1,5 @@
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 
 class Cart {

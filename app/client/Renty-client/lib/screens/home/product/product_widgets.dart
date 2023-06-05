@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:client/api/dto/response/product.dart';
+import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';

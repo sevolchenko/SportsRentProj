@@ -1,33 +1,29 @@
-class ReceiptItemResponse {
+class ReceiptResponse {
   final int receiptId;
-  final int userId;
-  final int employeeId;
+  final int user;
+  final int employee;
   final String payLink;
   final String createdAt;
-  final List<ReceiptItemResponse> items;
   final double sum;
   final String status;
 
-  ReceiptItemResponse({
+  ReceiptResponse({
     required this.receiptId,
-    required this.userId,
-    required this.employeeId,
+    required this.user,
+    required this.employee,
     required this.payLink,
     required this.createdAt,
-    required this.items,
     required this.sum,
     required this.status,
   });
 
-  factory ReceiptItemResponse.fromJson(Map<String, dynamic> json) {
-    return ReceiptItemResponse(
-      receiptId: json['product_id'],
-      userId: json['user_id'],
-      employeeId: json['employee_id'],
+  factory ReceiptResponse.fromJson(Map<String, dynamic> json) {
+    return ReceiptResponse(
+      receiptId: json['receipt_id'],
+      user: json['user'],
+      employee: json['employee'],
       payLink: json['pay_link'],
       createdAt: json['created_at'],
-      items: json['items'] = List<ReceiptItemResponse>.from(
-          json['items'].map((x) => ReceiptItemResponse.fromJson(x))),
       sum: json['sum'],
       status: json['status'],
     );

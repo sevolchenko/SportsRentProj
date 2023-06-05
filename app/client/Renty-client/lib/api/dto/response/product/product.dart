@@ -1,6 +1,6 @@
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/image.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/image.dart';
+import 'package:client/api/dto/response/product/size.dart';
 
 class ProductResponse {
   final int id;

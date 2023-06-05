@@ -1,5 +1,6 @@
 import 'package:client/api/apis/rent_api.dart';
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/receipt.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 
 class RentRepository {
@@ -17,8 +18,12 @@ class RentRepository {
     await _rentApi.finishRentByUserIdRentId(userId, rentId, {});
   }
 
-  Future<void> finishUserRents(int userId, Map<String, dynamic> body) async {
-    await _rentApi.finishRentsByUserId(userId, body);
+  Future<List<RentResponse>?> finishUserRents(int userId, Map<String, dynamic> body) async {
+    return await _rentApi.finishRentsByUserId(userId, body);
+  }
+
+  Future<ReceiptResponse?> getMyReceipt(int receiptId) async {
+    return await _rentApi.getMyReceipt(receiptId);
   }
 
   Future<void> prolongRent(int rentId, Map<String, dynamic> body) async {

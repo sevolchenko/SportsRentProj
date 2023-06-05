@@ -1,7 +1,7 @@
 import 'package:client/api/apis/product_api.dart';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 
 class ProductRepository {
@@ -19,8 +19,8 @@ class ProductRepository {
     return await _productApi.productPreview(productId);
   }
 
-  Future<List<ProductPreviewResponse>> getProductsPreviews() async {
-    return await _productApi.productsPreviews();
+  Future<List<ProductPreviewResponse>> getProductsPreviews({Map<String, dynamic>? queryParameters}) async {
+    return await _productApi.productsPreviews(query: queryParameters);
   }
 
   Future<List<SizeResponse>> getProductSizes(int productId) async {

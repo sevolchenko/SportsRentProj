@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 
 abstract class RentState {}
 

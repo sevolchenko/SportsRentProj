@@ -1,5 +1,5 @@
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/size/size_bloc.dart';

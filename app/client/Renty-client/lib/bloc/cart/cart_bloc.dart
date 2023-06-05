@@ -1,5 +1,5 @@
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/api/repository/product_repository.dart';
 import 'package:client/api/repository/rent_repository.dart';
 import 'package:client/bloc/cart/cart_event.dart';

@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_state.dart';
 import 'package:client/common/values/colors.dart';

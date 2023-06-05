@@ -1,5 +1,5 @@
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/api/dto/response/user/user.dart';
 
 class RentResponse {
@@ -10,6 +10,7 @@ class RentResponse {
   final UserResponse user;
   final String exceptedDuration;
   final String prettyDuration;
+  final String receiptId;
   final ProductPreviewResponse product;
   final SizeResponse size;
   final int count;
@@ -24,12 +25,12 @@ class RentResponse {
       required this.user,
       required this.exceptedDuration,
       required this.prettyDuration,
+      required this.receiptId,
       required this.product,
       required this.size,
       required this.count,
       required this.price,
       required this.status});
-      
 
   factory RentResponse.fromJson(Map<String, dynamic> json) {
     return RentResponse(
@@ -40,6 +41,7 @@ class RentResponse {
       user: json['user'] = UserResponse.fromJson(json['user']),
       exceptedDuration: json['excepted_duration'],
       prettyDuration: json['pretty_duration'],
+      receiptId: json['receipt_id'],
       product: json['product'] =
           ProductPreviewResponse.fromJson(json['product']),
       size: json['size'] = SizeResponse.fromJson(json['size']),

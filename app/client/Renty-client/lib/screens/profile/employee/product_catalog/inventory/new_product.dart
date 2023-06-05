@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:client/api/dto/request/image_create.dart';
-import 'package:client/api/dto/response/category.dart';
+import 'package:client/api/dto/request/product/image_create.dart';
+import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';

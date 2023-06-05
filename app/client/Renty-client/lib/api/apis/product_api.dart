@@ -1,7 +1,7 @@
-import 'package:client/api/dto/request/size.dart';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/request/product/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';
@@ -38,10 +38,11 @@ class ProductApi {
     return res;
   }
 
-  Future<List<ProductPreviewResponse>> productsPreviews() async {
+  Future<List<ProductPreviewResponse>> productsPreviews({Map<String, dynamic>? query}) async {
     var path = 'catalog/products/previews';
     var response = await HttpUtil().get(
       path,
+      queryParameters: query
     );
     var jsonData = response.data;
     var res = List<ProductPreviewResponse>.from(

@@ -1,4 +1,5 @@
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/receipt.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
@@ -49,16 +50,30 @@ class RentApi {
     return null;
   }
 
-  Future<int?> finishRentsByUserId(
+  Future<List<RentResponse>?> finishRentsByUserId(
       int userId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/finish/batch';
-    var statusCode = await HttpUtil().patch(path, body);
+    var response = await HttpUtil().patchWithResponse(path, body);
     try {
-      if (statusCode == 200) {
+      if (response.statusCode == 200) {
         toastInfo(msg: "Аренды успешно завершены");
-        return statusCode;
+        return response;
       } else {
-        toastInfo(msg: "Ошибка при завершении аренды");
+        toastInfo(msg: "Ошибка при завершении аренд");
+      }
+    } on DioError catch (e) {}
+    return null;
+  }
+
+  Future<ReceiptResponse?> getMyReceipt(int receiptId) async {
+    var path = 'receipts/my/${receiptId}';
+    var response = await HttpUtil().get(path);
+    try {
+      if (response.statusCode == 200) {
+        toastInfo(msg: "Чек получен");
+        return response;
+      } else {
+        toastInfo(msg: "Ошибка при получении чека");
       }
     } on DioError catch (e) {}
     return null;

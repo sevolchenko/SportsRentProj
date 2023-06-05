@@ -1,8 +1,6 @@
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/bloc/cart/cart_bloc.dart';
 import 'package:client/bloc/cart/cart_event.dart';
 import 'package:client/bloc/cart/cart_state.dart';
-import 'package:client/bloc/rent/rent_bloc.dart';
-import 'package:client/bloc/rent/rent_state.dart';
 import 'package:client/common/service/cart.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
@@ -11,17 +9,12 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/icons.dart';
 import 'package:client/global.dart';
-import 'package:client/screens/cart/widgets/cart_widgets.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
-import 'package:client/screens/rental/rent_screen.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../bloc/cart/cart_bloc.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -304,6 +297,7 @@ class _CartScreenState extends State<CartScreen> {
                         () {
                           context.read<CartBloc>().add(RentCartItemsEvent(
                               startRentRequest: cart.setRents));
+                          toastInfo(msg: "Успешно забронировано");
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(
                           //     builder: (context) => const RentScreen(),
