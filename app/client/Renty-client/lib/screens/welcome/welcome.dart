@@ -1,6 +1,7 @@
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/global.dart';
+import 'package:client/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -65,8 +66,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                 ),
                 SizedBox(height: 30.h),
-                // SizedBox(height: 100.h),
-                buildButton("Начать", "secondary", () {})
+                buildButton("Начать", "secondary", () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ),
+                  );
+                })
               ],
             ),
           )),

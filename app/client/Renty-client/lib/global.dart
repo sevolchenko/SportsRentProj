@@ -2,9 +2,7 @@ import 'package:client/common/service/cart.dart';
 import 'package:client/common/service/storage_service.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class Global {
   static late FirebaseRemoteConfig remoteConfig;

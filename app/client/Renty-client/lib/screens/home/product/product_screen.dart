@@ -236,41 +236,6 @@ class _ProductScreenState extends State<ProductScreen> {
             startDateTime: _startDateTime,
           ),
         ),
-        // Column(
-        //   children: [
-        //     reusableText("Часов аренды"),
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         IconButton(
-        //           icon: const Icon(
-        //             FontAwesomeIcons.minus,
-        //             size: 24,
-        //           ),
-        //           onPressed: () {},
-        //         ),
-        //         Container(
-        //           margin: EdgeInsets.symmetric(horizontal: 5.w),
-        //           child: Text(
-        //             "",
-        //             style: GoogleFonts.raleway(
-        //                 color: Colors.black,
-        //                 fontStyle: FontStyle.italic,
-        //                 fontWeight: FontWeight.normal,
-        //                 fontSize: 22.sp),
-        //           ),
-        //         ),
-        //         IconButton(
-        //           icon: const Icon(
-        //             FontAwesomeIcons.plus,
-        //             size: 24,
-        //           ),
-        //           onPressed: () {},
-        //         ),
-        //       ],
-        //     )
-        //   ],
-        // ),
         SizedBox(height: 20.h),
         buildButton("Уведомить по освобождении", "secondary", () {}),
         SizedBox(
