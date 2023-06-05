@@ -24,7 +24,7 @@ public class ReceiptProcessor {
 
     public Integer countSum(Duration factDuration, Integer price, Integer count, Integer fine) {
 
-        return (int) factDuration.dividedBy(rentProperties.price().per()) *
+        return (int) (factDuration.dividedBy(rentProperties.price().per()) + 1) *
                 price * count + fine;
 
     }
