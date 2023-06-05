@@ -1,13 +1,11 @@
 import 'package:client/bloc/register/register_bloc.dart';
-import 'package:client/bloc/register/register_event.dart';
 import 'package:client/bloc/register/register_state.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/controller/register_controller.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/profile/login/login_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +18,19 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late RegisterController _registerController;
+
+  late String name;
+  late String email;
+  late String password;
+  late String rePassword;
+
+  @override
+  void initState() {
+    super.initState();
+    _registerController = RegisterController(context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
@@ -35,7 +46,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // buildThirdPartyLogin(context),
                     Container(
                         margin: EdgeInsets.only(top: 20.h),
                         padding: EdgeInsets.only(left: 25.w, right: 25.w),
@@ -43,53 +53,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             reusableText("Имя"),
-                            // SizedBox(
-                            //   height: 1.h,
-                            // ),
                             buildTextField("Введите Ваше имя", 'name', (value) {
-                              context
-                                  .read<RegisterBloc>()
-                                  .add(UserNameEvent(value));
+                              name = value;
                             }),
                             reusableText("Почта"),
-
                             buildTextField("Введите электронную почту", 'email',
+                                textInputType: TextInputType.emailAddress,
                                 (value) {
-                              context
-                                  .read<RegisterBloc>()
-                                  .add(EmailEvent(value));
+                              email = value;
                             }),
                             reusableText("Пароль"),
-
                             buildTextField("Введите пароль", 'password',
                                 (value) {
-                              context
-                                  .read<RegisterBloc>()
-                                  .add(PasswordEvent(value));
+                              password = value;
                             }),
                             reusableText("Подтверждение пароля"),
-
                             buildTextField("Введите пароль снова", 'password',
                                 (value) {
-                              context
-                                  .read<RegisterBloc>()
-                                  .add(RePasswordEvent(value));
+                              rePassword = value;
                             }),
-
                             buildButton(
                               "Зарегистрироваться",
                               "primary",
                               () {
-                                // RegisterController(context: context)
-                                //     .handleRegister();
-
-                                // Navigator.of(context).pushNamed("/application");
-
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ),
-                                );
+                                if (password != rePassword) {
+                                  toastInfo(msg: "Пароли не совпадают!");
+                                  setState(() {});
+                                } else {
+                                  _registerController.handleRegister(
+                                      name, email, password);
+                                }
                               },
                             ),
                             SizedBox(

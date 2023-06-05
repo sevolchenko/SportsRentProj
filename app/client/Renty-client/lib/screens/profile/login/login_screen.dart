@@ -67,21 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20.h,
                               ),
                               buildButton("Войти", "primary", () {
-                                // SignInController(context: context)
-                                //     .handleSignIn("email");
-
-                                context.read<AuthBloc>().add(
-                                    LoginEvent(
-                                        LoginRequest(email: email, password: password)
-                                    )
-                                );
+                                context.read<AuthBloc>().add(LoginEvent(
+                                    LoginRequest(
+                                        email: email, password: password)));
                                 Navigator.of(context).pushNamed("/profile");
                               }),
                               SizedBox(
                                 height: 20.h,
                               ),
                               buildButton("Регистрация", "secondary", () {
-                                // Navigator.of(context).pop(RegisterScreen());
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
