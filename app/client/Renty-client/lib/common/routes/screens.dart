@@ -9,6 +9,7 @@ import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/common/routes/names.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/cart/cart_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/product/product_screen.dart';
@@ -94,27 +95,15 @@ class AppScreens {
   }
 
   static MaterialPageRoute GenerateRouteSettings(RouteSettings settings) {
-    // if (settings.name != null) {
-    //   //check for route name matching when navigator gets triggered
-    //   var result = routes().where((element) => element.route == settings.name);
-    //   //TODO действия для зарегестр. и незарегестр. пользователя при нажатии на кнопки
 
-    //   if (result.isNotEmpty) {
-    //     print("valid ${settings.name}");
-    //     // if(){
-    //     bool isLoged = Global.storageService.getIsLoggedIn();
-    //     if (isLoged) {
-    //       return MaterialPageRoute(builder: (_) => const Application());
-    //     }
-    //     // }
-    //     return MaterialPageRoute(
-    //         builder: (_) => result.first.screen, settings: settings);
-    //   }
-    // }
-    // print("invalid ${settings.name}");
+    StatefulWidget screen = const HomeScreen();
+
+    if (Global.storageService.isFirstOpen()) {
+      screen = const WelcomeScreen();
+      Global.storageService.setFirstOpen(false);
+    }
+
     return MaterialPageRoute(
-        builder: (_) => const HomeScreen(), settings: settings);
-    // return MaterialPageRoute(
-    //     builder: (_) => const SignInScreen(), settings: settings);
+        builder: (_) => screen, settings: settings);
   }
 }
