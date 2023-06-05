@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/product/product_preview.dart';
@@ -72,10 +73,13 @@ class StorageService {
       cart.setProducts = products;
     }
     return cart;
+  }
 
-    // deleteCartData() {
-    //   _prefs.remove("cart_rents");
-    //   _prefs.remove("cart_products");
-    // }
+  bool isFirstOpen() {
+    return _prefs.getBool("firstOpen") ?? true;
+  }
+
+  setFirstOpen(bool bool) {
+    _prefs.setBool("firstOpen", bool);
   }
 }
