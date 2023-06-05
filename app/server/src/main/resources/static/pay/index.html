@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <title>Оплата</title>
 
+    <style>
+        .name-cell {
+            padding-top: 10px; /* добавить отступ в 10 пикселей снизу для каждой ячейки */
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .button {
+            width: 150px;
+            height: 48px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            background-color: #6C166C;
+            border-radius: 10px;
+        }
+    </style>
+
     <script>
         var receiptId = new URLSearchParams(window.location.search).get('receipt_id');
 
@@ -27,53 +44,98 @@
                         console.log(receipt['pay_link']);
 
                         var table = document.getElementById('rents-table');
-                        var rents = receipt['rents'];
-                        rents.forEach((rent) => {
-                            var itemTable = document.createElement("table");
 
-                            itemTable.style.textAlign = 'center';
-                            itemTable.style.width = '100%';
+                        var rowHeader = document.createElement("tr");
+                        rowHeader.style.textAlign = 'left';
+
+                        var numberCell = document.createElement("th");
+                        numberCell.textContent = "ID";
+                        rowHeader.appendChild(numberCell);
+
+                        var sizeCell = document.createElement("th");
+                        sizeCell.textContent = "Размер";
+                        rowHeader.appendChild(sizeCell);
+
+                        var countCell = document.createElement("th");
+                        countCell.textContent = "Кол-во";
+                        rowHeader.appendChild(countCell);
+
+                        var priceCell = document.createElement("th");
+                        priceCell.textContent = "Цена/час";
+                        rowHeader.appendChild(priceCell);
+
+                        var durationCell = document.createElement("th");
+                        durationCell.textContent = "Длительность";
+                        rowHeader.appendChild(durationCell);
+
+                        var fineCell = document.createElement("th");
+                        fineCell.textContent = "Штраф";
+                        rowHeader.appendChild(fineCell);
+
+                        var sumCell = document.createElement("th");
+                        sumCell.textContent = "Сумма";
+                        rowHeader.appendChild(sumCell);
+
+                        table.appendChild(rowHeader);
+                        
+                        var rents = receipt['rents'];
+
+                        rents.forEach((rent) => {
+
+                            var cellNum = document.createElement("td");
+                            cellNum.rowSpan = 2;
+                            cellNum.style.paddingRight = '10px';
+                            cellNum.style.verticalAlign = 'middle';
+                            cellNum.textContent = rent['rent_id'];
 
                             var rowName = document.createElement("tr");
                             var nameCell = document.createElement("td");
 
-                            nameCell.style.textAlign = 'left';
+                            rowName.appendChild(cellNum);
+
+                            nameCell.style.fontWeight = 'bold';
+                            nameCell.style.fontSize = '18px';
                             nameCell.textContent = rent['product']['name'];
                             nameCell.colSpan = 6;
+                            nameCell.classList.add('name-cell');
+                            rowName.style.textAlign = 'left';
                             rowName.appendChild(nameCell);
 
+                            table.appendChild(rowName);
+
                             var rowInfo = document.createElement("tr");
+                            rowInfo.style.textAlign = 'left';
+                            rowInfo.style.paddingBottom = '10px';
 
                             var sizeCell = document.createElement("td");
                             sizeCell.textContent = rent['size']['size_name'];
-
-                            var durationCell = document.createElement("td");
-                            durationCell.textContent = rent['pretty_duration'];
+                            rowInfo.appendChild(sizeCell);
 
                             var countCell = document.createElement("td");
                             countCell.textContent = rent['count'];
+                            rowInfo.appendChild(countCell);
 
                             var priceCell = document.createElement("td");
                             priceCell.textContent = rent['price'];
+                            rowInfo.appendChild(priceCell);
+
+                            var durationCell = document.createElement("td");
+                            durationCell.textContent = rent['pretty_duration'];
+                            rowInfo.appendChild(durationCell);
 
                             var fineCell = document.createElement("td");
                             fineCell.textContent = rent['fine'];
+                            rowInfo.appendChild(fineCell);
 
                             var sumCell = document.createElement("td");
                             sumCell.textContent = rent['sum'];
-
-                            rowInfo.appendChild(sizeCell);
-                            rowInfo.appendChild(durationCell);
-                            rowInfo.appendChild(countCell);
-                            rowInfo.appendChild(priceCell);
-                            rowInfo.appendChild(fineCell);
                             rowInfo.appendChild(sumCell);
 
-                            itemTable.appendChild(rowName);
-                            itemTable.appendChild(rowInfo);
+                            table.appendChild(rowInfo);
 
-                            table.appendChild(itemTable);
                         });
+
+                        buildReceiptDiv(receipt['status']);
 
                         document.getElementById('receipt-div').style.display = 'block';
 
@@ -85,6 +147,29 @@
 
             spinner.classList.remove("d-none");
             xhr.send(JSON.stringify({}));
+        }
+
+        function buildReceiptDiv(status) {
+            var div = document.getElementById('status-div');
+            div.innerHTML = "";
+
+            switch (status) {
+                case ('CREATED') :
+                    div.innerHTML = "   <button id=\"pay-button\" class='button' type=\"button\" onClick=\"pay()\">\n" +
+                        "                    <span id=\"pay-spinner\" class=\"spinner-border spinner-border-sm d-none\" role=\"status\"\n" +
+                        "                          aria-hidden=\"true\"></span>\n" +
+                        "                    <span id=\"pay-checkmark\" class=\"bi bi-check d-none\" style=\"color: green; font-size: 2em; vertical-align: middle\"></span>\n" +
+                        "                    <span id=\"pay-cross\" class=\"bi bi-x d-none\" style=\"color: red\"></span>\n" +
+                        "                       ОПЛАТИТЬ\n" +
+                        "                </button>\n"
+                    break
+                case ('PAID') :
+                    div.innerHTML = "<span id=\"paid-checkmark\" class=\"bi bi-check\" style=\"color: green; font-size: 2em; vertical-align: middle\"></span>" +
+                        "<strong style='vertical-align: middle'>ОПЛАЧЕНО</strong>";
+                    break
+            }
+
+            div.style.display = 'block';
         }
 
         function pay() {
@@ -120,30 +205,23 @@
         }
     </script>
     <link rel="stylesheet" href="pay/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="pay/stylesheets/bootstrap-icons.css">
+    <link rel="stylesheet" href="pay/stylesheets/bootstrap-icons.min.css">
     <script src="pay/scripts/jquery-3.7.0.min.js"></script>
     <script src="pay/scripts/bootstrap.min.js"></script>
 </head>
-<body onload="fetchReceipt()" style="text-align: center">
+<body onload="fetchReceipt()" style="text-align: center; padding: 10px">
 
-<div style="display: none; text-align: center; width: 500px" id="receipt-div" >
-    <h1><strong>RENTY</strong></h1>
-    <h3>Аренда спортивного инвентаря</h3>
-    <h2>Квитанция об оплате</h2>
-    <table id="rents-table" style="text-align: center; width: 100%;">
+<div style="display: none; text-align: center; width: 100%; border: #6C166C 2px solid; padding: 20px; border-radius: 20px" id="receipt-div">
+    <h1><strong style="font-size: 40px; color: #6C166C">RENTY</strong></h1>
+    <h4>Аренда спортивного инвентаря</h4>
+    <h3>Квитанция об оплате</h3>
+    <table id="rents-table" style="text-align: center; width: 100%; margin-top: 15px"></table>
+    <h4 style="font-size: 16px; text-align: right; margin-top: 20px; margin-right: 50px">К оплате: <span id="receipt-sum" style="font-size: 20px;"></span></h4>
+    <div id='status-div'></div>
 
-    </table>
-    <h3 id="receipt-sum">Сумма к оплате: </h3>
 </div>
 <div id="load-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true">
 </div>
-
-<button id="pay-button" type="button" onclick="pay()">
-    Оплатить
-    <span id="pay-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-    <span id="pay-checkmark" class="bi bi-check d-none" style="color: green"></span>
-    <span id="pay-cross" class="bi bi-x d-none" style="color: red"></span>
-</button>
 
 </body>
 </html>
