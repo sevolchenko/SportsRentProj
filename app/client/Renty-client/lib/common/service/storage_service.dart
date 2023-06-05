@@ -73,9 +73,9 @@ class StorageService {
     }
     return cart;
 
-    deleteCartData() {
-      _prefs.remove("cart_rents");
-      _prefs.remove("cart_products");
-    }
+    // deleteCartData() {
+    //   _prefs.remove("cart_rents");
+    //   _prefs.remove("cart_products");
+    // }
   }
 }

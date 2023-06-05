@@ -10,7 +10,7 @@ class RentResponse {
   final UserResponse user;
   final String exceptedDuration;
   final String prettyDuration;
-  final String receiptId;
+  final String? receiptId;
   final ProductPreviewResponse product;
   final SizeResponse size;
   final int count;

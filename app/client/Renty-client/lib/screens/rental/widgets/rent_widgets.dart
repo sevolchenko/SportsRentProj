@@ -100,7 +100,7 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
                           margin: EdgeInsets.all(2.h),
                           alignment: Alignment.center,
                           child: Text(
-                            rent.product.name,
+                            "${rent.product.name}, ${rent.status}",
                             style: GoogleFonts.raleway(
                                 color: Colors.black,
                                 fontStyle: FontStyle.italic,

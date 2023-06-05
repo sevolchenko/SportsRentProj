@@ -122,13 +122,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       );
                     });
-                // Navigator.of(context).pop(const SignInScreen());
-                //
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const SignInScreen(),
-                //   ),
-                // );
               },
             ),
           ],

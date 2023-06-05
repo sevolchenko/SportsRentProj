@@ -17,6 +17,10 @@ class FinishRentsEvent extends RentEvent {
   FinishRentsEvent(this.userId, this.rentsIds);
 }
 
+class PaymentRentsEvent extends RentEvent {
+  PaymentRentsEvent();
+}
+
 class AddCartItemRentEvent extends RentEvent {
   final int productId;
   final String sizeName;

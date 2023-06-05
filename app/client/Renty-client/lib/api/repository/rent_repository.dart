@@ -18,11 +18,11 @@ class RentRepository {
     await _rentApi.finishRentByUserIdRentId(userId, rentId, {});
   }
 
-  Future<List<RentResponse>?> finishUserRents(int userId, Map<String, dynamic> body) async {
+  Future<List<RentResponse>> finishUserRents(int userId, Map<String, dynamic> body) async {
     return await _rentApi.finishRentsByUserId(userId, body);
   }
 
-  Future<ReceiptResponse?> getMyReceipt(int receiptId) async {
+  Future<ReceiptResponse?> getMyReceipt(String receiptId) async {
     return await _rentApi.getMyReceipt(receiptId);
   }
 

@@ -29,6 +29,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<RemoveCartItemEvent>(
       (event, emit) async {
         Global.cart.removeRentItem(event.startRentEventRequest, event.product);
+        Global.storageService.saveCart(Global.cart);
         emit(CartLoadedState(cart: Global.cart));
       },
     );
@@ -41,6 +42,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         }
         _rentRepository.startRents({"rents": listRequests});
         Global.cart.removeAll();
+        Global.storageService.saveCart(Global.cart);
         emit(CartLoadedState(cart: Global.cart));
       },
     );

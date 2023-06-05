@@ -50,28 +50,33 @@ class RentApi {
     return null;
   }
 
-  Future<List<RentResponse>?> finishRentsByUserId(
+  Future<List<RentResponse>> finishRentsByUserId(
       int userId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/finish/batch';
     var response = await HttpUtil().patchWithResponse(path, body);
     try {
       if (response.statusCode == 200) {
         toastInfo(msg: "Аренды успешно завершены");
-        return response;
+        var jsonData = response.data;
+        var res = List<RentResponse>.from(
+            jsonData.map((x) => RentResponse.fromJson(x)));
+        return res;
       } else {
         toastInfo(msg: "Ошибка при завершении аренд");
       }
     } on DioError catch (e) {}
-    return null;
+    return [];
   }
 
-  Future<ReceiptResponse?> getMyReceipt(int receiptId) async {
-    var path = 'receipts/my/${receiptId}';
+  Future<ReceiptResponse?> getMyReceipt(String receiptId) async {
+    var path = 'receipts/${receiptId}/show';
     var response = await HttpUtil().get(path);
     try {
       if (response.statusCode == 200) {
         toastInfo(msg: "Чек получен");
-        return response;
+        var jsonData = response.data;
+        var res = ReceiptResponse.fromJson(jsonData);
+        return res;
       } else {
         toastInfo(msg: "Ошибка при получении чека");
       }
@@ -88,7 +93,9 @@ class RentApi {
         toastInfo(msg: "Аренда продлена");
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при продлении аренды");
+        toastInfo(
+            msg:
+                "Аренду продлить нельзя. Возможно, товар уже занят на это время");
       }
     } on DioError catch (e) {}
     return null;

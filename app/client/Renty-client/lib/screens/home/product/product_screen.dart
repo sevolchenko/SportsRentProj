@@ -34,6 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
   late int _selectedSizeIndex;
 
   DateTime _startDateTime = DateTime.now();
+  DateTime _endDateTime = DateTime.now();
 
   String startTime = "";
   String endTime = "";
@@ -57,6 +58,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void _handleEndDateTime(DateTime dateTime) {
     setState(() {
+      _endDateTime = dateTime;
       endTime = dateTime.toUtc().toIso8601String();
     });
   }
@@ -276,20 +278,36 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         buildButton("Добавить в корзину", "primary", () {
           if (Global.storageService.isUserAuthenticated()) {
-            context.read<RentBloc>().add(
-                  AddCartItemRentEvent(
-                    productId: product.id,
-                    count: count,
-                    sizeName: sizes[_selectedSizeIndex].sizeName,
-                    startTime: startTime,
-                    endTime: endTime,
-                  ),
-                );
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ),
-            );
+            if (startTime == "" || endTime == "" || count == 0) {
+              toastInfo(msg: "Заполните все необходимые поля!");
+              setState(() {});
+              return;
+            }
+            if (DateTime.now().isAfter(_startDateTime)) {
+              toastInfo(msg: "Неверное время начала");
+              setState(() {});
+              return;
+            }
+            if (_startDateTime.isAfter(_endDateTime)) {
+              toastInfo(msg: "Неверное время окончания");
+              setState(() {});
+              return;
+            } else {
+              context.read<RentBloc>().add(
+                    AddCartItemRentEvent(
+                      productId: product.id,
+                      count: count,
+                      sizeName: sizes[_selectedSizeIndex].sizeName,
+                      startTime: startTime,
+                      endTime: endTime,
+                    ),
+                  );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ),
+              );
+            }
           } else {
             context.read<ProductBloc>().add(ProductUnAuthenticatedUserEvent());
           }

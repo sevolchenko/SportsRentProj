@@ -1,6 +1,7 @@
 import 'package:client/api/dto/request/rent/extend_rent_event.dart';
 import 'package:client/api/dto/request/rent/finish_rent.dart';
 import 'package:client/api/dto/request/rent/start_rent_event.dart';
+import 'package:client/api/dto/response/receipt.dart';
 import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/api/repository/product_repository.dart';
@@ -15,6 +16,7 @@ class RentBloc extends Bloc<RentEvent, RentState> {
   final RentRepository _rentRepository = RentRepository();
   final ProductRepository _productRepository = ProductRepository();
   late final List<RentResponse>? _finishRentResponse;
+  late final ReceiptResponse? receipt;
 
   late List<RentResponse> myRents = [];
 
@@ -31,23 +33,32 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       },
     );
 
-    // on<UserRentsLoadEvent>(
-    //   (event, emit) async {
-    //     myRents = await _rentRepository.getUserOngRents(event.userId);
-    //     emit(RentsLoadedState(rents: myRents));
-    //   },
-    // );
-
     on<FinishRentsEvent>(
       (event, emit) async {
         UserRentsFinishRequest finishRequest =
             UserRentsFinishRequest(rentsId: event.rentsIds);
         _finishRentResponse = await _rentRepository.finishUserRents(
             event.userId, finishRequest.toJson());
-        await _rentRepository.getMyReceipt(_finishRentResponse![0].user.userId);
-        emit(UserRentsLoadedState(userId: event.userId, userRents: myRents));
+        final curReceipt = await _rentRepository
+            .getMyReceipt(_finishRentResponse![0].receiptId!);
+        receipt = ReceiptResponse(
+            receiptId: curReceipt!.receiptId,
+            user: curReceipt.user,
+            employee: curReceipt.employee,
+            payLink: curReceipt.payLink,
+            createdAt: curReceipt.createdAt,
+            sum: curReceipt.sum,
+            status: curReceipt.status);
+        // emit(UserRentsLoadedState(userId: event.userId, userRents: myRents));
+        emit(PaymentRentsState(payLink: receipt!.payLink, sum: receipt!.sum));
       },
     );
+
+    // on<PaymentRentsEvent>(
+    //   (event, emit) async {
+        
+    //   },
+    // );
 
     on<AddCartItemRentEvent>((event, emit) async {
       StartRentEventRequest startRentRequest = StartRentEventRequest(
@@ -57,8 +68,6 @@ class RentBloc extends Bloc<RentEvent, RentState> {
         startTime: event.startTime,
         endTime: event.endTime,
       );
-      // await _rentRepository.startRent(startRentRequest.toJson());
-      // myRents = await _rentRepository.getMyOngRents();
       final product =
           await _productRepository.getProductPreviewById(event.productId);
       Global.cart.addRentItem(startRentRequest, product);
