@@ -9,14 +9,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 toastInfo(
     {required String msg,
-    Color backgroundColor = kPrimaryColor,
+    // Color backgroundColor = kPrimaryColor,
     Color textColor = Colors.white}) {
   return Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.TOP,
     timeInSecForIosWeb: 2,
-    backgroundColor: backgroundColor,
+    // backgroundColor: backgroundColor,
     textColor: textColor,
     fontSize: 16.sp,
   );

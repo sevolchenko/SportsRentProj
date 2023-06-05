@@ -15,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -92,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20.w),
                                   border: Border.all(
-                                      color: kPrimaryColor, width: 4),
+                                      color: Global.appColor, width: 4),
                                 ),
                                 child: Column(
                                   mainAxisAlignment:
@@ -133,9 +132,9 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              const VerticalDivider(
+                                              VerticalDivider(
                                                 thickness: 2,
-                                                color: kPrimaryColor,
+                                                color: Global.appColor,
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -210,11 +209,11 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                         Container(
                                           alignment: Alignment.center,
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
                                             border: Border(
                                               top: BorderSide(
                                                   width: 2.0,
-                                                  color: kPrimaryColor),
+                                                  color: Global.appColor),
                                             ),
                                           ),
                                           child: IntrinsicHeight(
@@ -232,9 +231,9 @@ class _CartScreenState extends State<CartScreen> {
                                                         buildRentTime(
                                                             cartItem.startTime,
                                                             ""),
-                                                        const VerticalDivider(
+                                                         VerticalDivider(
                                                           thickness: 2,
-                                                          color: kPrimaryColor,
+                                                          color: Global.appColor,
                                                         ),
                                                         buildRentTime(
                                                             cartItem.endTime,

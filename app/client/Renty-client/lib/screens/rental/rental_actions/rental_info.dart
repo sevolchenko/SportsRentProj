@@ -7,6 +7,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/rental/rental_actions/rental_extension.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _RentalInfoScreenState extends State<RentalInfoScreen> {
                   width: 200.w,
                   height: 200.h,
                   decoration: BoxDecoration(
-                    border: Border.all(color: kPrimaryColor, width: 4),
+                    border: Border.all(color: Global.appColor, width: 4),
                   ),
                   child: buildSmallProductImage(
                       widget.rentItem.product.mainImage!.image),

@@ -4,6 +4,7 @@ import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/icons.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,16 +17,16 @@ Widget buildInventoryItem(
     width: 290.w,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
-      border: Border.all(color: kPrimaryColor, width: 4),
+      border: Border.all(color: Global.appColor, width: 4),
     ),
     child: Row(
       children: [
         image != null
             ? buildSmallProductImage(image)
             : Image.asset("assets/images/no_picture.jpg"),
-        const VerticalDivider(
+        VerticalDivider(
           thickness: 2,
-          color: kPrimaryColor,
+          color: Global.appColor,
         ),
         Expanded(
           child: Column(

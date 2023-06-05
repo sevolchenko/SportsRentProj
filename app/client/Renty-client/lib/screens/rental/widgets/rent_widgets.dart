@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/common/values/colors.dart';
+import 'package:client/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,12 +73,12 @@ Widget rentColumnText(String topText, String bottomText) {
   );
 }
 
-Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
+Widget rentGrid(RentResponse rent) {
   print("getted start time: ${rent.startTime}");
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
-      border: Border.all(color: kPrimaryColor, width: 4),
+      border: Border.all(color: Global.appColor, width: 4),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,9 +89,9 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
               child: Row(
                 children: [
                   buildSmallProductImage(rent.product.mainImage!.image),
-                  const VerticalDivider(
+                   VerticalDivider(
                     thickness: 2,
-                    color: kPrimaryColor,
+                    color: Global.appColor,
                   ),
                   Expanded(
                     child: Column(
@@ -136,9 +137,9 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
             ),
             Container(
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 border: Border(
-                  top: BorderSide(width: 2.0, color: kPrimaryColor),
+                  top: BorderSide(width: 2.0, color: Global.appColor),
                 ),
               ),
               child: IntrinsicHeight(
@@ -146,9 +147,9 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     buildRentTime(rent.startTime, rent.status),
-                    const VerticalDivider(
+                     VerticalDivider(
                       thickness: 2,
-                      color: kPrimaryColor,
+                      color: Global.appColor,
                     ),
                     buildRentTime(rent.endTime, rent.status),
                   ],
