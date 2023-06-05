@@ -30,23 +30,6 @@ public interface IReceiptController {
             ReceiptStatusFilter statusFilter,
             Authentication authentication);
 
-    @Operation(summary = "Получить свой чек по идентификатору чека",
-            responses = {
-                    @ApiResponse(
-                            content = {
-                                    @Content(schema = @Schema(implementation = ApiErrorResponse.class))
-                            },
-                            responseCode = "404", description = "Ссылка на несуществующую сущность"
-                    ),
-                    @ApiResponse(
-                            responseCode = "403", description = "Недостаточно прав для совершения операции"
-                    )
-            })
-    @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    ReceiptResponse getMyByReceiptId(@Parameter(name = "receipt_it", description = "Идентификатор чека") UUID receiptId,
-                                     Authentication authentication);
-
     @Operation(summary = "Получить чеки по идентификатору пользователя",
             responses = {
                     @ApiResponse(
@@ -63,18 +46,20 @@ public interface IReceiptController {
                                       ) ReceiptStatusFilter statusFilter,
                                       Authentication authentication);
 
-
-    @Operation(summary = "Получить чек по идентификатору пользователя и идентификатору чека",
+    @Operation(summary = "Получить чек по идентификатору чека",
             responses = {
+                    @ApiResponse(
+                            content = {
+                                    @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+                            },
+                            responseCode = "404", description = "Ссылка на несуществующую сущность"
+                    ),
                     @ApiResponse(
                             responseCode = "403", description = "Недостаточно прав для совершения операции"
                     )
             })
     @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    ReceiptResponse getReceiptByUserIdAndReceiptId(@Parameter(name = "user_id", description = "Идентификатор пользователя") Long userId,
-                                                   @Parameter(name = "receipt_it", description = "Идентификатор чека") UUID receiptId,
-                                                   Authentication authentication);
+    ReceiptResponse getByReceiptId(@Parameter(name = "receipt_it", description = "Идентификатор чека") UUID receiptId);
 
     @Operation(summary = "Оплатить чек по идентификатору",
             responses = {
@@ -83,8 +68,6 @@ public interface IReceiptController {
                     )
             })
     @ApiResponse(responseCode = "200")
-    @SecurityRequirement(name = "JWT")
-    ReceiptResponse performPay(@Parameter(name = "receipt_id", description = "Идентификатор чека") UUID receiptId,
-                               Authentication authentication);
+    ReceiptResponse performPay(@Parameter(name = "receipt_id", description = "Идентификатор чека") UUID receiptId);
 
 }

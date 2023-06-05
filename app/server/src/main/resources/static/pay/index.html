@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Оплата</title>
+
+    <script>
+        var receiptId = new URLSearchParams(window.location.search).get('receipt_id');
+
+        function fetchReceipt() {
+
+            var spinner = document.getElementById("load-spinner");
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/receipts/" + receiptId + "/show");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // Запрос завершен, скрываем индикатор загрузки
+                    spinner.classList.add("d-none");
+                    // Обрабатываем ответ
+                    if (xhr.status === 200) {
+                        var receipt = JSON.parse(xhr.response);
+                        console.log(xhr.response);
+                        document.getElementById("receipt-sum").textContent += receipt['sum'];
+
+                        console.log(receipt['pay_link']);
+
+                        var table = document.getElementById('rents-table');
+                        var rents = receipt['rents'];
+                        rents.forEach((rent) => {
+                            var itemTable = document.createElement("table");
+
+                            itemTable.style.textAlign = 'center';
+                            itemTable.style.width = '100%';
+
+                            var rowName = document.createElement("tr");
+                            var nameCell = document.createElement("td");
+
+                            nameCell.style.textAlign = 'left';
+                            nameCell.textContent = rent['product']['name'];
+                            nameCell.colSpan = 6;
+                            rowName.appendChild(nameCell);
+
+                            var rowInfo = document.createElement("tr");
+
+                            var sizeCell = document.createElement("td");
+                            sizeCell.textContent = rent['size']['size_name'];
+
+                            var durationCell = document.createElement("td");
+                            durationCell.textContent = rent['pretty_duration'];
+
+                            var countCell = document.createElement("td");
+                            countCell.textContent = rent['count'];
+
+                            var priceCell = document.createElement("td");
+                            priceCell.textContent = rent['price'];
+
+                            var fineCell = document.createElement("td");
+                            fineCell.textContent = rent['fine'];
+
+                            var sumCell = document.createElement("td");
+                            sumCell.textContent = rent['sum'];
+
+                            rowInfo.appendChild(sizeCell);
+                            rowInfo.appendChild(durationCell);
+                            rowInfo.appendChild(countCell);
+                            rowInfo.appendChild(priceCell);
+                            rowInfo.appendChild(fineCell);
+                            rowInfo.appendChild(sumCell);
+
+                            itemTable.appendChild(rowName);
+                            itemTable.appendChild(rowInfo);
+
+                            table.appendChild(itemTable);
+                        });
+
+                        document.getElementById('receipt-div').style.display = 'block';
+
+                    } else {
+                        console.log(xhr.response);
+                    }
+                }
+            };
+
+            spinner.classList.remove("d-none");
+            xhr.send(JSON.stringify({}));
+        }
+
+        function pay() {
+            // Находим кнопку и индикатор загрузки
+            var button = document.getElementById("pay-button");
+            var spinner = document.getElementById("pay-spinner");
+
+            // Отправляем PATCH-запрос
+            var xhr = new XMLHttpRequest();
+            xhr.open("PATCH", "/receipts/" + receiptId + "/pay");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // Запрос завершен, скрываем индикатор загрузки
+                    spinner.classList.add("d-none");
+
+                    // Обрабатываем ответ
+                    if (xhr.status === 200) {
+                        // Операция выполнена успешно, показываем галочку
+                        document.getElementById("pay-checkmark").classList.remove("d-none");
+                    } else {
+                        console.log(xhr.status)
+                        // Ошибка при выполнении операции, показываем крестик
+                        document.getElementById("pay-cross").classList.remove("d-none");
+                    }
+                }
+            };
+
+            // Показываем индикатор загрузки и отправляем запрос
+            button.disabled = true;
+            spinner.classList.remove("d-none");
+            xhr.send(JSON.stringify({}));
+        }
+    </script>
+    <link rel="stylesheet" href="pay/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="pay/stylesheets/bootstrap-icons.css">
+    <script src="pay/scripts/jquery-3.7.0.min.js"></script>
+    <script src="pay/scripts/bootstrap.min.js"></script>
+</head>
+<body onload="fetchReceipt()" style="text-align: center">
+
+<div style="display: none; text-align: center; width: 500px" id="receipt-div" >
+    <h1><strong>RENTY</strong></h1>
+    <h3>Аренда спортивного инвентаря</h3>
+    <h2>Квитанция об оплате</h2>
+    <table id="rents-table" style="text-align: center; width: 100%;">
+
+    </table>
+    <h3 id="receipt-sum">Сумма к оплате: </h3>
+</div>
+<div id="load-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true">
+</div>
+
+<button id="pay-button" type="button" onclick="pay()">
+    Оплатить
+    <span id="pay-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+    <span id="pay-checkmark" class="bi bi-check d-none" style="color: green"></span>
+    <span id="pay-cross" class="bi bi-x d-none" style="color: red"></span>
+</button>
+
+</body>
+</html>
