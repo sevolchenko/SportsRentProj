@@ -1,35 +1,33 @@
-class ReceiptItemResponse {
-  final int receiptId;
-  final int userId;
-  final int employeeId;
+import 'package:client/api/dto/response/user/user.dart';
+
+class ReceiptResponse {
+  final String receiptId;
+  final UserResponse user;
+  final UserResponse employee;
   final String payLink;
   final String createdAt;
-  final List<ReceiptItemResponse> items;
-  final double sum;
+  final int sum;
   final String status;
 
-  ReceiptItemResponse({
+  ReceiptResponse({
     required this.receiptId,
-    required this.userId,
-    required this.employeeId,
+    required this.user,
+    required this.employee,
     required this.payLink,
     required this.createdAt,
-    required this.items,
     required this.sum,
     required this.status,
   });
 
-  factory ReceiptItemResponse.fromJson(Map<String, dynamic> json) {
-    return ReceiptItemResponse(
-      receiptId: json['product_id'],
-      userId: json['user_id'],
-      employeeId: json['employee_id'],
-      payLink: json['pay_link'],
+  factory ReceiptResponse.fromJson(Map<String, dynamic> json) {
+    return ReceiptResponse(
+      receiptId: json['receipt_id'],
+      user: json['user'] = UserResponse.fromJson(json['user']),
+      employee: json['employee'] = UserResponse.fromJson(json['employee']),       
+      payLink: json['pay_link'],     
       createdAt: json['created_at'],
-      items: json['items'] = List<ReceiptItemResponse>.from(
-          json['items'].map((x) => ReceiptItemResponse.fromJson(x))),
       sum: json['sum'],
-      status: json['status'],
+      status: json['status'],  
     );
   }
 }

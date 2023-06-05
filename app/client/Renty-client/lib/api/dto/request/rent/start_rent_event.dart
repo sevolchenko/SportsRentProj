@@ -19,4 +19,13 @@ class StartRentEventRequest {
         'start_time': startTime,
         'end_time': endTime,
       };
+
+  factory StartRentEventRequest.fromJson(Map<String, dynamic> json) {
+    return StartRentEventRequest(
+        productId: json['product_id'],
+        sizeName: json['size_name'],
+        count: json['count'],
+        startTime: json['start_time'],
+        endTime: json['end_time']);
+  }
 }

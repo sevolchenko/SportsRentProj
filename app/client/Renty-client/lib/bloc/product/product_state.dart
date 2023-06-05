@@ -1,7 +1,7 @@
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/product/size.dart';
 
 abstract class ProductState {}
 
@@ -20,6 +20,9 @@ class ProductErrorState extends ProductState {
 }
 
 class ProductsLoadingState extends ProductState {}
+
+class ProductUnAuthenticatedUserState extends ProductState {}
+
 
 class ProductsPreviewsLoadedState extends ProductState {
   final List<ProductPreviewResponse> productsPreviews;

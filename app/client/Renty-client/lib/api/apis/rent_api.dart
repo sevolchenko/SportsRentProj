@@ -1,42 +1,15 @@
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/receipt.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';
 
 class RentApi {
-  Future<List<RentResponse>> getRentsByUserId(int userId) async {
-    var path = 'rents/${userId}';
-    try {
-      var response = await HttpUtil().get(path);
-      var jsonData = response.data;
-      var res = List<RentResponse>.from(
-          jsonData.map((x) => RentResponse.fromJson(x)));
-      return res;
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при получении аренд");
-    }
-    return [];
-  }
-
-  Future<List<RentResponse>> getOngoingRentsByUserId(int userId) async {
-    var path = 'rents/${userId}/ongoing';
-    try {
-      var response = await HttpUtil().get(path);
-      var jsonData = response.data;
-      var res = List<RentResponse>.from(
-          jsonData.map((x) => RentResponse.fromJson(x)));
-      return res;
-    } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при получении аренд");
-    }
-    return [];
-  }
-
-  Future<List<RentResponse>> getMyRentsByUserId() async {
+  Future<List<RentResponse>> getMyRents(Map<String, dynamic> query) async {
     var path = 'rents/my';
     try {
-      var response = await HttpUtil().get(path);
+      var response = await HttpUtil().get(path, queryParameters: query);
       var jsonData = response.data;
       var res = List<RentResponse>.from(
           jsonData.map((x) => RentResponse.fromJson(x)));
@@ -47,10 +20,11 @@ class RentApi {
     return [];
   }
 
-  Future<List<RentResponse>> getMyOngoingRents() async {
-    var path = 'rents/my/ongoing';
+  Future<List<RentResponse>> getRentsByUserId(
+      int userId, Map<String, dynamic> query) async {
+    var path = 'rents/${userId}';
     try {
-      var response = await HttpUtil().get(path);
+      var response = await HttpUtil().get(path, queryParameters: query);
       var jsonData = response.data;
       var res = List<RentResponse>.from(
           jsonData.map((x) => RentResponse.fromJson(x)));
@@ -76,16 +50,35 @@ class RentApi {
     return null;
   }
 
-  Future<int?> finishRentsByUserId(
+  Future<List<RentResponse>> finishRentsByUserId(
       int userId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/finish/batch';
-    var statusCode = await HttpUtil().patch(path, body);
+    var response = await HttpUtil().patchWithResponse(path, body);
     try {
-      if (statusCode == 200) {
+      if (response.statusCode == 200) {
         toastInfo(msg: "Аренды успешно завершены");
-        return statusCode;
+        var jsonData = response.data;
+        var res = List<RentResponse>.from(
+            jsonData.map((x) => RentResponse.fromJson(x)));
+        return res;
       } else {
-        toastInfo(msg: "Ошибка при завершении аренды");
+        toastInfo(msg: "Ошибка при завершении аренд");
+      }
+    } on DioError catch (e) {}
+    return [];
+  }
+
+  Future<ReceiptResponse?> getMyReceipt(String receiptId) async {
+    var path = 'receipts/${receiptId}/show';
+    var response = await HttpUtil().get(path);
+    try {
+      if (response.statusCode == 200) {
+        toastInfo(msg: "Чек получен");
+        var jsonData = response.data;
+        var res = ReceiptResponse.fromJson(jsonData);
+        return res;
+      } else {
+        toastInfo(msg: "Ошибка при получении чека");
       }
     } on DioError catch (e) {}
     return null;
@@ -100,7 +93,9 @@ class RentApi {
         toastInfo(msg: "Аренда продлена");
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при продлении аренды");
+        toastInfo(
+            msg:
+                "Аренду продлить нельзя. Возможно, товар уже занят на это время");
       }
     } on DioError catch (e) {}
     return null;

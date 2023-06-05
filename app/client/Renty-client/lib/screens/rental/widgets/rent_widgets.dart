@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,7 +100,7 @@ Widget rentGrid(RentResponse rent, {Color borderColor = kPrimaryColor}) {
                           margin: EdgeInsets.all(2.h),
                           alignment: Alignment.center,
                           child: Text(
-                            rent.product.name,
+                            "${rent.product.name}, ${rent.status}",
                             style: GoogleFonts.raleway(
                                 color: Colors.black,
                                 fontStyle: FontStyle.italic,

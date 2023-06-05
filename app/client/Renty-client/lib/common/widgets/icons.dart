@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Widget buildTrashIcon(context, void Function() func) {
+Widget buildTrashIcon(context, void Function() func, ) {
   return GestureDetector(
     onTap: () {
       showDialog(

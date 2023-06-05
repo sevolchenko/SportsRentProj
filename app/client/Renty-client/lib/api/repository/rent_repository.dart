@@ -1,24 +1,29 @@
 import 'package:client/api/apis/rent_api.dart';
-import 'package:client/api/dto/response/rent.dart';
+import 'package:client/api/dto/response/receipt.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
 
 class RentRepository {
   final RentApi _rentApi = RentApi();
 
-  Future<List<RentResponse>> getMyOngRents() async {
-    return await _rentApi.getMyOngoingRents();
+  Future<List<RentResponse>> getMyOngRents(Map<String, dynamic> query) async {
+    return await _rentApi.getMyRents(query);
   }
 
-  Future<List<RentResponse>> getUserOngRents(int userId) async {
-    return await _rentApi.getOngoingRentsByUserId(userId);
+  Future<List<RentResponse>> getUserOngRents(int userId, Map<String, dynamic> query) async {
+    return await _rentApi.getRentsByUserId(userId, query);
   }
 
   Future<void> finishUserRentById(int userId, int rentId) async {
     await _rentApi.finishRentByUserIdRentId(userId, rentId, {});
   }
 
-  Future<void> finishUserRents(int userId, Map<String, dynamic> body) async {
-    await _rentApi.finishRentsByUserId(userId, body);
+  Future<List<RentResponse>> finishUserRents(int userId, Map<String, dynamic> body) async {
+    return await _rentApi.finishRentsByUserId(userId, body);
+  }
+
+  Future<ReceiptResponse?> getMyReceipt(String receiptId) async {
+    return await _rentApi.getMyReceipt(receiptId);
   }
 
   Future<void> prolongRent(int rentId, Map<String, dynamic> body) async {

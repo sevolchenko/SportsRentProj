@@ -1,7 +1,7 @@
-import 'package:client/api/dto/request/size.dart';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/product_preview.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/request/product/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';
@@ -28,10 +28,21 @@ class ProductApi {
     return res;
   }
 
-  Future<List<ProductPreviewResponse>> productsPreviews() async {
+  Future<ProductPreviewResponse> productPreview(int productId) async {
+    var path = 'catalog/products/previews/${productId}';
+    var response = await HttpUtil().get(
+      path,
+    );
+    var jsonData = response.data;
+    var res = ProductPreviewResponse.fromJson(jsonData);
+    return res;
+  }
+
+  Future<List<ProductPreviewResponse>> productsPreviews({Map<String, dynamic>? query}) async {
     var path = 'catalog/products/previews';
     var response = await HttpUtil().get(
       path,
+      queryParameters: query
     );
     var jsonData = response.data;
     var res = List<ProductPreviewResponse>.from(
@@ -78,10 +89,10 @@ class ProductApi {
 
   Future<int?> sizeCreate(int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
-    var response = await HttpUtil().post(path, data: size);
+    var statusCode = await HttpUtil().post(path, data: size);
     try {
-      if (response.statusCode == 200) {
-        return response.statusCode;
+      if (statusCode == 200) {
+        return statusCode;
       } else {
         toastInfo(msg: "Ошибка при создании размера");
       }
@@ -91,10 +102,10 @@ class ProductApi {
 
   Future<int?> productCreate(Map<String, dynamic> body) async {
     var path = 'catalog/products';
-    var response = await HttpUtil().post(path, data: body);
+    var statusCode = await HttpUtil().post(path, data: body);
     try {
-      if (response.statusCode == 200) {
-        return response.statusCode;
+      if (statusCode == 200) {
+        return statusCode;
       } else {
         toastInfo(msg: "Ошибка при создании продукта");
       }

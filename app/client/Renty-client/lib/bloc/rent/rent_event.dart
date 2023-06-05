@@ -4,11 +4,11 @@ abstract class RentEvent {
 
 class MyRentsLoadEvent extends RentEvent {}
 
-class UserRentsLoadEvent extends RentEvent {
-  final int userId;
+// class UserRentsLoadEvent extends RentEvent {
+//   final int userId;
 
-  UserRentsLoadEvent(this.userId);
-}
+//   UserRentsLoadEvent(this.userId);
+// }
 
 class FinishRentsEvent extends RentEvent {
   final int userId;
@@ -17,14 +17,18 @@ class FinishRentsEvent extends RentEvent {
   FinishRentsEvent(this.userId, this.rentsIds);
 }
 
-class StartRentEvent extends RentEvent {
+class PaymentRentsEvent extends RentEvent {
+  PaymentRentsEvent();
+}
+
+class AddCartItemRentEvent extends RentEvent {
   final int productId;
   final String sizeName;
   final int count;
   final String startTime;
   final String endTime;
 
-  StartRentEvent(
+  AddCartItemRentEvent(
       {required this.productId,
       required this.sizeName,
       required this.count,

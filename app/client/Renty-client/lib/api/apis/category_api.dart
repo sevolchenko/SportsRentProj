@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/category.dart';
+import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/common/utils/http_util.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:dio/dio.dart';

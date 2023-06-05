@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
@@ -14,12 +13,12 @@ import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
+import 'package:client/global.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/product/datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -35,6 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
   late int _selectedSizeIndex;
 
   DateTime _startDateTime = DateTime.now();
+  DateTime _endDateTime = DateTime.now();
 
   String startTime = "";
   String endTime = "";
@@ -58,6 +58,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void _handleEndDateTime(DateTime dateTime) {
     setState(() {
+      _endDateTime = dateTime;
       endTime = dateTime.toUtc().toIso8601String();
     });
   }
@@ -67,7 +68,9 @@ class _ProductScreenState extends State<ProductScreen> {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductLoadedState) {
-          return _buildProductWidget(state.productItem, state.sizes);
+          return _buildProductWidget(state, state.productItem, state.sizes);
+        } else if (state is ProductUnAuthenticatedUserState) {
+          return buildUnauthenticatedWidget(context);
         } else {
           return buildLoadingWidget();
         }
@@ -76,7 +79,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildProductWidget(
-      ProductResponse product, List<SizeResponse> sizes) {
+      ProductState state, ProductResponse product, List<SizeResponse> sizes) {
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(
@@ -92,14 +95,15 @@ class _ProductScreenState extends State<ProductScreen> {
         body: SingleChildScrollView(
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: buildProduct(product, sizes)),
+              child: buildProduct(state, product, sizes)),
         ),
         bottomNavigationBar: MyBottomNavBar(selectedIndex: 0),
       ),
     );
   }
 
-  Widget buildProduct(ProductResponse product, List<SizeResponse> sizes) {
+  Widget buildProduct(
+      ProductState state, ProductResponse product, List<SizeResponse> sizes) {
     return Column(
       children: [
         Container(
@@ -171,7 +175,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 5.h,
                     ),
                     sizes.length == 0
-                        ? const Text("Недоступно")
+                        ? Text(0.toString())
                         : Text(
                             product.sizes[_selectedSizeIndex].countAvailableNow
                                 .toString(),
@@ -273,17 +277,40 @@ class _ProductScreenState extends State<ProductScreen> {
           height: 20.h,
         ),
         buildButton("Добавить в корзину", "primary", () {
-          print("startTime: ${startTime}");
-          context.read<RentBloc>().add(
-                StartRentEvent(
-                  productId: product.id,
-                  count: count,
-                  sizeName: sizes[_selectedSizeIndex].sizeName,
-                  startTime: startTime,
-                  endTime: endTime,
+          if (Global.storageService.isUserAuthenticated()) {
+            if (startTime == "" || endTime == "" || count == 0) {
+              toastInfo(msg: "Заполните все необходимые поля!");
+              setState(() {});
+              return;
+            }
+            if (DateTime.now().isAfter(_startDateTime)) {
+              toastInfo(msg: "Неверное время начала");
+              setState(() {});
+              return;
+            }
+            if (_startDateTime.isAfter(_endDateTime)) {
+              toastInfo(msg: "Неверное время окончания");
+              setState(() {});
+              return;
+            } else {
+              context.read<RentBloc>().add(
+                    AddCartItemRentEvent(
+                      productId: product.id,
+                      count: count,
+                      sizeName: sizes[_selectedSizeIndex].sizeName,
+                      startTime: startTime,
+                      endTime: endTime,
+                    ),
+                  );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
                 ),
               );
-          setState(() {});
+            }
+          } else {
+            context.read<ProductBloc>().add(ProductUnAuthenticatedUserEvent());
+          }
         }),
         SizedBox(
           height: 20.h,

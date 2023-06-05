@@ -48,25 +48,9 @@ class _MyDateTimePickerState extends State<MyDateTimePicker> {
                 selectedTime = time;
                 DateTime result =
                     DateTimeField.combine(selectedDate, selectedTime);
-                if (DateTime.now().isAfter(result)) {
-                  result = DateTime.now().add(Duration(minutes: 1));
-                  TimeOfDay timeOfDay = TimeOfDay.fromDateTime(result);
-                  DateTime date =
-                      DateTime(result.year, result.month, result.day);
-                  Duration duration =
-                      Duration(hours: result.hour, minutes: result.minute);
-                  DateTime time = DateTime(date.year, date.month, date.day,
-                      timeOfDay.hour, timeOfDay.minute);
-
-                  DateTime combined = DateTimeField.combine(date, timeOfDay);
-                  widget.onSaved(result);
-                  toastInfo(msg: "Некорректное время! Изменнено на ${result}");
-                  return combined;
-                }
-                if (widget.startDateTime != null) {
-                  if (widget.startDateTime!.isAfter(result)) {
-                    result =
-                        widget.startDateTime!.add(const Duration(hours: 1));
+                if (widget.startDateTime == null) {
+                  if (DateTime.now().isAfter(result)) {
+                    result = DateTime.now().add(Duration(minutes: 5));
                     TimeOfDay timeOfDay = TimeOfDay.fromDateTime(result);
                     DateTime date =
                         DateTime(result.year, result.month, result.day);
@@ -79,6 +63,19 @@ class _MyDateTimePickerState extends State<MyDateTimePicker> {
                     widget.onSaved(result);
                     toastInfo(
                         msg: "Некорректное время! Изменнено на ${result}");
+                    return combined;
+                  }
+                }
+                if (widget.startDateTime != null) {
+                  if (widget.startDateTime!.isAfter(result)) {
+                    result =
+                        widget.startDateTime!.add(const Duration(hours: 1));
+                    TimeOfDay timeOfDay = TimeOfDay.fromDateTime(result);
+                    DateTime date =
+                        DateTime(result.year, result.month, result.day);
+                    DateTime combined = DateTimeField.combine(date, timeOfDay);
+                    widget.onSaved(result);
+                    toastInfo(msg: "Некорректное время окончания аренды! Добавлен 1 час от начала аренды");
                     return combined;
                   }
                 }

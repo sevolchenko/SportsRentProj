@@ -20,6 +20,11 @@ class CategoryResponse {
       required this.parentcategory,
       required this.name});
 
+  Map<String, dynamic> toJson() => {
+        'cateegory_id': categoryId,
+        'name': name,
+      };
+
   factory CategoryResponse.fromJson(Map<String, dynamic> json) {
     return CategoryResponse(
         categoryId: json['category_id'],
@@ -28,4 +33,3 @@ class CategoryResponse {
         name: json['name']);
   }
 }
-

@@ -1,4 +1,4 @@
-import 'package:client/api/dto/response/category.dart';
+import 'package:client/api/dto/response/product/category.dart';
 
 abstract class CategoryState {}
 

@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:client/api/dto/response/product_preview.dart';
+import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,9 @@ PreferredSize buildAppBar() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildTextField("Поиск", 'search', height: 45, (value) {}),
+                  buildTextField("Поиск", 'search', height: 45, (value) {
+
+                  }),
                 ],
               ),
             ],

@@ -1,5 +1,5 @@
-import 'package:client/api/dto/response/product.dart';
-import 'package:client/api/dto/response/size.dart';
+import 'package:client/api/dto/response/product/product.dart';
+import 'package:client/api/dto/response/product/size.dart';
 
 abstract class SizeState {}
 

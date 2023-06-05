@@ -37,9 +37,8 @@ class HttpUtil {
 
   Future post(String path,
       {dynamic data,
-    Map<String, dynamic>? queryParameters = null,
-    Options? options = null}
-  ) async {
+      Map<String, dynamic>? queryParameters = null,
+      Options? options = null}) async {
     var response = await dio.post(
       path,
       data: data,
@@ -51,9 +50,8 @@ class HttpUtil {
 
   Future postWithResponse(String path,
       {dynamic data,
-        Map<String, dynamic>? queryParameters = null,
-        Options? options = null}
-      ) async {
+      Map<String, dynamic>? queryParameters = null,
+      Options? options = null}) async {
     var response = await dio.post(
       path,
       data: data,
@@ -63,32 +61,37 @@ class HttpUtil {
     return response;
   }
 
-  Future patch(String path,
-      dynamic data,
+  Future patch(String path, dynamic data,
       {Map<String, dynamic>? queryParameters = null,
       Options? options = null}) async {
     var response = await dio.patch(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: getOptions(options),
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: getOptions(options),
     );
-    return
-    response
-    .
-    statusCode;
+    return response.statusCode;
   }
 
-  Future delete(String path,
-      dynamic data,
+  Future patchWithResponse(String path, dynamic data,
       {Map<String, dynamic>? queryParameters = null,
-        Options? options = null}) async {
-    var response = await dio.delete(
-        path,
+      Options? options = null}) async {
+    var response = await dio.patch(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: getOptions(options),
+    );
+    return response;
+  }
+
+  Future delete(String path, dynamic data,
+      {Map<String, dynamic>? queryParameters = null,
+      Options? options = null}) async {
+    var response = await dio.delete(path,
         data: data,
         queryParameters: queryParameters,
-        options: getOptions(options)
-    );
+        options: getOptions(options));
     return response.statusCode;
   }
 

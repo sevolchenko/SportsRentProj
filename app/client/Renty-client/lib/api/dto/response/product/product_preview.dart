@@ -1,5 +1,5 @@
-import 'package:client/api/dto/response/category.dart';
-import 'package:client/api/dto/response/image.dart';
+import 'package:client/api/dto/response/product/category.dart';
+import 'package:client/api/dto/response/product/image.dart';
 
 class ProductPreviewResponse {
   final int productId;
@@ -17,6 +17,25 @@ class ProductPreviewResponse {
     required this.category,
     this.mainImage,
   });
+
+  Map<String, dynamic> toJson() => {
+        'product_id': productId,
+        'name': name,
+        'price': price,
+        'busy_now': busyNow,
+        'category': {'category_id': category.categoryId, 'name': category.name},
+        'main_image': {
+          'product_id': mainImage!.productId,
+          'position': mainImage!.position,
+          'image': mainImage!.image,
+        },
+      };
+  Map<String, dynamic> toCartJson() => {
+        'product_id': productId,
+        'name': name,
+        'price': price,
+        'main_image': mainImage!.image,
+      };
 
   factory ProductPreviewResponse.fromJson(Map<String, dynamic> json) {
     return ProductPreviewResponse(

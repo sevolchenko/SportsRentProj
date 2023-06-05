@@ -1,5 +1,6 @@
 //unify BlocProvider and routes and screens
 import 'package:client/bloc/auth/auth_bloc.dart';
+import 'package:client/bloc/cart/cart_bloc.dart';
 import 'package:client/bloc/category/category_bloc.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/common/routes/names.dart';
+import 'package:client/screens/cart/cart_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/home/product/product_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
@@ -72,8 +74,13 @@ class AppScreens {
           screen: const RentScreen(),
           bloc: BlocProvider(
             create: (_) => RentBloc(),
-          ))
-    ];
+          )),
+    ScreenEntity(
+          route: AppRoutes.CART,
+          screen: const CartScreen(),
+          bloc: BlocProvider(
+            create: (_) => CartBloc(),
+          ))];
   }
 
 //return all bloc providers

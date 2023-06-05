@@ -1,39 +1,71 @@
+import 'package:client/bloc/cart/cart_bloc.dart';
+import 'package:client/bloc/cart/cart_event.dart';
+import 'package:client/bloc/cart/cart_state.dart';
+import 'package:client/common/service/cart.dart';
 import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
+import 'package:client/common/widgets/icons.dart';
 import 'package:client/global.dart';
-import 'package:client/screens/cart/widgets/cart_widgets.dart';
-import 'package:client/screens/profile/employee/product_catalog/inventory/new_product.dart';
 import 'package:client/screens/rental/widgets/rent_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CartScreen extends StatelessWidget {
 
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    context.read<CartBloc>().add(CartLoadEvent());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        if (state is CartLoadedState) {
+          return _buildCartWidget(Global.cart);
+        } else if (state is CartUnAuthenticatedUserState) {
+          return buildUnauthenticatedWidget(context);
+        } else {
+          return buildLoadingWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildCartWidget(Cart cart) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(title: 'Корзина'),
-      body: 
-      // cart.length == 0
-      //     ? Container(
-      //         alignment: Alignment.center,
-      //         child: Text("Корзина пуста",
-      //             style: GoogleFonts.raleway(
-      //               color: Colors.black,
-      //               fontStyle: FontStyle.italic,
-      //               fontWeight: FontWeight.normal,
-      //               fontSize: 20.sp,
-      //             )),
-      //       )
-      //     : 
-      Container(
+      body: cart.setRents.length == 0
+          ? Container(
+              alignment: Alignment.center,
+              child: Text("Корзина пуста",
+                  style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp,
+                  )),
+            )
+          : Container(
               child: CustomScrollView(
                 slivers: [
                   SliverPadding(
@@ -47,11 +79,13 @@ class CartScreen extends StatelessWidget {
                         crossAxisCount: 1,
                         mainAxisSpacing: 15,
                         crossAxisSpacing: 15,
-                        childAspectRatio: 1.95,
+                        childAspectRatio: 1.7,
                       ),
                       delegate: SliverChildBuilderDelegate(
-                        childCount: 10,
+                        childCount: cart.setRents.length,
                         (BuildContext context, int index) {
+                          final cartItem = cart.setRents[index];
+                          final productItem = cart.setProducts[index];
                           return GestureDetector(
                               onTap: () {},
                               child: Container(
@@ -69,8 +103,36 @@ class CartScreen extends StatelessWidget {
                                         IntrinsicHeight(
                                           child: Row(
                                             children: [
-                                              buildSmallProductImage(
-                                                  "assets/images/image_2.png"),
+                                              Column(
+                                                children: [
+                                                  buildSmallProductImage(
+                                                      productItem
+                                                          .mainImage!.image),
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    margin: EdgeInsets.only(
+                                                        left: 7.w),
+                                                    child: Text(
+                                                      "${productItem.price} Р/час"
+                                                          .toString(),
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      style:
+                                                          GoogleFonts.raleway(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 18.sp),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                               const VerticalDivider(
                                                 thickness: 2,
                                                 color: kPrimaryColor,
@@ -82,34 +144,16 @@ class CartScreen extends StatelessWidget {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Container(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 5.w),
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            'Велосипед, ',
-                                                            style: GoogleFonts.raleway(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                fontSize:
-                                                                    18.sp),
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '1000 Р/час',
-                                                          maxLines: 2,
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          style: GoogleFonts
-                                                              .raleway(
+                                                        Expanded(
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 5.w),
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                              productItem.name,
+                                                              style: GoogleFonts.raleway(
                                                                   color: Colors
                                                                       .black,
                                                                   fontStyle:
@@ -117,9 +161,11 @@ class CartScreen extends StatelessWidget {
                                                                           .italic,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold,
+                                                                          .normal,
                                                                   fontSize:
                                                                       18.sp),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -147,13 +193,12 @@ class CartScreen extends StatelessWidget {
                                                         children: [
                                                           rentColumnText(
                                                               'Размер',
-                                                              'детский'),
-                                                          Container(
-                                                            child:
-                                                                cartColumnQuantity(
-                                                                    'Количество',
-                                                                    '1'),
-                                                          )
+                                                              cartItem
+                                                                  .sizeName),
+                                                          rentColumnText(
+                                                              'Количество',
+                                                              cartItem.count
+                                                                  .toString()),
                                                         ],
                                                       ),
                                                     )
@@ -185,32 +230,51 @@ class CartScreen extends StatelessWidget {
                                                               .spaceEvenly,
                                                       children: [
                                                         buildRentTime(
-                                                            "23.04.23 15:00",
+                                                            cartItem.startTime,
                                                             ""),
                                                         const VerticalDivider(
                                                           thickness: 2,
                                                           color: kPrimaryColor,
                                                         ),
                                                         buildRentTime(
-                                                            "23.04.23 16:00",
+                                                            cartItem.endTime,
                                                             ""),
                                                       ],
                                                     ),
                                                   ),
                                                 ),
-                                                Container(
-                                                  margin:
-                                                      EdgeInsets.only(top: 5.h),
-                                                  child: GestureDetector(
-                                                    child: GestureDetector(
-                                                      onTap: () {},
-                                                      child: const Icon(
-                                                        FontAwesomeIcons.trash,
-                                                        size: 30,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                SizedBox(
+                                                  height: 3.h,
                                                 ),
+                                                buildTrashIcon(context, () {
+                                                  context.read<CartBloc>().add(
+                                                      RemoveCartItemEvent(
+                                                          startRentEventRequest:
+                                                              cartItem,
+                                                          product:
+                                                              productItem));
+                                                  Navigator.of(context).pop();
+                                                }),
+                                                // Container(
+                                                //   margin:
+                                                //       EdgeInsets.only(top: 5.h),
+                                                //   child: GestureDetector(
+                                                //     child: GestureDetector(
+                                                //       onTap: () {
+                                                //         context.read<CartBloc>().add(
+                                                //             RemoveCartItemEvent(
+                                                //                 startRentEventRequest:
+                                                //                     cartItem,
+                                                //                 product:
+                                                //                     productItem));
+                                                //       },
+                                                //       child: const Icon(
+                                                //         FontAwesomeIcons.trash,
+                                                //         size: 30,
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                           ),
@@ -231,11 +295,14 @@ class CartScreen extends StatelessWidget {
                         "Забронировать",
                         "secondary",
                         () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const NewProductScreen(),
-                            ),
-                          );
+                          context.read<CartBloc>().add(RentCartItemsEvent(
+                              startRentRequest: cart.setRents));
+                          toastInfo(msg: "Успешно забронировано");
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const RentScreen(),
+                          //   ),
+                          // );
                         },
                       ),
                     ),
