@@ -22,8 +22,6 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-
-
 class _ProfileScreenState extends State<ProfileScreen> {
   void removeUserData() {
     // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
@@ -78,44 +76,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: 100.h,
             ),
-            user.role == "EMPLOYEE" ?
-            buildButton("Меню сотрудника", 'primary', () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const EmpoyeeMenu(),
-                ),
-              );
-            }) :  Container(),
+            user.role == "EMPLOYEE"
+                ? buildButton("Меню сотрудника", 'primary', () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const EmpoyeeMenu(),
+                      ),
+                    );
+                  })
+                : Container(),
             SizedBox(
               height: 20.h,
             ),
             buildButton(
               "Выйти",
               "secondary",
-                  () {
+              () {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: const Text("Подтверждение выхода"),
-                        content:
-                        const Text("Вы действительно хотите выйти?"),
+                        content: const Text("Вы действительно хотите выйти?"),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
                             child: const Text("Отмена"),
                           ),
                           TextButton(
-                            // onPressed: () => removeUserData(),
                             onPressed: () {
                               Global.storageService.logout();
-                              Navigator.pushNamed(context, AppRoutes.LOGIN).then((_) => setState(() {}));
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //     const LoginScreen(),
-                              //   ),
-                              // );
+                              Navigator.pushNamed(context, AppRoutes.LOGIN)
+                                  .then((_) => setState(() {}));
                             },
                             child: const Text("Выйти"),
                           ),

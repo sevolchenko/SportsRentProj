@@ -11,9 +11,6 @@ class HttpUtil {
 
   late Dio dio;
 
-  // final String token =
-  //     "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZS52b2xjaGVua29AeWEucnUiLCJyb2xlIjoiRU1QTE9ZRUUiLCJpYXQiOjE2ODUzMDg1MjksImV4cCI6MTY5MzA4NDUyOX0.PORl2S7ITzvjFzPSC5f0OPcNZcQDNAUKJ5XsjD1p3TJOhEPwr7ZG8Mdteqe7EVRl";
-  //     "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ2YWRpbTAyMTAxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjg1NjYyMzU1LCJleHAiOjE2OTM0MzgzNTV9.3jAt9aYnFEiabmKPTDSVbim6rfq8uhj_ca41HHQ2Ipn060XsodOt_UgKmedaIrSs";
   HttpUtil._internal() {
     BaseOptions options = BaseOptions(
       baseUrl: AppConstants.SERVER_API_URL,

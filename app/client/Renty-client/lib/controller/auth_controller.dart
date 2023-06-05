@@ -12,5 +12,4 @@ class AuthController {
   void initLogin(LoginRequest loginRequest) async {
     context.read<AuthBloc>().add(LoginEvent(loginRequest));
   }
-
 }
