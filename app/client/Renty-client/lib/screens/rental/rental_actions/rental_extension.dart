@@ -6,7 +6,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/home/product/datetime_picker.dart';
+import 'package:client/screens/home/product/product_widgets/datetime_picker.dart';
 import 'package:client/screens/rental/rent_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

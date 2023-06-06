@@ -68,13 +68,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: "Новый товар",
-          backFun: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const InventoryScreen(),
-              ),
-            );
-          },
+          leading: false,
         ),
         body: SingleChildScrollView(
           child: SizedBox(

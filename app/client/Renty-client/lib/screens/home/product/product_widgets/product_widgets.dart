@@ -1,13 +1,13 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:client/api/dto/response/product/product.dart';
-import 'package:client/common/values/colors.dart';
-import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:client/api/dto/response/product/product.dart';
+// import 'package:client/common/values/colors.dart';
+// import 'package:client/common/widgets/button_widget.dart';
+// import 'package:client/common/widgets/text/text_widgets.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 // Widget buildProduct(ProductResponse product) {
 //   List<String> size_names = [];

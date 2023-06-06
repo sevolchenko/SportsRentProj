@@ -1,5 +1,5 @@
 import 'package:client/api/dto/response/user/login.dart';
-import 'package:client/api/repository/auth_repository.dart';
+import 'package:client/repository/auth_repository.dart';
 import 'package:client/bloc/auth/auth_event.dart';
 import 'package:client/bloc/auth/auth_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';

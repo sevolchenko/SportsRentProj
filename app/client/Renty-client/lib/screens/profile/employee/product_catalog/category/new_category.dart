@@ -43,6 +43,7 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Новая категория",
+          leading: false,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

@@ -1,5 +1,5 @@
 import 'package:client/api/dto/response/user/user.dart';
-import 'package:client/api/repository/user_repository.dart';
+import 'package:client/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_event.dart';
 import 'user_state.dart';

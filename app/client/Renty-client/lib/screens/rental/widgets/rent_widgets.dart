@@ -74,7 +74,7 @@ Widget rentColumnText(String topText, String bottomText) {
 }
 
 Widget rentGrid(RentResponse rent) {
-  print("getted start time: ${rent.startTime}");
+  // print("getted start time: ${rent.startTime}");
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.w),
@@ -89,7 +89,7 @@ Widget rentGrid(RentResponse rent) {
               child: Row(
                 children: [
                   buildSmallProductImage(rent.product.mainImage!.image),
-                   VerticalDivider(
+                  VerticalDivider(
                     thickness: 2,
                     color: Global.appColor,
                   ),
@@ -101,7 +101,7 @@ Widget rentGrid(RentResponse rent) {
                           margin: EdgeInsets.all(2.h),
                           alignment: Alignment.center,
                           child: Text(
-                            "${rent.product.name}, ${rent.status}",
+                            rent.product.name,
                             style: GoogleFonts.raleway(
                                 color: Colors.black,
                                 fontStyle: FontStyle.italic,
@@ -137,7 +137,7 @@ Widget rentGrid(RentResponse rent) {
             ),
             Container(
               alignment: Alignment.center,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(width: 2.0, color: Global.appColor),
                 ),
@@ -147,7 +147,7 @@ Widget rentGrid(RentResponse rent) {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     buildRentTime(rent.startTime, rent.status),
-                     VerticalDivider(
+                    VerticalDivider(
                       thickness: 2,
                       color: Global.appColor,
                     ),
