@@ -1,8 +1,8 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/bloc/cart/cart_bloc.dart';
 import 'package:client/bloc/cart/cart_event.dart';
 import 'package:client/bloc/cart/cart_state.dart';
 import 'package:client/common/service/cart.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
@@ -254,26 +254,6 @@ class _CartScreenState extends State<CartScreen> {
                                                               productItem));
                                                   Navigator.of(context).pop();
                                                 }),
-                                                // Container(
-                                                //   margin:
-                                                //       EdgeInsets.only(top: 5.h),
-                                                //   child: GestureDetector(
-                                                //     child: GestureDetector(
-                                                //       onTap: () {
-                                                //         context.read<CartBloc>().add(
-                                                //             RemoveCartItemEvent(
-                                                //                 startRentEventRequest:
-                                                //                     cartItem,
-                                                //                 product:
-                                                //                     productItem));
-                                                //       },
-                                                //       child: const Icon(
-                                                //         FontAwesomeIcons.trash,
-                                                //         size: 30,
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // ),
                                               ],
                                             ),
                                           ),
@@ -294,14 +274,10 @@ class _CartScreenState extends State<CartScreen> {
                         "Забронировать",
                         "secondary",
                         () {
+                          AppMetrica.reportEvent('Product rented');
                           context.read<CartBloc>().add(RentCartItemsEvent(
                               startRentRequest: cart.setRents));
                           toastInfo(msg: "Успешно забронировано");
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const RentScreen(),
-                          //   ),
-                          // );
                         },
                       ),
                     ),

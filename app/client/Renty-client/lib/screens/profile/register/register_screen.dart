@@ -76,6 +76,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               "Зарегистрироваться",
                               "primary",
                               () {
+                                bool isValidEmail =
+                                    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                        .hasMatch(email);
                                 if (name == "" ||
                                     email == "" ||
                                     password == "" ||
@@ -84,14 +87,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   toastInfo(msg: "Заполните все поля!");
                                   return;
                                 } else if (password.length < 8) {
-                                  toastInfo(msg: "Пароль от 8 символов, цифры и буквы");
+                                  toastInfo(
+                                      msg:
+                                          "Пароль от 8 символов, цифры и буквы");
                                   setState(() {});
                                   return;
-                                }
-                                else if (password != rePassword) {
+                                } else if (password != rePassword) {
                                   toastInfo(msg: "Пароли не совпадают!");
                                   setState(() {});
                                   return;
+                                } else if (isValidEmail == false) {
+                                  toastInfo(msg: "Неверный email формат!");
+                                  setState(() {});
                                 } else {
                                   _registerController.handleRegister(
                                       name, email, password);
