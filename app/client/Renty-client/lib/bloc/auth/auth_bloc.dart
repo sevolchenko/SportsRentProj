@@ -14,12 +14,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(LoggedOutState()) {
     on<LoginEvent>(
       (event, emit) async {
-        response = await _authRepository.login(event.loginRequest);
-        if (response != null) {
+        try {
+          response = await _authRepository.login(event.loginRequest);
           Global.storageService.setUser(response!);
           emit(LoggedInState(response: response!));
-        } else {
-          toastInfo(msg: "Ошибка.Проверьте введенные данные");
+        } catch (e) {
+          // toastInfo(msg: "Ошибка.Проверьте введенные данные");
           emit(LoginUserFailedState());
         }
       },

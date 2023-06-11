@@ -70,7 +70,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(
                                 height: 20.h,
                               ),
-                              // TODO обработка ввода email и пароля
                               buildButton("Войти", "primary", () {
                                 _authController.handleLogin(email, password);
                               }),

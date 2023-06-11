@@ -15,7 +15,7 @@ class AuthApi {
       return res;
     }
     } on DioError catch(e) {
-      toastInfo(msg: "");
+      toastInfo(msg: "Ошибка при попытке войти");
     }
       return null;
   }

@@ -144,7 +144,7 @@ class RentApi {
       var res = UserResponse.fromJson(jsonData);
       return res;
     } on DioError catch (e) {
-      toastInfo(msg: "Ошибка получении данных пользователя");
+      toastInfo(msg: "Данные пользователя не были получены");
     }
     return null;
   }

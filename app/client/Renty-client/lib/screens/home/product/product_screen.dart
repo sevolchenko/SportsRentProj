@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
@@ -6,10 +7,10 @@ import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
 import 'package:client/global.dart';
@@ -46,7 +47,9 @@ class _ProductScreenState extends State<ProductScreen> {
     _productController.initProduct(widget.productId);
 
     _selectedSizeIndex = 0;
+    AppMetrica.reportEvent('Product screen open');
   }
+
 
   void _handleStartDateTime(DateTime dateTime) {
     setState(() {
@@ -240,7 +243,7 @@ class _ProductScreenState extends State<ProductScreen> {
         SizedBox(
           height: 20.h,
         ),
-        buildButton("Добавить в корзину", "primary", () {
+        buildButton("Добавить в корзину", "primary", () async {
           if (Global.storageService.isUserAuthenticated()) {
             if (startTime == "" || endTime == "" || count == 0) {
               toastInfo(msg: "Заполните все необходимые поля!");
@@ -257,6 +260,8 @@ class _ProductScreenState extends State<ProductScreen> {
               setState(() {});
               return;
             } else {
+              // _sendProductAnalytics(product, sizes);
+              AppMetrica.reportEvent('Product added to cart');
               context.read<RentBloc>().add(
                     AddCartItemRentEvent(
                       productId: product.id,
@@ -271,6 +276,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   builder: (context) => const HomeScreen(),
                 ),
               );
+
             }
           } else {
             context.read<ProductBloc>().add(ProductUnAuthenticatedUserEvent());

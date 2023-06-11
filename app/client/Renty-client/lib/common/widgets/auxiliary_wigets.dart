@@ -31,13 +31,17 @@ Widget buildLoadingWidget() {
 }
 
 Widget buildErrorWidget({String error = ""}) {
-  return Center(
+  return Scaffold(
+    body: Center(
       child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text("Произошла ошибка: $error"),
-    ],
-  ));
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Произошла ошибка: $error"),
+        ],
+      ),
+    ),
+    bottomNavigationBar: MyBottomNavBar(selectedIndex: 0),
+  );
 }
 
 Widget buildUnauthenticatedWidget(BuildContext context) {
