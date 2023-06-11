@@ -8,7 +8,6 @@ import 'package:client/repository/product_repository.dart';
 import 'package:client/repository/rent_repository.dart';
 import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/global.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,7 +55,7 @@ class RentBloc extends Bloc<RentEvent, RentState> {
 
     // on<PaymentRentsEvent>(
     //   (event, emit) async {
-        
+
     //   },
     // );
 
@@ -88,14 +87,19 @@ class RentBloc extends Bloc<RentEvent, RentState> {
 
     on<SearchUserRentsEvent>(
       (event, emit) async {
-        UserResponse? user;
-        user = await _rentRepository.getUserData({"email": event.userEmail});
-        if (user != null) {
-          myRents = await _rentRepository
-              .getUserOngRents(user.userId, {"status_filter": "ONGOING"});
-          emit(UserRentsLoadedState(userId: user.userId, userRents: myRents));
-        } else {
-          emit(UnsuccessfulUserSearchState());
+        emit(RentsLoadingState());
+        try {
+          UserResponse? user;
+          user = await _rentRepository.getUserData({"email": event.userEmail});
+          if (user != null) {
+            myRents = await _rentRepository
+                .getUserOngRents(user.userId, {"status_filter": "ONGOING"});
+            emit(UserRentsLoadedState(userId: user.userId, userRents: myRents));
+          } else {
+            emit(UnsuccessfulUserSearchState());
+          }
+        } catch (e) {
+          emit(RentsErrorState(errorMessage: e.toString()));
         }
       },
     );

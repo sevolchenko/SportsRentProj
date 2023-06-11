@@ -1,17 +1,11 @@
-import 'dart:io';
-
 import 'package:client/bloc/rent/rent_bloc.dart';
-import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/screens/profile/employee/rental_completion/rental_comletion.dart';
+import 'package:client/controller/rent_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,10 +17,12 @@ class RentalSearchScreen extends StatefulWidget {
 }
 
 class _RentalSearchScreenState extends State<RentalSearchScreen> {
+  late RentController _rentController;
   late String _userEmail;
 
   @override
   void initState() {
+    _rentController = RentController(context: context);
     super.initState();
   }
 
@@ -65,22 +61,13 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                buildButton("Поиск", "primary", () {
-                  context
-                      .read<RentBloc>()
-                      .add(SearchUserRentsEvent(_userEmail));
-                  if (state is UserRentsLoadedState) {
-                    toastInfo(msg: "Подождите немного, идет поиск");
-                    // sleep(Duration(seconds: 1));
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => RentalCompletionScreen(
-                          userEmail: _userEmail,
-                        ),
-                      ),
-                    );
-                  }
-                })
+                buildButton(
+                  "Поиск",
+                  "primary",
+                  () {
+                    _rentController.handleSearchByEmail(_userEmail);
+                  },
+                )
               ],
             ),
           ),

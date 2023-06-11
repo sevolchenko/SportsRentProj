@@ -28,7 +28,6 @@ class RentalCompletionScreen extends StatefulWidget {
 class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
   @override
   void initState() {
-    // context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
     super.initState();
   }
 
@@ -43,17 +42,10 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
       builder: (context, state) {
         if (state is UserRentsLoadedState) {
           return _buildUserRentsWidget(state.userId, state.userRents);
-        }
-        // else if (state is UnsuccessfulUserSearchState) {
-        //   Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) => const RentalSearchScreen(),
-        //     ),
-        //   );
-        //   return buildLoadingWidget();
-        // }
-        else {
+        } else if (state is RentsLoadingState) {
           return buildLoadingWidget();
+        } else {
+          return buildErrorWidget(error: "Ошибка, попробуйте снова");
         }
       },
     );

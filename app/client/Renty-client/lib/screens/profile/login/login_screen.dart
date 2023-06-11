@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // buildThirdPartyLogin(context),
                       Container(
                           margin: EdgeInsets.only(top: 80.h),
                           padding: EdgeInsets.only(left: 25.w, right: 25.w),
@@ -56,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 5.h,
                               ),
                               buildTextField(
-                                  "Введите электронную почту", 'email',
+                                  "Введите электронную почту", 'email', textInputType: TextInputType.emailAddress,
                                   (value) {
                                 email = value;
                               }, height: 58),
@@ -71,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(
                                 height: 20.h,
                               ),
+                              // TODO обработка ввода email и пароля
                               buildButton("Войти", "primary", () {
                                 _authController.handleLogin(email, password);
                               }),

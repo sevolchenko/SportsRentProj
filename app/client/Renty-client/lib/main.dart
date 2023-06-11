@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       providers: [...AppScreens.allProviders(context)],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
