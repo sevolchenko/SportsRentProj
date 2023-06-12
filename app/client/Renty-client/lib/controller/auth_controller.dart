@@ -12,26 +12,30 @@ class AuthController {
   final BuildContext context;
   AuthController({required this.context});
 
-  void handleLogin(String email, String password) {
+  void handleLogin(String email, String password) async {
     bool isValidEmail =
         RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
     if (isValidEmail == false) {
       toastInfo(msg: "Неверный email формат!");
+      return;
     } else {
       context
           .read<AuthBloc>()
           .add(LoginEvent(LoginRequest(email: email, password: password)));
+      await Future.delayed(Duration(seconds: 2));
       final state = context.read<AuthBloc>().state;
-      if (state is LoginUserFailedState) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-        );
-      } else if (state is LoggedInState) {
+      print(state);
+      if (state is LoggedInState) {
+        toastInfo(msg: "Успешный вход в систему");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const HomeScreen(),
+          ),
+        );
+      } else if (state is LoginUserFailedState) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
           ),
         );
       }

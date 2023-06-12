@@ -1,6 +1,6 @@
 import 'dart:convert';
+
 import 'package:client/api/dto/response/product/product_preview.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/global.dart';
 import 'package:flutter/material.dart';
@@ -29,32 +29,50 @@ PreferredSize buildAppBar() {
   );
 }
 
-Widget sortAndFilter() {
+Widget sortAndFilter(
+    {void Function(Map<String, String> value)? sortFunc,
+    void Function(String value)? filterFunc}) {
   return Container(
     margin: EdgeInsets.only(top: 10.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () {},
+        PopupMenuButton<Map<String, String>>(
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: {'NAME': "ASC"},
+              child: Text('В алфавитном порядке'),
+            ),
+            const PopupMenuItem(
+              value: {'PRICE': "ASC"},
+              child: Text('По возрастанию цены'),
+            ),
+            const PopupMenuItem(
+              value: {'PRICE': "DESC"},
+              child: Text('По убыванию цены'),
+            ),
+          ],
+          onSelected: (value) => sortFunc!(value),
           child: SizedBox(
-              width: 20.w,
-              height: 20.h,
-              child: const Icon(
-                FontAwesomeIcons.sort,
-                size: 35,
-              )),
+            width: 20.w,
+            height: 20.h,
+            child: const Icon(
+              FontAwesomeIcons.sort,
+              size: 35,
+            ),
+          ),
         ),
         GestureDetector(
           onTap: () {},
           child: SizedBox(
-              width: 20.w,
-              height: 20.h,
-              child: const Icon(
-                FontAwesomeIcons.filter,
-                size: 35,
-              )),
+            width: 20.w,
+            height: 20.h,
+            child: const Icon(
+              FontAwesomeIcons.filter,
+              size: 35,
+            ),
+          ),
         ),
       ],
     ),

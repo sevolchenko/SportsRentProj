@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late ProductController _productController;
 
   String search = "";
+  Map<String, String> sortValue = {};
 
   @override
   void initState() {
@@ -75,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ProductsPreviewsSearchEvent(search: search));
                           },
                         ),
-                        
                       ],
                     ),
                   ],
@@ -85,9 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Container(
           child: CustomScrollView(
             slivers: [
-              // SliverToBoxAdapter(
-              //   child: sortAndFilter(),
-              // ),
+              SliverToBoxAdapter(
+                child: sortAndFilter(
+                  sortFunc: (value) {
+                    sortValue = value;
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductsPreviewsSortEvent(sortValue: sortValue));
+                  },
+                ),
+              ),
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   vertical: 20.h,
