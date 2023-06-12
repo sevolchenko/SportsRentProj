@@ -7,17 +7,17 @@ import 'package:dio/dio.dart';
 class AuthApi {
   Future<LoginResponse?> login(LoginRequest request) async {
     try {
-    var response =
-        await HttpUtil().postWithResponse('auth/login', data: request);
-    if (response.statusCode == 200) {
-      var jsonData = response.data;
-      var res = LoginResponse.fromJson(jsonData);
-      return res;
+      var response =
+          await HttpUtil().postWithResponse('auth/login', data: request);
+      if (response.statusCode == 200) {
+        var jsonData = response.data;
+        var res = LoginResponse.fromJson(jsonData);
+        return res;
+      }
+    } on DioError catch (e) {
+      toastInfo(msg: "Не удалось войти. Проверьте данные");
     }
-    } on DioError catch(e) {
-      toastInfo(msg: "Ошибка при попытке войти");
-    }
-      return null;
+    return null;
   }
 
   void logout() async {

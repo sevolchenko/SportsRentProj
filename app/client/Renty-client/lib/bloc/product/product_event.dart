@@ -23,6 +23,11 @@ class ProductsPreviewsSearchEvent extends ProductEvent {
   ProductsPreviewsSearchEvent({required this.search});
 }
 
+class ProductsPreviewsSortEvent extends ProductEvent {
+  final Map<String, String> sortValue;
+  ProductsPreviewsSortEvent({required this.sortValue});
+}
+
 class ProductRentEvent extends ProductEvent {
   final String startTime;
   final String endTime;
