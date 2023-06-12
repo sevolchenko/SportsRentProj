@@ -16,7 +16,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   late List<ProductResponse> products;
   late List<ProductPreviewResponse> productsPreviews;
   late List<CategoryResponse> categories;
-
+  
   ProductBloc() : super(ProductLoadingState()) {
     on<ProductsPreviewsLoadEvent>(
       (event, emit) async {

@@ -12,6 +12,7 @@ import 'package:client/screens/home/widgets/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,18 +69,35 @@ class _HomeScreenState extends State<HomeScreen> {
             automaticallyImplyLeading: false,
             title: Container(
                 margin: EdgeInsets.only(top: 30.h, left: 5.w, right: 5.w),
-                child: Column(
+                child: Row(
                   children: [
                     buildTextField(
                       "Поиск",
                       'search',
                       height: 45,
+                      width: 280,
                       (value) {
                         search = value;
-                        context
-                            .read<ProductBloc>()
-                            .add(ProductsPreviewsSearchEvent(search: search));
                       },
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.only(left: 15.w, right: 5.w, bottom: 30.h),
+                      child: GestureDetector(
+                        onTap: () {
+                          context
+                              .read<ProductBloc>()
+                              .add(ProductsPreviewsSearchEvent(search: search));
+                        },
+                        child: SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: const Icon(
+                            FontAwesomeIcons.magnifyingGlass,
+                            size: 30,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 )),
