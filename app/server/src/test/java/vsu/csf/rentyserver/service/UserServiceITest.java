@@ -1,19 +1,17 @@
 package vsu.csf.rentyserver.service;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.IntegrationEnvironment;
 import vsu.csf.rentyserver.exception.AlreadyRegisteredUserException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
 import vsu.csf.rentyserver.model.dto.auth.request.RegisterRequest;
-import vsu.csf.rentyserver.model.entity.*;
+import vsu.csf.rentyserver.model.entity.AppUser;
 import vsu.csf.rentyserver.model.mapping.UserMapper;
 import vsu.csf.rentyserver.repository.AppUsersRepository;
 
@@ -23,7 +21,6 @@ import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
 public class UserServiceITest extends IntegrationEnvironment {
 
     @Autowired

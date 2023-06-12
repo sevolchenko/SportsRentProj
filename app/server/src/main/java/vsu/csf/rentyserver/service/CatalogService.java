@@ -61,6 +61,8 @@ public class CatalogService {
     public List<ProductResponse> listAllProducts(ProductsSorting sorting, Sort.Direction direction,
                                                  String search, Long categoryId,
                                                  Integer minPrice, Integer maxPrice) {
+        log.info("Searching products: search \"{}\", sort by {} {}, category {}, price: [{} {}]",
+                search, sorting, direction, categoryId, minPrice, maxPrice);
 
         var res = listAllProductsBase(sorting, direction, search, categoryId, minPrice, maxPrice);
         return productMapper.map(res);
@@ -113,13 +115,22 @@ public class CatalogService {
         return productMapper.map(deleted.get(0));
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductPreviewResponse> listAllProductsPreviews() {
+        log.info("List all products previews called");
+
+        var res = productsRepository.findAll();
+
+        return productMapper.mapToPreview(res);
+    }
 
     @Transactional(readOnly = true)
     public List<ProductPreviewResponse> listAllProductsPreviews(ProductsSorting sorting, Sort.Direction direction,
                                                                 String search, Long categoryId,
                                                                 Integer minPrice, Integer maxPrice) {
-        log.info("List all products projections called");
 
+        log.info("Searching products previews: search \"{}\", sort by {} {}, category {}, price: [{} {}]",
+                search, sorting, direction, categoryId, minPrice, maxPrice);
 
         var res = listAllProductsBase(sorting, direction, search, categoryId, minPrice, maxPrice);
 
