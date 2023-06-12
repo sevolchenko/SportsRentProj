@@ -64,6 +64,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
     });
 
+    on<ProductsPreviewsFilterEvent>((event, emit) async {
+      emit(ProductLoadingState());
+      productsPreviews =
+          await _productRepository.getProductsPreviews(queryParameters: {
+        "category_filter": event.categoryId,
+        "price_min_filter": event.minPrice,
+        "price_max_filter": event.maxPrice,
+      });
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+    });
+
     on<PreCreateProductEvent>(
       (event, emit) async {
         categories = await _categoryRepository.getCategories();
