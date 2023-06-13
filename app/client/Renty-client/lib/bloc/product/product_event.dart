@@ -56,7 +56,6 @@ class DeleteProductEvent extends ProductEvent {
   DeleteProductEvent(this.productId);
 }
 
-class PreCreateProductEvent extends ProductEvent {}
 
 class CreateProductEvent extends ProductEvent {
   final int categoryId;

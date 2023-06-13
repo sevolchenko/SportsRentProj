@@ -41,11 +41,6 @@ class ProductsErrorState extends ProductState {
   final String errorMessage;
 }
 
-class ProductInCreateState extends ProductState {
-  final List<CategoryResponse> categories;
-  ProductInCreateState({required this.categories});
-}
-
 class CreateProductState extends ProductState {
   CreateProductState();
 }

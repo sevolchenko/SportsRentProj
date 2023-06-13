@@ -80,13 +80,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           productsPreviews: productsPreviews, categories: categories));
     });
 
-    on<PreCreateProductEvent>(
-      (event, emit) async {
-        categories = await _categoryRepository.getCategories();
-        emit(ProductInCreateState(categories: categories));
-      },
-    );
-
     on<CreateProductEvent>((event, emit) async {
       emit(ProductLoadingState());
       ProductCreateRequest productCreateRequest = ProductCreateRequest(
