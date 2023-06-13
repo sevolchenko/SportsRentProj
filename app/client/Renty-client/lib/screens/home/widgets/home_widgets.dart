@@ -62,13 +62,9 @@ Widget sortAndFilter(
             ),
           ],
           onSelected: (value) => sortFunc!(value),
-          child: SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.sort,
-              size: 40,
-            ),
+          child: const Icon(
+            FontAwesomeIcons.sort,
+            size: 40,
           ),
         ),
         GestureDetector(
@@ -158,13 +154,9 @@ Widget sortAndFilter(
               ),
             );
           },
-          child: SizedBox(
-            width: 20.w,
-            height: 20.h,
-            child: const Icon(
-              FontAwesomeIcons.filter,
-              size: 40,
-            ),
+          child: const Icon(
+            FontAwesomeIcons.filter,
+            size: 40,
           ),
         ),
       ],
