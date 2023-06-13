@@ -24,7 +24,6 @@ class AuthController {
           .add(LoginEvent(LoginRequest(email: email, password: password)));
       await Future.delayed(Duration(seconds: 2));
       final state = context.read<AuthBloc>().state;
-      print(state);
       if (state is LoggedInState) {
         toastInfo(msg: "Успешный вход в систему");
         Navigator.of(context).push(
@@ -32,13 +31,7 @@ class AuthController {
             builder: (context) => const HomeScreen(),
           ),
         );
-      } else if (state is LoginUserFailedState) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-        );
-      }
+      } 
     }
   }
 }

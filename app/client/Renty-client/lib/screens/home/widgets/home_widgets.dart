@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/api/dto/response/product/product_preview.dart';
-import 'package:client/bloc/category/category_bloc.dart';
-import 'package:client/bloc/category/category_state.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/controller/category_controller.dart';
 import 'package:client/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,12 +36,12 @@ PreferredSize buildAppBar() {
 
 Widget sortAndFilter(
   BuildContext context,
-  CategoryController controller, {
+  List<CategoryResponse> categories, {
   void Function(Map<String, String> value)? sortFunc,
   void Function(String value)? filterFunc,
 }) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+    margin: EdgeInsets.only(top: 5.h, bottom: 15.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,100 +72,91 @@ Widget sortAndFilter(
           ),
         ),
         GestureDetector(
-          onTap: () async {
-            controller.initCategories();
-            await Future.delayed(Duration(milliseconds: 1000));
-            final state = context.read<CategoryBloc>().state;
-            if (state is CategoriesLoadedState) {
-              final List<CategoryResponse> categories = state.categories;
-              int selectedCategoryId = state.categories[0].categoryId;
-              final minPriceController = TextEditingController();
-              final maxPriceController = TextEditingController();
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Фильтр'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: minPriceController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Минимальная стоимость',
-                        ),
+          onTap: () {
+            int selectedCategoryId = categories[0].categoryId;
+            final minPriceController = TextEditingController();
+            final maxPriceController = TextEditingController();
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Фильтр'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: minPriceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Минимальная стоимость',
                       ),
-                      TextField(
-                        controller: maxPriceController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Максимальная стоимость',
-                        ),
-                      ),
-                      DropdownButtonFormField(
-                        value: selectedCategoryId,
-                        hint: const Text('Выберите категорию'),
-                        items: categories.map((category) {
-                          return DropdownMenuItem(
-                            value: category.categoryId,
-                            child: Text(
-                              category.name,
-                              style: GoogleFonts.raleway(
-                                color: Colors.black,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          selectedCategoryId =
-                              value ?? categories[0].categoryId;
-                        },
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Отмена'),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        int minPrice = minPriceController.text != ""
-                            ? int.parse(
-                                minPriceController.text,
-                              )
-                            : 0;
-                        int maxPrice = maxPriceController.text != ""
-                            ? int.parse(
-                                maxPriceController.text,
-                              )
-                            : 2147483647;
-                        if (minPrice < 0 ||
-                            maxPrice < 0 ||
-                            maxPrice < minPrice) {
-                          toastInfo(msg: "Недопустимое значение!");
-                          return;
-                        }
-                        context.read<ProductBloc>().add(
-                              ProductsPreviewsFilterEvent(
-                                categoryId: selectedCategoryId,
-                                minPrice: minPrice,
-                                maxPrice: maxPrice,
-                              ),
-                            );
-                        Navigator.of(context).pop();
+                    TextField(
+                      controller: maxPriceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Максимальная стоимость',
+                      ),
+                    ),
+                    DropdownButtonFormField(
+                      value: selectedCategoryId,
+                      hint: const Text('Выберите категорию'),
+                      items: categories.map((category) {
+                        return DropdownMenuItem(
+                          value: category.categoryId,
+                          child: Text(
+                            category.name,
+                            style: GoogleFonts.raleway(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        selectedCategoryId = value ?? categories[0].categoryId;
                       },
-                      child: const Text('Применить'),
                     ),
                   ],
                 ),
-              );
-            }
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Отмена'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      int minPrice = minPriceController.text != ""
+                          ? int.parse(
+                              minPriceController.text,
+                            )
+                          : 0;
+                      int maxPrice = maxPriceController.text != ""
+                          ? int.parse(
+                              maxPriceController.text,
+                            )
+                          : 2147483647;
+                      if (minPrice < 0 || maxPrice < 0 || maxPrice < minPrice) {
+                        toastInfo(msg: "Недопустимое значение!");
+                        return;
+                      }
+                      context.read<ProductBloc>().add(
+                            ProductsPreviewsFilterEvent(
+                              categoryId: selectedCategoryId,
+                              minPrice: minPrice,
+                              maxPrice: maxPrice,
+                            ),
+                          );
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Применить'),
+                  ),
+                ],
+              ),
+            );
           },
           child: SizedBox(
             width: 20.w,

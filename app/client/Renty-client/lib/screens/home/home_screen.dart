@@ -1,3 +1,4 @@
+import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
@@ -5,7 +6,6 @@ import 'package:client/bloc/product/product_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:client/controller/category_controller.dart';
 import 'package:client/controller/product_controller.dart';
 import 'package:client/screens/home/product/product_screen.dart';
 import 'package:client/screens/home/widgets/home_widgets.dart';
@@ -24,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late ProductController _productController;
-  late CategoryController _categoryController;
 
   String search = "";
   Map<String, String> sortValue = {};
@@ -36,8 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _productController = ProductController(context: context);
     _productController.initProductsPreviews();
-
-    _categoryController = CategoryController(context: context);
   }
 
   @override
@@ -50,7 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductsPreviewsLoadedState) {
-          return _buildProductPreviewWidget(state.productsPreviews);
+          return _buildProductPreviewWidget(
+              state.productsPreviews, state.categories);
         } else {
           return buildLoadingWidget();
         }
@@ -59,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildProductPreviewWidget(
-      List<ProductPreviewResponse> productsPreviews) {
+    List<ProductPreviewResponse> productsPreviews,
+    List<CategoryResponse> categories,
+  ) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -75,14 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Поиск",
                       'search',
                       height: 45,
-                      width: 280,
+                      width: 260,
                       (value) {
                         search = value;
                       },
                     ),
                     Container(
                       margin:
-                          EdgeInsets.only(left: 15.w, right: 5.w, bottom: 30.h),
+                          EdgeInsets.only(left: 15.w, right: 5.w, bottom: 35.h),
                       child: GestureDetector(
                         onTap: () {
                           context
@@ -106,13 +106,15 @@ class _HomeScreenState extends State<HomeScreen> {
         body: productsPreviews.length == 0
             ? Container(
                 alignment: Alignment.center,
-                child: Text("Список товаров пуст",
-                    style: GoogleFonts.raleway(
-                      color: Colors.black,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.sp,
-                    )),
+                child: Text(
+                  "Список товаров пуст",
+                  style: GoogleFonts.raleway(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.sp,
+                  ),
+                ),
               )
             : Container(
                 child: CustomScrollView(
@@ -120,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SliverToBoxAdapter(
                       child: sortAndFilter(
                         context,
-                        _categoryController,
+                        categories,
                         sortFunc: (value) {
                           sortValue = value;
                           context.read<ProductBloc>().add(

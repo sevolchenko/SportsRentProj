@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RentBloc extends Bloc<RentEvent, RentState> {
   final RentRepository _rentRepository = RentRepository();
   final ProductRepository _productRepository = ProductRepository();
-  late final List<RentResponse>? _finishRentResponse;
+  // late final List<RentResponse>? _finishRentResponse;
   late final ReceiptResponse? receipt;
 
   late List<RentResponse> myRents = [];
@@ -36,10 +36,10 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       (event, emit) async {
         UserRentsFinishRequest finishRequest =
             UserRentsFinishRequest(rentsId: event.rentsIds);
-        _finishRentResponse = await _rentRepository.finishUserRents(
+        var finishRentResponse = await _rentRepository.finishUserRents(
             event.userId, finishRequest.toJson());
         final curReceipt = await _rentRepository
-            .getMyReceipt(_finishRentResponse![0].receiptId!);
+            .getMyReceipt(finishRentResponse[0].receiptId!);
         receipt = ReceiptResponse(
             receiptId: curReceipt!.receiptId,
             user: curReceipt.user,

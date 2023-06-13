@@ -1,7 +1,6 @@
 import 'package:client/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget reusableText(String text,
@@ -35,7 +34,7 @@ Widget buildTextField(
       children: [
         SizedBox(
           width: (width - 13).w,
-          height: 50.h,
+          height: height.h,
           child: TextField(
             onChanged: (value) => func!(value),
             textAlign: TextAlign.left,

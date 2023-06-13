@@ -15,13 +15,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   late ProductResponse product;
   late List<ProductResponse> products;
   late List<ProductPreviewResponse> productsPreviews;
-  late List<CategoryResponse> categories;
-  
+  List<CategoryResponse> categories = [];
+
   ProductBloc() : super(ProductLoadingState()) {
     on<ProductsPreviewsLoadEvent>(
       (event, emit) async {
         productsPreviews = await _productRepository.getProductsPreviews();
-        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+        categories = await _categoryRepository.getCategories();
+        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
       },
     );
 
@@ -50,7 +51,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       (event, emit) async {
         productsPreviews = await _productRepository
             .getProductsPreviews(queryParameters: {"search": event.search});
-        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
       },
     );
 
@@ -61,7 +62,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         "sort_by": event.sortValue.keys.first,
         "sort_direction": event.sortValue.values.first
       });
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
     });
 
     on<ProductsPreviewsFilterEvent>((event, emit) async {
@@ -72,7 +73,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         "price_min_filter": event.minPrice,
         "price_max_filter": event.maxPrice,
       });
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
     });
 
     on<PreCreateProductEvent>(
@@ -91,13 +92,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           images: event.images);
       await _productRepository.productCreate(productCreateRequest.toJson());
       productsPreviews = await _productRepository.getProductsPreviews();
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
     });
 
     on<DeleteProductEvent>((event, emit) async {
       await _productRepository.productDelete(event.productId);
       productsPreviews = await _productRepository.getProductsPreviews();
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews, categories: categories));
     });
 
     // on<HomeProductItem>(_homeProductProjectionUtem);

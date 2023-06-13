@@ -23,11 +23,11 @@ class ProductsLoadingState extends ProductState {}
 
 class ProductUnAuthenticatedUserState extends ProductState {}
 
-
 class ProductsPreviewsLoadedState extends ProductState {
   final List<ProductPreviewResponse> productsPreviews;
+  final List<CategoryResponse> categories;
 
-  ProductsPreviewsLoadedState({required this.productsPreviews});
+  ProductsPreviewsLoadedState({required this.productsPreviews, required this.categories});
 }
 
 class ProductsLoadedState extends ProductState {
