@@ -56,7 +56,6 @@ class DeleteProductEvent extends ProductEvent {
   DeleteProductEvent(this.productId);
 }
 
-
 class CreateProductEvent extends ProductEvent {
   final int categoryId;
   final String name;

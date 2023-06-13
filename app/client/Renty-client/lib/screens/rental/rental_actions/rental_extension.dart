@@ -1,4 +1,5 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
@@ -14,8 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RentalExtensionScreen extends StatefulWidget {
-  final int rentId;
-  const RentalExtensionScreen({super.key, required this.rentId});
+  final RentResponse rent;
+  const RentalExtensionScreen({super.key, required this.rent});
 
   @override
   State<RentalExtensionScreen> createState() => _RentalExtensionScreenState();
@@ -72,14 +73,22 @@ class _RentalExtensionScreenState extends State<RentalExtensionScreen> {
             SizedBox(height: 30.h),
             buildButton("Продлить", "primary", () {
               if (_newEndDateTime == "") {
-              toastInfo(msg: "Выберите новое время аренды!");
-              setState(() {});
-              return;
-            }
+                toastInfo(msg: "Выберите новое время аренды!");
+                setState(() {});
+                return;
+              }
+              if (widget.rent.status == "EXPIRED") {
+                toastInfo(msg: "Нельзя продлить просроченную аренду!");
+                return;
+              }
+              if (widget.rent.status == "CREATED") {
+                toastInfo(msg: "Нельзя продлить еще не начатую аренду!");
+                return;
+              }
               AppMetrica.reportEvent('Product rental extended');
               context
                   .read<RentBloc>()
-                  .add(ProlongRentEvent(widget.rentId, _newEndDateTime));
+                  .add(ProlongRentEvent(widget.rent.rentId, _newEndDateTime));
 
               Navigator.of(context).push(
                 MaterialPageRoute(
