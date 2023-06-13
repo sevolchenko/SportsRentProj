@@ -27,25 +27,6 @@ public abstract class IntegrationEnvironment {
         registry.add("spring.datasource.password", DB_CONTAINER::getPassword);
 
         Startables.deepStart(DB_CONTAINER);
-        //.thenAccept(unused -> runMigrations(DB_CONTAINER));
     }
-//
-//
-//    private static void runMigrations(JdbcDatabaseContainer<?> c) {
-//        var changelogPath = new File(".").toPath().toAbsolutePath().getParent().getParent()
-//                .resolve("migrations");
-//
-//        try (var conn = DriverManager.getConnection(c.getJdbcUrl(), c.getUsername(), c.getPassword())) {
-//            var changelogDir = new DirectoryResourceAccessor(changelogPath);
-//
-//            var db = new PostgresDatabase();
-//            db.setConnection(new JdbcConnection(conn));
-//
-//            var liquibase = new Liquibase("master.xml", changelogDir, db);
-//            liquibase.update(new Contexts(), new LabelExpression());
-//        } catch (FileNotFoundException | LiquibaseException | SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
 }
