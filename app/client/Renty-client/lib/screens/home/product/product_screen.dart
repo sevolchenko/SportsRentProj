@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/size.dart';

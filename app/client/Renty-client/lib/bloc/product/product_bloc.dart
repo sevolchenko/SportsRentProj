@@ -20,7 +20,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductLoadingState()) {
     on<ProductsPreviewsLoadEvent>(
       (event, emit) async {
-        productsPreviews = await _productRepository.getProductsPreviews();
+        productsPreviews = await _productRepository.getProductsPreviews(
+          // queryParameters: {
+          //   "search": event.search,
+          //   "sort_by": event.sortValue.keys.first,
+          //   "sort_direction": event.sortValue.values.first
+          // },
+        );
         categories = await _categoryRepository.getCategories();
         emit(ProductsPreviewsLoadedState(
             productsPreviews: productsPreviews, categories: categories));

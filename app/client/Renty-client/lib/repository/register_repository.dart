@@ -4,7 +4,7 @@ class RegisterRepository {
   final RegisterApi _registerApi = RegisterApi();
 
 
-  Future<int> registerUser(Map<String, dynamic> body) async {
+  Future<int?> registerUser(Map<String, dynamic> body) async {
     return await _registerApi.register(body);
   }
 }
