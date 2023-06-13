@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/size.dart';
 import 'package:client/bloc/product/product_bloc.dart';
@@ -6,16 +7,15 @@ import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/rent/rent_event.dart';
-import 'package:client/common/values/colors.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/controller/product_controller.dart';
 import 'package:client/global.dart';
 import 'package:client/screens/home/home_screen.dart';
-import 'package:client/screens/home/product/datetime_picker.dart';
+import 'package:client/screens/home/product/product_widgets/datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,6 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
     _productController.initProduct(widget.productId);
 
     _selectedSizeIndex = 0;
+    AppMetrica.reportEvent('Product screen open');
   }
 
   void _handleStartDateTime(DateTime dateTime) {
@@ -189,7 +190,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
               Container(
-                height: 110.h,
+                height: 120.h,
                 child: Column(
                   children: [
                     reusableText("Количество"),
@@ -236,15 +237,17 @@ class _ProductScreenState extends State<ProductScreen> {
             startDateTime: _startDateTime,
           ),
         ),
-        SizedBox(height: 20.h),
-        buildButton("Уведомить по освобождении", "secondary", () {}),
+        // SizedBox(height: 20.h),
+        // buildButton("Уведомить по освобождении", "secondary", () {}),
         SizedBox(
           height: 20.h,
         ),
-        buildButton("Добавить в корзину", "primary", () {
+        buildButton("Добавить в корзину", "primary", () async {
           if (Global.storageService.isUserAuthenticated()) {
             if (startTime == "" || endTime == "" || count == 0) {
-              toastInfo(msg: "Заполните все необходимые поля!");
+              toastInfo(
+                  msg:
+                      "Заполните все необходимые поля или введите корректные данные!");
               setState(() {});
               return;
             }
@@ -258,6 +261,7 @@ class _ProductScreenState extends State<ProductScreen> {
               setState(() {});
               return;
             } else {
+              AppMetrica.reportEvent('Product added to cart');
               context.read<RentBloc>().add(
                     AddCartItemRentEvent(
                       productId: product.id,

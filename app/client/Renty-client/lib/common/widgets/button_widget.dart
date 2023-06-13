@@ -7,12 +7,13 @@ Widget buildButton(
   String buttonName,
   String buttonType,
   void Function()? func,
+  {double width=280, double height=50}
 ) {
   return GestureDetector(
     onTap: func,
     child: Container(
-      width: 280.w,
-      height: 50.h,
+      width: width.w,
+      height: height.h,
       margin: EdgeInsets.only(left: 25.w, right: 25.w),
       decoration: BoxDecoration(
         color: buttonType == "primary" ? Global.appColor : Colors.white,

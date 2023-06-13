@@ -7,40 +7,42 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-toastInfo(
-    {required String msg,
-    // Color backgroundColor = kPrimaryColor,
-    Color textColor = Colors.white}) {
+toastInfo({required String msg, Color textColor = Colors.white}) {
   return Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.TOP,
     timeInSecForIosWeb: 2,
-    // backgroundColor: backgroundColor,
     textColor: textColor,
     fontSize: 16.sp,
   );
 }
 
 Widget buildLoadingWidget() {
-  return Center(
+  return Scaffold(
+    body: Center(
       child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: const [Text("Loading data ..."), CircularProgressIndicator()],
-  ));
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [Text("Loading data ..."), CircularProgressIndicator()],
+      ),
+    ),
+    bottomNavigationBar: MyBottomNavBar(selectedIndex: 0),
+  );
 }
 
 Widget buildErrorWidget({String error = ""}) {
-  return Center(
+  return Scaffold(
+    body: Center(
       child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text("Произошла ошибка: $error"),
-    ],
-  ));
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Произошла ошибка: $error"),
+        ],
+      ),
+    ),
+    bottomNavigationBar: MyBottomNavBar(selectedIndex: 0),
+  );
 }
-
-
 
 Widget buildUnauthenticatedWidget(BuildContext context) {
   return Scaffold(

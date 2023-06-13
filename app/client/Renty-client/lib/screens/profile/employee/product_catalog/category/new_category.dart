@@ -43,6 +43,7 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "Новая категория",
+          leading: false,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -92,8 +93,10 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                 () {
                   context.read<CategoryBloc>().add(
                       CreateCategoryEvent(_selectedCategoryId, _categoryname));
+                  toastInfo(msg: "Новый категория успешно добавлен");
                   setState(
                     () {
+                      _categoryname = "";
                       _selectedCategoryId = categories[0].categoryId;
                     },
                   );

@@ -1,13 +1,11 @@
-import 'package:client/api/dto/request/user/login.dart';
 import 'package:client/bloc/auth/auth_bloc.dart';
-import 'package:client/bloc/auth/auth_event.dart';
 import 'package:client/bloc/auth/auth_state.dart';
+import 'package:client/controller/auth_controller.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,8 +18,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late String email;
-  late String password;
+  late AuthController _authController;
+  String email = "";
+  String password = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _authController = AuthController(context: context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // buildThirdPartyLogin(context),
                       Container(
                           margin: EdgeInsets.only(top: 80.h),
                           padding: EdgeInsets.only(left: 25.w, right: 25.w),
@@ -51,9 +55,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 5.h,
                               ),
                               buildTextField(
-                                  "Введите электронную почту", 'email',
+                                  "Введите электронную почту", 'email', textInputType: TextInputType.emailAddress,
                                   (value) {
-                                email = value;
+                                email = value.toLowerCase();
                               }, height: 58),
                               reusableText("Пароль"),
                               SizedBox(
@@ -67,10 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20.h,
                               ),
                               buildButton("Войти", "primary", () {
-                                context.read<AuthBloc>().add(LoginEvent(
-                                    LoginRequest(
-                                        email: email, password: password)));
-                                Navigator.of(context).pushNamed("/profile");
+                                _authController.handleLogin(email, password);
                               }),
                               SizedBox(
                                 height: 20.h,

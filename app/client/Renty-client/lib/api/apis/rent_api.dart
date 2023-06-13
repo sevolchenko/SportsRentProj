@@ -38,23 +38,27 @@ class RentApi {
   Future<int?> finishRentByUserIdRentId(
       int userId, int rentId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/${rentId}/finish';
-    var statusCode = await HttpUtil().patch(path, body);
     try {
+      var statusCode = await HttpUtil().patch(path, body);
+
       if (statusCode == 200) {
         toastInfo(msg: "Аренда успешно завершена");
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при завершении аренды");
+        toastInfo(msg: "Аренда не завершена");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при завершении аренды");
+    }
     return null;
   }
 
   Future<List<RentResponse>> finishRentsByUserId(
       int userId, Map<String, dynamic> body) async {
     var path = 'rents/${userId}/finish/batch';
-    var response = await HttpUtil().patchWithResponse(path, body);
     try {
+      var response = await HttpUtil().patchWithResponse(path, body);
+
       if (response.statusCode == 200) {
         toastInfo(msg: "Аренды успешно завершены");
         var jsonData = response.data;
@@ -62,33 +66,38 @@ class RentApi {
             jsonData.map((x) => RentResponse.fromJson(x)));
         return res;
       } else {
-        toastInfo(msg: "Ошибка при завершении аренд");
+        toastInfo(msg: "Аренды не завершены");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при завершении аренд");
+    }
     return [];
   }
 
   Future<ReceiptResponse?> getMyReceipt(String receiptId) async {
     var path = 'receipts/${receiptId}/show';
-    var response = await HttpUtil().get(path);
     try {
+      var response = await HttpUtil().get(path);
       if (response.statusCode == 200) {
         toastInfo(msg: "Чек получен");
         var jsonData = response.data;
         var res = ReceiptResponse.fromJson(jsonData);
         return res;
       } else {
-        toastInfo(msg: "Ошибка при получении чека");
+        toastInfo(msg: "Чек не получен");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при получении чека");
+    }
     return null;
   }
 
   Future<int?> prolongRentByRentId(
       int rentId, Map<String, dynamic> body) async {
     var path = 'rents/my/${rentId}/prolong';
-    var statusCode = await HttpUtil().patch(path, body);
     try {
+      var statusCode = await HttpUtil().patch(path, body);
+
       if (statusCode == 200) {
         toastInfo(msg: "Аренда продлена");
         return statusCode;
@@ -97,7 +106,9 @@ class RentApi {
             msg:
                 "Аренду продлить нельзя. Возможно, товар уже занят на это время");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при продлении аренды");
+    }
     return null;
   }
 
@@ -108,12 +119,9 @@ class RentApi {
       if (statusCode == 200) {
         toastInfo(msg: "Аренда успешно началась");
         return statusCode;
+      } else {
+        toastInfo(msg: "Не удалось начать аренду");
       }
-      // else else {
-      //   toastInfo(msg: "Ошибка при старте аренды");
-      // }{
-      //   toastInfo(msg: "Ошибка при старте аренды");
-      // }
     } on DioError catch (e) {
       toastInfo(msg: "Ошибка при старте аренды");
     }
@@ -122,14 +130,14 @@ class RentApi {
 
   Future<int?> startBatchRents(Map<String, dynamic> body) async {
     var path = 'rents/my/start/batch';
-    var statusCode = await HttpUtil().post(path, data: body);
     try {
+      var statusCode = await HttpUtil().post(path, data: body);
+
       if (statusCode == 200) {
         return statusCode;
+      } else {
+        toastInfo(msg: "Не удалось начать аренду");
       }
-      //  else {
-      //   toastInfo(msg: "Ошибка при старте нескольких аренд");
-      // }
     } on DioError catch (e) {
       toastInfo(msg: "Ошибка при старте нескольких аренд");
     }
@@ -144,7 +152,7 @@ class RentApi {
       var res = UserResponse.fromJson(jsonData);
       return res;
     } on DioError catch (e) {
-      toastInfo(msg: "Ошибка получении данных пользователя");
+      toastInfo(msg: "Данные пользователя не были получены");
     }
     return null;
   }

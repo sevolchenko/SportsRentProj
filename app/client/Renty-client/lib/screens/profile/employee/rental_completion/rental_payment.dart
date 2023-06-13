@@ -20,7 +20,6 @@ class RentalPaymentScreen extends StatefulWidget {
 class _RentalPaymentScreenState extends State<RentalPaymentScreen> {
   @override
   void initState() {
-    // context.read<RentBloc>().add(PaymentRentsEvent());
     super.initState();
   }
 
@@ -47,6 +46,7 @@ class _RentalPaymentScreenState extends State<RentalPaymentScreen> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: 'Оплата аренды',
+          leading: false,
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

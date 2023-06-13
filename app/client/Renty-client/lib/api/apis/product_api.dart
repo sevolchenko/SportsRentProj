@@ -1,4 +1,3 @@
-import 'package:client/api/dto/request/product/size.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/product_preview.dart';
 import 'package:client/api/dto/response/product/size.dart';
@@ -38,12 +37,10 @@ class ProductApi {
     return res;
   }
 
-  Future<List<ProductPreviewResponse>> productsPreviews({Map<String, dynamic>? query}) async {
+  Future<List<ProductPreviewResponse>> productsPreviews(
+      {Map<String, dynamic>? query}) async {
     var path = 'catalog/products/previews';
-    var response = await HttpUtil().get(
-      path,
-      queryParameters: query
-    );
+    var response = await HttpUtil().get(path, queryParameters: query);
     var jsonData = response.data;
     var res = List<ProductPreviewResponse>.from(
         jsonData.map((x) => ProductPreviewResponse.fromJson(x)));
@@ -63,14 +60,16 @@ class ProductApi {
 
   Future<int?> sizeCountUpdate(int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
-    var statusCode = await HttpUtil().patch(path, size);
     try {
+      var statusCode = await HttpUtil().patch(path, size);
       if (statusCode == 200) {
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при изменении количества");
+        toastInfo(msg: "Не изменено");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при изменении количества");
+    }
     return null;
   }
 
@@ -89,41 +88,47 @@ class ProductApi {
 
   Future<int?> sizeCreate(int productId, Map<String, dynamic> size) async {
     var path = 'catalog/products/${productId}/sizes';
-    var statusCode = await HttpUtil().post(path, data: size);
     try {
+      var statusCode = await HttpUtil().post(path, data: size);
       if (statusCode == 200) {
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при создании размера");
+        toastInfo(msg: "Размер не был создан");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при создании размера");
+    }
     return null;
   }
 
   Future<int?> productCreate(Map<String, dynamic> body) async {
     var path = 'catalog/products';
-    var statusCode = await HttpUtil().post(path, data: body);
     try {
+      var statusCode = await HttpUtil().post(path, data: body);
       if (statusCode == 200) {
         return statusCode;
       } else {
-        toastInfo(msg: "Ошибка при создании продукта");
+        toastInfo(msg: "Товар не был создан");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при создании товара");
+    }
     return null;
   }
 
   Future<int?> productDelete(int id) async {
     var path = 'catalog/products/${id}';
-    var code = await HttpUtil().delete(path, null);
     try {
+      var code = await HttpUtil().delete(path, null);
       if (code == 200) {
-        toastInfo(msg: "Продукт удален");
+        toastInfo(msg: "Товар удален");
         return code;
       } else {
-        toastInfo(msg: "Ошибка при удалении продукта");
+        toastInfo(msg: "Этот товар сейчас удалить нельзя");
       }
-    } on DioError catch (e) {}
+    } on DioError catch (e) {
+      toastInfo(msg: "Ошибка при удалении товара");
+    }
     return null;
   }
 }

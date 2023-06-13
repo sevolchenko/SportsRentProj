@@ -11,3 +11,7 @@ class LoggedInState extends AuthState {
 class LoggingOutState extends AuthState {}
 
 class LoggedOutState extends AuthState {}
+
+class LoginUserFailedState extends AuthState {
+  LoginUserFailedState();
+}

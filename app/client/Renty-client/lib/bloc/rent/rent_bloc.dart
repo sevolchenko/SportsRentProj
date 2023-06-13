@@ -4,18 +4,17 @@ import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/receipt.dart';
 import 'package:client/api/dto/response/rent/rent.dart';
 import 'package:client/api/dto/response/user/user.dart';
-import 'package:client/api/repository/product_repository.dart';
-import 'package:client/api/repository/rent_repository.dart';
+import 'package:client/repository/product_repository.dart';
+import 'package:client/repository/rent_repository.dart';
 import 'package:client/bloc/rent/rent_event.dart';
 import 'package:client/bloc/rent/rent_state.dart';
-import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/global.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RentBloc extends Bloc<RentEvent, RentState> {
   final RentRepository _rentRepository = RentRepository();
   final ProductRepository _productRepository = ProductRepository();
-  late final List<RentResponse>? _finishRentResponse;
+  // late final List<RentResponse>? _finishRentResponse;
   late final ReceiptResponse? receipt;
 
   late List<RentResponse> myRents = [];
@@ -37,10 +36,10 @@ class RentBloc extends Bloc<RentEvent, RentState> {
       (event, emit) async {
         UserRentsFinishRequest finishRequest =
             UserRentsFinishRequest(rentsId: event.rentsIds);
-        _finishRentResponse = await _rentRepository.finishUserRents(
+        var finishRentResponse = await _rentRepository.finishUserRents(
             event.userId, finishRequest.toJson());
         final curReceipt = await _rentRepository
-            .getMyReceipt(_finishRentResponse![0].receiptId!);
+            .getMyReceipt(finishRentResponse[0].receiptId!);
         receipt = ReceiptResponse(
             receiptId: curReceipt!.receiptId,
             user: curReceipt.user,
@@ -56,7 +55,7 @@ class RentBloc extends Bloc<RentEvent, RentState> {
 
     // on<PaymentRentsEvent>(
     //   (event, emit) async {
-        
+
     //   },
     // );
 
@@ -88,14 +87,19 @@ class RentBloc extends Bloc<RentEvent, RentState> {
 
     on<SearchUserRentsEvent>(
       (event, emit) async {
-        UserResponse? user;
-        user = await _rentRepository.getUserData({"email": event.userEmail});
-        if (user != null) {
-          myRents = await _rentRepository
-              .getUserOngRents(user.userId, {"status_filter": "ONGOING"});
-          emit(UserRentsLoadedState(userId: user.userId, userRents: myRents));
-        } else {
-          emit(UnsuccessfulUserSearchState());
+        emit(RentsLoadingState());
+        try {
+          UserResponse? user;
+          user = await _rentRepository.getUserData({"email": event.userEmail});
+          if (user != null) {
+            myRents = await _rentRepository
+                .getUserOngRents(user.userId, {"status_filter": "ONGOING"});
+            emit(UserRentsLoadedState(userId: user.userId, userRents: myRents));
+          } else {
+            emit(UnsuccessfulUserSearchState());
+          }
+        } catch (e) {
+          emit(RentsErrorState(errorMessage: e.toString()));
         }
       },
     );

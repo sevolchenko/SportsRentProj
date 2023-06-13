@@ -1,7 +1,4 @@
 import 'package:client/api/dto/request/product/image_create.dart';
-import 'package:client/api/dto/response/product/category.dart';
-import 'package:client/api/dto/response/product/image.dart';
-import 'package:client/api/dto/response/product/product.dart';
 
 abstract class ProductEvent {
   const ProductEvent();
@@ -21,6 +18,21 @@ class ProductsPreviewsLoadEvent extends ProductEvent {}
 class ProductsPreviewsSearchEvent extends ProductEvent {
   final String search;
   ProductsPreviewsSearchEvent({required this.search});
+}
+
+class ProductsPreviewsSortEvent extends ProductEvent {
+  final Map<String, String> sortValue;
+  ProductsPreviewsSortEvent({required this.sortValue});
+}
+
+class ProductsPreviewsFilterEvent extends ProductEvent {
+  final int categoryId;
+  final int minPrice;
+  final int maxPrice;
+  ProductsPreviewsFilterEvent(
+      {required this.categoryId,
+      required this.minPrice,
+      required this.maxPrice});
 }
 
 class ProductRentEvent extends ProductEvent {
@@ -43,8 +55,6 @@ class DeleteProductEvent extends ProductEvent {
 
   DeleteProductEvent(this.productId);
 }
-
-class PreCreateProductEvent extends ProductEvent {}
 
 class CreateProductEvent extends ProductEvent {
   final int categoryId;

@@ -1,10 +1,8 @@
-//unify BlocProvider and routes and screens
 import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/cart/cart_bloc.dart';
 import 'package:client/bloc/category/category_bloc.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/register/register_bloc.dart';
-import 'package:client/bloc/auth/auth_bloc.dart';
 import 'package:client/bloc/rent/rent_bloc.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/user/user_bloc.dart';
@@ -20,7 +18,6 @@ import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/profile/register/register_screen.dart';
 import 'package:client/screens/rental/rent_screen.dart';
 import 'package:client/screens/welcome/welcome.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -85,7 +82,6 @@ class AppScreens {
           ))];
   }
 
-//return all bloc providers
   static List<dynamic> allProviders(BuildContext context) {
     List<dynamic> blocProviders = <dynamic>[];
     for (var bloc in routes()) {
