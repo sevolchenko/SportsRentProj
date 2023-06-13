@@ -56,7 +56,7 @@ class _RentalSearchScreenState extends State<RentalSearchScreen> {
                 buildTextField("Введите электронную почту клиента", 'email',
                     textInputType: TextInputType.emailAddress,
                     height: 58, (value) {
-                  _userEmail = value;
+                  _userEmail = value.toLowerCase();
                 }),
                 SizedBox(
                   height: 20.h,

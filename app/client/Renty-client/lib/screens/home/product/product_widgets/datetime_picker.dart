@@ -1,9 +1,9 @@
 import 'package:client/common/widgets/auxiliary_wigets.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class MyDateTimePicker extends StatefulWidget {
   final void Function(DateTime) onSaved;
@@ -35,7 +35,7 @@ class _MyDateTimePickerState extends State<MyDateTimePicker> {
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime.now(),
-          lastDate: DateTime.now().add(const Duration(days: 60)),
+          lastDate: DateTime.now().add(const Duration(days: 30)),
         ).then((date) async {
           if (date != null) {
             selectedDate = date;
@@ -75,7 +75,9 @@ class _MyDateTimePickerState extends State<MyDateTimePicker> {
                         DateTime(result.year, result.month, result.day);
                     DateTime combined = DateTimeField.combine(date, timeOfDay);
                     widget.onSaved(result);
-                    toastInfo(msg: "Некорректное время окончания аренды! Добавлен 1 час от начала аренды");
+                    toastInfo(
+                        msg:
+                            "Некорректное время окончания аренды! Добавлен 1 час от начала аренды");
                     return combined;
                   }
                 }

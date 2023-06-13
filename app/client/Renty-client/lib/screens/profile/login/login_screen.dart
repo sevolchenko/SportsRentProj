@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               buildTextField(
                                   "Введите электронную почту", 'email', textInputType: TextInputType.emailAddress,
                                   (value) {
-                                email = value;
+                                email = value.toLowerCase();
                               }, height: 58),
                               reusableText("Пароль"),
                               SizedBox(

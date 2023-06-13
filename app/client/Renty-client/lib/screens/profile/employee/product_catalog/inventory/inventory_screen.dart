@@ -86,7 +86,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                            left: 15.w, right: 5.w, bottom: 30.h),
+                            left: 15.w, right: 5.w, bottom: 35.h),
                         child: GestureDetector(
                           onTap: () {
                             context.read<ProductBloc>().add(

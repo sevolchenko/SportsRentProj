@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/size.dart';
@@ -49,7 +50,6 @@ class _ProductScreenState extends State<ProductScreen> {
     _selectedSizeIndex = 0;
     AppMetrica.reportEvent('Product screen open');
   }
-
 
   void _handleStartDateTime(DateTime dateTime) {
     setState(() {
@@ -191,7 +191,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
               Container(
-                height: 110.h,
+                height: 120.h,
                 child: Column(
                   children: [
                     reusableText("Количество"),
@@ -246,7 +246,9 @@ class _ProductScreenState extends State<ProductScreen> {
         buildButton("Добавить в корзину", "primary", () async {
           if (Global.storageService.isUserAuthenticated()) {
             if (startTime == "" || endTime == "" || count == 0) {
-              toastInfo(msg: "Заполните все необходимые поля!");
+              toastInfo(
+                  msg:
+                      "Заполните все необходимые поля или введите корректные данные!");
               setState(() {});
               return;
             }
@@ -260,7 +262,6 @@ class _ProductScreenState extends State<ProductScreen> {
               setState(() {});
               return;
             } else {
-              // _sendProductAnalytics(product, sizes);
               AppMetrica.reportEvent('Product added to cart');
               context.read<RentBloc>().add(
                     AddCartItemRentEvent(
@@ -276,7 +277,6 @@ class _ProductScreenState extends State<ProductScreen> {
                   builder: (context) => const HomeScreen(),
                 ),
               );
-
             }
           } else {
             context.read<ProductBloc>().add(ProductUnAuthenticatedUserEvent());

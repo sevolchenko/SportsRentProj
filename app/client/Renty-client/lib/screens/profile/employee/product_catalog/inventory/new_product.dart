@@ -6,7 +6,6 @@ import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/bloc/product/product_bloc.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
@@ -35,7 +34,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
   List<ImageCreateRequest> _images = [];
   ImageCreateRequest _image = ImageCreateRequest(position: 1, image: "");
   String _loadedPhoto = "";
-  late int _price;
+  int _price = 0;
   String _description = "";
 
   late int _selectedCategoryId;
@@ -53,7 +52,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        if (state is ProductInCreateState) {
+        if (state is ProductsPreviewsLoadedState) {
           _selectedCategoryId = state.categories[0].categoryId;
           return _buildProductCreateWidget(state.categories);
         } else {
@@ -68,7 +67,13 @@ class _NewProductScreenState extends State<NewProductScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: "Новый товар",
-          leading: false,
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const InventoryScreen(),
+              ),
+            );
+          },
         ),
         body: SingleChildScrollView(
           child: SizedBox(
@@ -154,7 +159,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 }),
                 buildTextField('Введите описание', 'text', (value) {
                   _description = value;
-                  // setState(() {});
                 }),
                 _description == ""
                     ? Container()
@@ -173,16 +177,29 @@ class _NewProductScreenState extends State<NewProductScreen> {
                   "Добавить",
                   "primary",
                   () {
-                    context.read<ProductBloc>().add(
-                          CreateProductEvent(_selectedCategoryId, _enteredName,
-                              _description, _price, _images),
-                        );
-                    toastInfo(msg: "Новый товар успешно добавлен");
-                    setState(
-                      () {
-                        _selectedCategoryId = categories[0].categoryId;
-                      },
-                    );
+                    if (_enteredName == "" ||
+                        _loadedPhoto == "" ||
+                        _price <= 0 ||
+                        _description == "") {
+                      toastInfo(
+                          msg:
+                              "Заполните все необходимые поля или введите корректные данные!");
+                      setState(() {});
+                      return;
+                    } else {
+                      context.read<ProductBloc>().add(
+                            CreateProductEvent(_selectedCategoryId,
+                                _enteredName, _description, _price, _images),
+                          );
+                      toastInfo(msg: "Новый товар успешно добавлен");
+                      setState(
+                        () {
+                          _selectedCategoryId = categories[0].categoryId;
+                          _loadedPhoto == "";
+                          _description == "";
+                        },
+                      );
+                    }
                   },
                 ),
                 SizedBox(

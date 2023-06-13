@@ -26,6 +26,6 @@ class ProductController {
   }
 
   void initNewProduct() async  {
-    context.read<ProductBloc>().add(PreCreateProductEvent());
+    context.read<ProductBloc>().add(ProductsPreviewsLoadEvent());
   }
 }
