@@ -1,6 +1,7 @@
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
+import 'package:client/screens/profile/employee/employee_menu.dart';
 import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,15 @@ class _CatalogMenuState extends State<CatalogMenu> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar:  MyAppBar(
           title: "Управление каталогом",
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const EmpoyeeMenu(),
+              ),
+            );
+          },
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

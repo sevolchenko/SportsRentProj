@@ -3,9 +3,8 @@ import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/screens/profile/employee/product_catalog/catalog_menu.dart';
 import 'package:client/screens/profile/employee/rental_completion/search_by_email.dart';
+import 'package:client/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmpoyeeMenu extends StatefulWidget {
@@ -20,8 +19,15 @@ class _EmpoyeeMenuState extends State<EmpoyeeMenu> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: MyAppBar(
           title: "Меню сотрудника",
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ProfileScreen(),
+              ),
+            );
+          },
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

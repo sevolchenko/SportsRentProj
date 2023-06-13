@@ -30,7 +30,7 @@ class NewProductScreen extends StatefulWidget {
 class _NewProductScreenState extends State<NewProductScreen> {
   late final ProductController _productController;
 
-  late String _enteredName;
+  String _enteredName = "";
   List<ImageCreateRequest> _images = [];
   ImageCreateRequest _image = ImageCreateRequest(position: 1, image: "");
   String _loadedPhoto = "";
@@ -186,20 +186,19 @@ class _NewProductScreenState extends State<NewProductScreen> {
                               "Заполните все необходимые поля или введите корректные данные!");
                       setState(() {});
                       return;
-                    } else {
-                      context.read<ProductBloc>().add(
-                            CreateProductEvent(_selectedCategoryId,
-                                _enteredName, _description, _price, _images),
-                          );
-                      toastInfo(msg: "Новый товар успешно добавлен");
-                      setState(
-                        () {
-                          _selectedCategoryId = categories[0].categoryId;
-                          _loadedPhoto == "";
-                          _description == "";
-                        },
-                      );
                     }
+                    context.read<ProductBloc>().add(
+                          CreateProductEvent(_selectedCategoryId, _enteredName,
+                              _description, _price, _images),
+                        );
+                    toastInfo(msg: "Новый товар успешно добавлен");
+                    setState(
+                      () {
+                        _selectedCategoryId = categories[0].categoryId;
+                        _loadedPhoto == "";
+                        _description == "";
+                      },
+                    );
                   },
                 ),
                 SizedBox(
