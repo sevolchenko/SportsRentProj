@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vsu.csf.rentyserver.component.CatalogProcessor;
 import vsu.csf.rentyserver.exception.DuplicateElementException;
 import vsu.csf.rentyserver.exception.NoSuchElementException;
+import vsu.csf.rentyserver.exception.WrongRentStatusException;
 import vsu.csf.rentyserver.model.dto.catalog.request.*;
 import vsu.csf.rentyserver.model.dto.catalog.response.CategoryResponse;
 import vsu.csf.rentyserver.model.dto.catalog.response.ProductPreviewResponse;
@@ -17,6 +18,7 @@ import vsu.csf.rentyserver.model.entity.Category;
 import vsu.csf.rentyserver.model.entity.Image;
 import vsu.csf.rentyserver.model.entity.Product;
 import vsu.csf.rentyserver.model.entity.Size;
+import vsu.csf.rentyserver.model.entity.enumeration.RentStatus;
 import vsu.csf.rentyserver.model.entity.id.ImageId;
 import vsu.csf.rentyserver.model.entity.id.SizeId;
 import vsu.csf.rentyserver.model.mapping.CategoryMapper;
@@ -106,11 +108,19 @@ public class CatalogService {
     public ProductResponse deleteProductById(Long productId) {
         log.info("Delete product by id {} called", productId);
 
-        var deleted = productsRepository.removeProductByProductIdEquals(productId);
+        var product = productsRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("product", Product.class, productId));
 
-        if (deleted.isEmpty()) {
-            throw new NoSuchElementException("product", Product.class, productId);
+        if (product.getRents() != null) {
+            product.getRents().stream()
+                    .filter(rentEvent -> rentEvent.getStatus() != RentStatus.FINISHED)
+                    .forEach(rentEvent -> {
+                        throw new WrongRentStatusException(
+                                rentEvent.getRentId(), rentEvent.getStatus(), Set.of(RentStatus.FINISHED));
+                    });
         }
+
+        var deleted = productsRepository.removeProductByProductIdEquals(productId);
 
         return productMapper.map(deleted.get(0));
     }
