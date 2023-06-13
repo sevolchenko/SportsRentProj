@@ -17,7 +17,7 @@ class UserApi {
         toastInfo(msg: "Данные пользователя не были получены");
       }
     } on DioError catch (e) {
-      toastInfo(msg: "Ошибка при получении данных пользователя");
+      // toastInfo(msg: "Ошибка при получении данных пользователя");
     }
     return null;
   }

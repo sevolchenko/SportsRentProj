@@ -2,6 +2,7 @@ import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/bloc/size/size_bloc.dart';
 import 'package:client/bloc/size/size_event.dart';
 import 'package:client/bloc/size/size_state.dart';
+import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
@@ -9,7 +10,6 @@ import 'package:client/common/widgets/text/text_widgets.dart';
 import 'package:client/screens/profile/employee/product_catalog/inventory/inventory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductSizeScreen extends StatefulWidget {
@@ -43,9 +43,9 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
   Widget _buildNewSizeWidget() {
     return SafeArea(
       child: Scaffold(
-        appBar:  MyAppBar(
+        appBar: MyAppBar(
           title: "Новый размер",
-          backFun:  () {
+          backFun: () {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => const InventoryScreen(),
@@ -77,8 +77,22 @@ class _ProductSizeScreenState extends State<ProductSizeScreen> {
                 "Добавить",
                 "primary",
                 () {
+                  if (_sizeName == "" || _sizeCount <= 0) {
+                    toastInfo(
+                        msg:
+                            "Заполните все необходимые поля или введите корректные данные!");
+                    setState(() {});
+                    return;
+                  }
                   context.read<SizeBloc>().add(ProductSizeCreateEvent(
                       widget.product!.id, _sizeName, _sizeCount));
+                  toastInfo(msg: "Новый категория успешно добавлена");
+                  setState(
+                    () {
+                      _sizeName = "";
+                      _sizeCount = 0;
+                    },
+                  );
                 },
               ),
             ],

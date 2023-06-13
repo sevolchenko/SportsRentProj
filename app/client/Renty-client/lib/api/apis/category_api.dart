@@ -32,10 +32,10 @@ class CategoryApi {
   Future<int?> createCategory(Map<String, dynamic> body) async {
     var path = 'catalog/categories';
     try {
-      var response = await HttpUtil().post(path, data: body);
-      if (response.statusCode == 200) {
+      var code = await HttpUtil().post(path, data: body);
+      if (code == 200) {
         toastInfo(msg: "Новая категория успешно добавлена");
-        return response.statusCode;
+        return code;
       }
     } on DioError catch (e) {
       toastInfo(msg: "Ошибка при создании категории");

@@ -28,8 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String search = "";
   Map<String, String> sortValue = {};
 
-  Map<String, dynamic> _filterParams = {};
-
   @override
   void initState() {
     super.initState();
@@ -89,13 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               .read<ProductBloc>()
                               .add(ProductsPreviewsSearchEvent(search: search));
                         },
-                        child: SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: const Icon(
-                            FontAwesomeIcons.magnifyingGlass,
-                            size: 30,
-                          ),
+                        child: const Icon(
+                          FontAwesomeIcons.magnifyingGlass,
+                          size: 30,
                         ),
                       ),
                     ),
@@ -132,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SliverPadding(
                       padding: EdgeInsets.symmetric(
-                        vertical: 20.h,
+                        vertical: 10.h,
                         horizontal: 15.w,
                       ),
                       sliver: SliverGrid(

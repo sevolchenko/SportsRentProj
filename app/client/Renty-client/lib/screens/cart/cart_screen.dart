@@ -52,7 +52,10 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildCartWidget(Cart cart) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const MyAppBar(title: 'Корзина'),
+      appBar: const MyAppBar(
+        title: 'Корзина',
+        leading: false,
+      ),
       body: cart.setRents.length == 0
           ? Container(
               alignment: Alignment.center,
@@ -231,9 +234,10 @@ class _CartScreenState extends State<CartScreen> {
                                                         buildRentTime(
                                                             cartItem.startTime,
                                                             ""),
-                                                         VerticalDivider(
+                                                        VerticalDivider(
                                                           thickness: 2,
-                                                          color: Global.appColor,
+                                                          color:
+                                                              Global.appColor,
                                                         ),
                                                         buildRentTime(
                                                             cartItem.endTime,

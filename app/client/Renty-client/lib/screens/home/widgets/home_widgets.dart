@@ -41,7 +41,7 @@ Widget sortAndFilter(
   void Function(String value)? filterFunc,
 }) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h, bottom: 15.h),
+    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,

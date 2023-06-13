@@ -92,13 +92,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
                             context.read<ProductBloc>().add(
                                 ProductsPreviewsSearchEvent(search: search));
                           },
-                          child: SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: const Icon(
-                              FontAwesomeIcons.magnifyingGlass,
-                              size: 30,
-                            ),
+                          child: const Icon(
+                            FontAwesomeIcons.magnifyingGlass,
+                            size: 30,
                           ),
                         ),
                       ),
