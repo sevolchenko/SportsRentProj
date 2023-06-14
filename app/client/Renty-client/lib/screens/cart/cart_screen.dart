@@ -1,8 +1,8 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/bloc/cart/cart_bloc.dart';
 import 'package:client/bloc/cart/cart_event.dart';
 import 'package:client/bloc/cart/cart_state.dart';
 import 'package:client/common/service/cart.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
@@ -52,7 +52,10 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildCartWidget(Cart cart) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const MyAppBar(title: 'Корзина'),
+      appBar: const MyAppBar(
+        title: 'Корзина',
+        leading: false,
+      ),
       body: cart.setRents.length == 0
           ? Container(
               alignment: Alignment.center,
@@ -231,9 +234,10 @@ class _CartScreenState extends State<CartScreen> {
                                                         buildRentTime(
                                                             cartItem.startTime,
                                                             ""),
-                                                         VerticalDivider(
+                                                        VerticalDivider(
                                                           thickness: 2,
-                                                          color: Global.appColor,
+                                                          color:
+                                                              Global.appColor,
                                                         ),
                                                         buildRentTime(
                                                             cartItem.endTime,
@@ -254,26 +258,6 @@ class _CartScreenState extends State<CartScreen> {
                                                               productItem));
                                                   Navigator.of(context).pop();
                                                 }),
-                                                // Container(
-                                                //   margin:
-                                                //       EdgeInsets.only(top: 5.h),
-                                                //   child: GestureDetector(
-                                                //     child: GestureDetector(
-                                                //       onTap: () {
-                                                //         context.read<CartBloc>().add(
-                                                //             RemoveCartItemEvent(
-                                                //                 startRentEventRequest:
-                                                //                     cartItem,
-                                                //                 product:
-                                                //                     productItem));
-                                                //       },
-                                                //       child: const Icon(
-                                                //         FontAwesomeIcons.trash,
-                                                //         size: 30,
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // ),
                                               ],
                                             ),
                                           ),
@@ -294,14 +278,10 @@ class _CartScreenState extends State<CartScreen> {
                         "Забронировать",
                         "secondary",
                         () {
+                          AppMetrica.reportEvent('Product rented');
                           context.read<CartBloc>().add(RentCartItemsEvent(
                               startRentRequest: cart.setRents));
                           toastInfo(msg: "Успешно забронировано");
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const RentScreen(),
-                          //   ),
-                          // );
                         },
                       ),
                     ),

@@ -1,9 +1,8 @@
 class AppRoutes {
-  //sign in screen
   static const LOGIN = "/login";
-  //register screen
+
   static const REGISTER = "/register";
-  // home screen
+  
   static const HOME = "/home";
 
   static const PROFILE = "/profile";

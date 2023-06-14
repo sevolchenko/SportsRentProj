@@ -23,11 +23,11 @@ class ProductsLoadingState extends ProductState {}
 
 class ProductUnAuthenticatedUserState extends ProductState {}
 
-
 class ProductsPreviewsLoadedState extends ProductState {
   final List<ProductPreviewResponse> productsPreviews;
+  final List<CategoryResponse> categories;
 
-  ProductsPreviewsLoadedState({required this.productsPreviews});
+  ProductsPreviewsLoadedState({required this.productsPreviews, required this.categories});
 }
 
 class ProductsLoadedState extends ProductState {
@@ -39,11 +39,6 @@ class ProductsLoadedState extends ProductState {
 class ProductsErrorState extends ProductState {
   ProductsErrorState({required this.errorMessage});
   final String errorMessage;
-}
-
-class ProductInCreateState extends ProductState {
-  final List<CategoryResponse> categories;
-  ProductInCreateState({required this.categories});
 }
 
 class CreateProductState extends ProductState {

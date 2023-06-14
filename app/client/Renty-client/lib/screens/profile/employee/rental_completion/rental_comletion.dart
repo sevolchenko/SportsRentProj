@@ -28,7 +28,6 @@ class RentalCompletionScreen extends StatefulWidget {
 class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
   @override
   void initState() {
-    // context.read<RentBloc>().add(SearchUserRentsEvent(widget.userEmail));
     super.initState();
   }
 
@@ -43,17 +42,10 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
       builder: (context, state) {
         if (state is UserRentsLoadedState) {
           return _buildUserRentsWidget(state.userId, state.userRents);
-        }
-        // else if (state is UnsuccessfulUserSearchState) {
-        //   Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) => const RentalSearchScreen(),
-        //     ),
-        //   );
-        //   return buildLoadingWidget();
-        // }
-        else {
+        } else if (state is RentsLoadingState) {
           return buildLoadingWidget();
+        } else {
+          return _buildSearchCrashWidget();
         }
       },
     );
@@ -64,7 +56,7 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
         child: Scaffold(
       appBar: const MyAppBar(
         title: 'Завершение аренды',
-        leading: false,
+        // leading: false,
       ),
       body: rents.length == 0
           ? Container(
@@ -248,5 +240,25 @@ class _RentalCompletionScreenState extends State<RentalCompletionScreen> {
             ),
       bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
     ));
+  }
+
+  Widget _buildSearchCrashWidget() {
+    return SafeArea(
+      child: Scaffold(
+        appBar: MyAppBar(title: "Завершение аренды"),
+        body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Text(
+            "Пользователь с таким email не найден",
+            style: GoogleFonts.raleway(
+                color: Colors.black,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.normal,
+                fontSize: 22.sp),
+          ),
+        ),
+        bottomNavigationBar: MyBottomNavBar(selectedIndex: 3),
+      ),
+    );
   }
 }

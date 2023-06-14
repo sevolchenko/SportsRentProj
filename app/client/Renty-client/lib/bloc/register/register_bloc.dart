@@ -1,5 +1,5 @@
 import 'package:client/api/dto/request/user/register.dart';
-import 'package:client/api/repository/register_repository.dart';
+import 'package:client/repository/register_repository.dart';
 import 'package:client/bloc/register/register_event.dart';
 import 'package:client/bloc/register/register_state.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
@@ -16,6 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         int? code =
             await _registerRepository.registerUser(registerRequest.toJson());
         if (code == 200) {
+          toastInfo(msg: "Регистрация успешна");
           emit(RegisterUserState());
         } else {
           toastInfo(msg: "Ошибка");

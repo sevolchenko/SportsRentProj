@@ -3,16 +3,14 @@ import 'package:client/bloc/user/user_bloc.dart';
 import 'package:client/bloc/user/user_event.dart';
 import 'package:client/bloc/user/user_state.dart';
 import 'package:client/common/routes/routes.dart';
-import 'package:client/common/values/constant.dart';
 import 'package:client/common/widgets/auxiliary_wigets.dart';
-import 'package:client/global.dart';
-import 'package:client/screens/profile/employee/employee_menu.dart';
-import 'package:client/screens/profile/login/login_screen.dart';
 import 'package:client/common/widgets/bar/app_bar.dart';
+import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/global.dart';
+import 'package:client/screens/profile/employee/employee_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,14 +21,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void removeUserData() {
-    // context.read<ApplicationBloc>().add(const TriggerAppEvent(0));
-
-    Global.storageService.logout();
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(AppRoutes.LOGIN, (route) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (Context, state) {
@@ -54,7 +44,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const MyAppBar(title: "Личный кабинет "),
+        appBar: const MyAppBar(
+          title: "Личный кабинет ",
+          leading: false,
+        ),
         body: body,
         bottomNavigationBar: MyBottomNavBar(
           selectedIndex: 3,

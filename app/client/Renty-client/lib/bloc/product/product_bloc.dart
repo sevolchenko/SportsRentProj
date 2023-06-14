@@ -1,12 +1,11 @@
 import 'package:client/api/dto/request/product/product.dart';
-import 'package:client/api/dto/request/rent/start_rent_event.dart';
 import 'package:client/api/dto/response/product/category.dart';
 import 'package:client/api/dto/response/product/product.dart';
 import 'package:client/api/dto/response/product/product_preview.dart';
-import 'package:client/api/repository/category_repository.dart';
-import 'package:client/api/repository/product_repository.dart';
 import 'package:client/bloc/product/product_event.dart';
 import 'package:client/bloc/product/product_state.dart';
+import 'package:client/repository/category_repository.dart';
+import 'package:client/repository/product_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
@@ -16,13 +15,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   late ProductResponse product;
   late List<ProductResponse> products;
   late List<ProductPreviewResponse> productsPreviews;
-  late List<CategoryResponse> categories;
+  List<CategoryResponse> categories = [];
 
   ProductBloc() : super(ProductLoadingState()) {
     on<ProductsPreviewsLoadEvent>(
       (event, emit) async {
-        productsPreviews = await _productRepository.getProductsPreviews();
-        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+        productsPreviews = await _productRepository.getProductsPreviews(
+          // queryParameters: {
+          //   "search": event.search,
+          //   "sort_by": event.sortValue.keys.first,
+          //   "sort_direction": event.sortValue.values.first
+          // },
+        );
+        categories = await _categoryRepository.getCategories();
+        emit(ProductsPreviewsLoadedState(
+            productsPreviews: productsPreviews, categories: categories));
       },
     );
 
@@ -49,30 +56,38 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     on<ProductsPreviewsSearchEvent>(
       (event, emit) async {
-        productsPreviews = await _productRepository.getProductsPreviews(queryParameters: {"search": event.search});
-        emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+        productsPreviews = await _productRepository
+            .getProductsPreviews(queryParameters: {"search": event.search});
+        emit(ProductsPreviewsLoadedState(
+            productsPreviews: productsPreviews, categories: categories));
       },
     );
 
-    // on<ProductRentEvent>((event, emit) async {
-    //   StartRentEventRequest rentEventCreateRequest = StartRentEventRequest(
-    //       productId: event.productId,
-    //       sizeName: event.sizeName,
-    //       count: event.count,
-    //       startTime: event.startTime,
-    //       endTime: event.endTime);
-    //   // await _productRepository.productRent(rentEventCreateRequest.toJson());
-    //   emit(ProductLoadedState(productItem: product, sizes: product.sizes));
-    // });
+    on<ProductsPreviewsSortEvent>((event, emit) async {
+      emit(ProductLoadingState());
+      productsPreviews =
+          await _productRepository.getProductsPreviews(queryParameters: {
+        "sort_by": event.sortValue.keys.first,
+        "sort_direction": event.sortValue.values.first
+      });
+      emit(ProductsPreviewsLoadedState(
+          productsPreviews: productsPreviews, categories: categories));
+    });
 
-    on<PreCreateProductEvent>(
-      (event, emit) async {
-        categories = await _categoryRepository.getCategories();
-        emit(ProductInCreateState(categories: categories));
-      },
-    );
+    on<ProductsPreviewsFilterEvent>((event, emit) async {
+      emit(ProductLoadingState());
+      productsPreviews =
+          await _productRepository.getProductsPreviews(queryParameters: {
+        "category_filter": event.categoryId,
+        "price_min_filter": event.minPrice,
+        "price_max_filter": event.maxPrice,
+      });
+      emit(ProductsPreviewsLoadedState(
+          productsPreviews: productsPreviews, categories: categories));
+    });
 
     on<CreateProductEvent>((event, emit) async {
+      emit(ProductLoadingState());
       ProductCreateRequest productCreateRequest = ProductCreateRequest(
           name: event.name,
           description: event.description,
@@ -81,13 +96,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           images: event.images);
       await _productRepository.productCreate(productCreateRequest.toJson());
       productsPreviews = await _productRepository.getProductsPreviews();
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      var categories = await _categoryRepository.getCategories();
+      emit(ProductsPreviewsLoadedState(
+          productsPreviews: productsPreviews, categories: categories));
     });
 
     on<DeleteProductEvent>((event, emit) async {
       await _productRepository.productDelete(event.productId);
       productsPreviews = await _productRepository.getProductsPreviews();
-      emit(ProductsPreviewsLoadedState(productsPreviews: productsPreviews));
+      emit(ProductsPreviewsLoadedState(
+          productsPreviews: productsPreviews, categories: categories));
     });
 
     // on<HomeProductItem>(_homeProductProjectionUtem);

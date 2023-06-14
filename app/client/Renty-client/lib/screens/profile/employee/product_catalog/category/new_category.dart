@@ -7,6 +7,7 @@ import 'package:client/common/widgets/bar/app_bar.dart';
 import 'package:client/common/widgets/bar/bottom_nav_bar.dart';
 import 'package:client/common/widgets/button_widget.dart';
 import 'package:client/common/widgets/text/text_widgets.dart';
+import 'package:client/screens/profile/employee/product_catalog/category/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,8 +42,15 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
     List<CategoryResponse> categories = widget.categories;
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar:  MyAppBar(
           title: "Новая категория",
+          backFun: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CategoryScreen(),
+              ),
+            );
+          },
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -90,10 +98,19 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                 "Добавить",
                 "primary",
                 () {
+                  if (_categoryname == "") {
+                    toastInfo(
+                        msg:
+                            "Заполните все необходимые поля или введите корректные данные!");
+                    setState(() {});
+                    return;
+                  }
                   context.read<CategoryBloc>().add(
                       CreateCategoryEvent(_selectedCategoryId, _categoryname));
+                  toastInfo(msg: "Новый категория успешно добавлена");
                   setState(
                     () {
+                      _categoryname = "";
                       _selectedCategoryId = categories[0].categoryId;
                     },
                   );

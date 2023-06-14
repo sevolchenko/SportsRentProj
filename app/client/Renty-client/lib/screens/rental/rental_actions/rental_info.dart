@@ -35,13 +35,6 @@ class _RentalInfoScreenState extends State<RentalInfoScreen> {
     return BlocBuilder<RentBloc, RentState>(
       builder: (context, state) {
         return _buildRentInfoWidget();
-        // if (state is RentsLoadedState) {
-        //   return _buildRentInfoWidget();
-        // } else if (state is RentsLoadingState) {
-        //   return buildLoadingWidget();
-        // } else {
-        //   return buildErrorWidget();
-        // }
       },
     );
   }
@@ -91,7 +84,7 @@ class _RentalInfoScreenState extends State<RentalInfoScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => RentalExtensionScreen(
-                        rentId: widget.rentItem.rentId,
+                        rent: widget.rentItem,
                       ),
                     ),
                   );

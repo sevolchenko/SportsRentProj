@@ -1,14 +1,10 @@
 import 'package:client/common/routes/routes.dart';
-import 'package:client/common/values/colors.dart';
 import 'package:client/global.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -40,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       providers: [...AppScreens.allProviders(context)],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
