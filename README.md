@@ -48,6 +48,10 @@
 - [Дизайн в Figma](https://www.figma.com/file/0UBSbFquRYT1QXGyrH6JiV/Renty?node-id=0%3A1&t=63ZOD7RdBsDtvM6V-1)
 - [Диаграммы в Draw.io](https://app.diagrams.net/#G1lqZKVPA-b3Bo-5tVm31jjGfLrGbnOb2S)
 
+## Презентации
+- [Презентация проекта](docs/presentation/Презентация%20проекта.pdf)
+- [Презентация ТЗ](docs/presentation/Презентация%20по%20ТЗ.pdf)
+
 ## Видеоматериалы
 - [Демонстрация работы приложения](https://youtu.be/tL0qWAL8syM)
 - [Обзор кода клиента](https://youtu.be/JL9Ml30094s)
